@@ -266,61 +266,61 @@ function initApp() {
 function renderApp() {
   const appElement = document.getElementById('app');
   appElement.innerHTML = `
-    <!-- Top Navigation Header (Foodpanda Style) -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <!-- Top Navigation Header (Clean Commercial Layout) -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-xs">
       <div class="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
-        <!-- Logo & Location -->
-        <div class="flex items-center gap-4 cursor-pointer" onclick="switchTab('customer')">
-          <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-2xl bg-[#d70f64] text-white flex items-center justify-center text-2xl font-black shadow-md shadow-[#d70f64]/30">
-              🐼
-            </div>
-            <div>
-              <h1 class="text-base font-black text-[#d70f64] tracking-tight leading-none flex items-center gap-1.5">
-                fooddinosaur <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-[#fff0f5] text-[#d70f64] border border-[#ffccd9]">food & grocery</span>
-              </h1>
-              <span class="text-[11px] text-gray-500 font-medium">Food Dinosaur Sdn. Bhd.</span>
-            </div>
+        
+        <!-- Left: Brand Logo & Sub-tag -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('customer')">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#d70f64] to-[#ff2b85] text-white flex items-center justify-center text-xl font-bold shadow-md shadow-[#d70f64]/25 shrink-0">
+            🐼
           </div>
-
-          <!-- Location Selector -->
-          <div class="hidden lg:flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-700 border border-gray-200 transition-colors">
-            <i class="fa-solid fa-location-dot text-[#d70f64]"></i>
-            <span>Deliver to: <strong>Setapak, Kuala Lumpur</strong></span>
-            <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-lg font-black text-[#d70f64] tracking-tight leading-none">fooddinosaur</span>
+              <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded-full bg-[#fff0f5] text-[#d70f64] border border-[#ffccd9] uppercase tracking-wider">FOOD & GROCERY</span>
+            </div>
+            <p class="text-[10px] text-gray-400 font-medium leading-tight">Food Dinosaur Sdn. Bhd.</p>
           </div>
         </div>
 
-        <!-- Role Tabs -->
-        <nav class="hidden md:flex items-center bg-gray-100 p-1 rounded-xl border border-gray-200">
-          <button onclick="switchTab('customer')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'customer' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
-            <i class="fa-solid fa-utensils mr-1.5"></i> Customer Food
-          </button>
-          <button onclick="switchTab('kitchen')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'kitchen' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
-            <i class="fa-solid fa-fire-burner mr-1.5"></i> Kitchen Queue
-          </button>
-          <button onclick="switchTab('rider')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'rider' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
-            <i class="fa-solid fa-motorcycle mr-1.5"></i> Rider Console
-          </button>
-          <button onclick="switchTab('analytics')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'analytics' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
-            <i class="fa-solid fa-chart-line mr-1.5"></i> Analytics
-          </button>
-        </nav>
+        <!-- Center: Location Selector Pill -->
+        <div class="hidden md:flex items-center gap-2 bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-full border border-gray-200 cursor-pointer transition-all">
+          <i class="fa-solid fa-location-dot text-[#d70f64] text-xs"></i>
+          <div class="text-xs">
+            <span class="text-gray-500 font-semibold">Deliver to: </span>
+            <strong class="text-gray-900 font-extrabold">Setapak, Kuala Lumpur</strong>
+          </div>
+          <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 ml-1"></i>
+        </div>
 
-        <!-- Right Action Controls -->
-        <div class="flex items-center gap-2">
-          <button onclick="openCheckoutModal()" class="btn-primary text-xs py-2 px-3.5 shadow-md">
+        <!-- Right Controls: Role Dropdown + Checkout + Basket Icon -->
+        <div class="flex items-center gap-2.5">
+          <!-- Sleek Role Selector Dropdown -->
+          <div class="relative">
+            <select onchange="switchTab(this.value)" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold py-2 px-3 rounded-xl border border-gray-200 focus:outline-none cursor-pointer">
+              <option value="customer" ${state.activeTab === 'customer' ? 'selected' : ''}>🍔 Customer Portal</option>
+              <option value="kitchen" ${state.activeTab === 'kitchen' ? 'selected' : ''}>👨‍🍳 Kitchen Queue</option>
+              <option value="rider" ${state.activeTab === 'rider' ? 'selected' : ''}>🛵 Rider Console</option>
+              <option value="analytics" ${state.activeTab === 'analytics' ? 'selected' : ''}>📊 Executive Analytics</option>
+            </select>
+          </div>
+
+          <!-- Checkout Button -->
+          <button onclick="openCheckoutModal()" class="btn-primary text-xs py-2 px-3.5 font-extrabold shadow-sm">
             <i class="fa-solid fa-credit-card"></i>
-            <span>Checkout</span>
+            <span class="hidden sm:inline">Checkout</span>
           </button>
-          <button onclick="toggleCartDrawer(true)" class="btn-secondary text-xs py-2 px-3.5 flex items-center gap-2">
-            <i class="fa-solid fa-bag-shopping text-[#d70f64] text-sm"></i>
-            <span>Basket</span>
-            <span class="bg-[#d70f64] text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full">
+
+          <!-- Basket Icon with Floating Badge Counter -->
+          <button onclick="toggleCartDrawer(true)" class="relative p-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-800 transition-colors shadow-2xs">
+            <i class="fa-solid fa-bag-shopping text-[#d70f64] text-base"></i>
+            <span class="absolute -top-1.5 -right-1.5 bg-[#d70f64] text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
               ${state.cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </button>
         </div>
+
       </div>
     </header>
 
@@ -370,7 +370,7 @@ function renderActiveTabContent() {
   }
 }
 
-// 1. CUSTOMER PORTAL (AUTHENTIC FOODPANDA UI)
+// 1. CUSTOMER PORTAL
 function renderCustomerPortal() {
   const filteredMenu = state.menu.filter(item => {
     const matchesRest = state.selectedRestaurant === 'all' || item.restaurantId === state.selectedRestaurant;
@@ -417,7 +417,7 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- Category Carousel Bar (Foodpanda Style) -->
+    <!-- Category Carousel Bar -->
     <div class="mb-8">
       <h3 class="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">Categories</h3>
       <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2">
@@ -467,7 +467,7 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- Foodpanda Food Cards Grid -->
+    <!-- Food Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       ${filteredMenu.map(item => `
         <div onclick="openFoodDetailModal('${item.id}')" 
@@ -476,7 +476,6 @@ function renderCustomerPortal() {
             <div class="relative h-48 bg-gray-100 overflow-hidden">
               <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               
-              <!-- Foodpanda Pink Floating Badges -->
               <div class="absolute top-3 left-3 bg-[#d70f64] text-white px-2.5 py-1 rounded-lg text-[11px] font-extrabold shadow-md flex items-center gap-1">
                 <span>🐼 Panda Pick</span>
               </div>
