@@ -6,8 +6,9 @@ import './style.css';
 
 // System State
 const state = {
-  activeTab: 'create', // 'create' | 'manage' | 'tracking'
+  activeTab: 'create', // 'create' | 'tracking'
   showAssignmentAnnotations: false, // Default to false for clean, uncluttered UI!
+  isPaymentModalOpen: false, // 2-step payment modal flag
 
   // Form Fields for Create Food Order
   form: {
@@ -515,6 +516,9 @@ function renderApp() {
     <!-- Help Modal Overlay -->
     ${state.isHelpOpen ? renderHelpModal() : ''}
 
+    <!-- Payment Modal Overlay -->
+    ${state.isPaymentModalOpen ? renderPaymentModal() : ''}
+
     <div id="toast-container" class="toast-container"></div>
   `;
 }
@@ -858,44 +862,7 @@ function renderCreateOrderScreen() {
               </div>
             </div>
 
-            <!-- Payment Options -->
-            <div class="space-y-3">
-              <div>
-                <label class="form-label text-xs">Payment Method</label>
-                <select onchange="window.updateFormField('paymentChannel', this.value)" class="form-input text-xs font-bold text-slate-800">
-                  <option value="card" ${state.form.paymentChannel === 'card' ? 'selected' : ''}>💳 Credit / Debit Card</option>
-                  <option value="fpx" ${state.form.paymentChannel === 'fpx' ? 'selected' : ''}>🏦 Online Banking (FPX)</option>
-                  <option value="ewallet" ${state.form.paymentChannel === 'ewallet' ? 'selected' : ''}>📱 E-Wallet (TnG / GrabPay)</option>
-                  <option value="cod" ${state.form.paymentChannel === 'cod' ? 'selected' : ''}>💵 Cash on Delivery</option>
-                </select>
-              </div>
-
-              ${state.form.paymentChannel === 'card' ? `
-                <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
-                  <div>
-                    <label class="form-label text-[11px] mb-1">Cardholder Name</label>
-                    <input type="text" value="${state.form.cardName}" oninput="window.updateFormField('cardName', this.value)" class="form-input py-1 text-xs" />
-                  </div>
-                  <div>
-                    <label class="form-label text-[11px] mb-1">Card Number (16 Digits)</label>
-                    <input type="text" maxlength="19" value="${state.form.cardNumber}" oninput="window.updateFormField('cardNumber', this.value)" class="form-input py-1 text-xs font-mono" />
-                    ${state.errors.cardNumber ? `<div class="error-msg">${state.errors.cardNumber}</div>` : ''}
-                  </div>
-                  <div class="grid grid-cols-2 gap-2">
-                    <div>
-                      <label class="form-label text-[11px] mb-1">Expiry</label>
-                      <input type="text" value="${state.form.cardExpiry}" oninput="window.updateFormField('cardExpiry', this.value)" class="form-input py-1 text-xs" />
-                    </div>
-                    <div>
-                      <label class="form-label text-[11px] mb-1">CVV</label>
-                      <input type="password" maxlength="4" value="${state.form.cardCvv}" oninput="window.updateFormField('cardCvv', this.value)" class="form-input py-1 text-xs text-center font-mono" />
-                    </div>
-                  </div>
-                </div>
-              ` : ''}
-            </div>
-
-            <!-- Grand Total -->
+            <!-- Grand Total & Continue to Payment Button -->
             <div class="pt-2 border-t border-slate-100 space-y-3">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold text-slate-700">Total Payable:</span>
@@ -903,14 +870,16 @@ function renderCreateOrderScreen() {
               </div>
 
               ${state.errors.general ? `
-                <div class="p-3 bg-red-50 rounded-xl text-red-700 text-xs font-bold">
-                  ${state.errors.general}
+                <div class="p-3 bg-red-50 rounded-xl text-red-700 text-xs font-bold flex items-center gap-2">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <span>${state.errors.general}</span>
                 </div>
               ` : ''}
 
-              <button onclick="window.validateAndSubmitOrder()" 
-                      class="btn-primary text-sm w-full py-3 font-extrabold shadow-sm">
-                Place Food Order (RM ${grandTotal.toFixed(2)})
+              <button onclick="window.openPaymentModal()" 
+                      class="btn-primary text-sm w-full py-3 font-extrabold shadow-sm flex items-center justify-center gap-2">
+                <span>Continue to Payment</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
               </button>
             </div>
 
@@ -1018,6 +987,140 @@ function renderHelpModal() {
 }
 
 // ============================================================================
+// PAYMENT DETAILS MODAL (STEP 2: PAYMENT & CHECKOUT)
+// ============================================================================
+
+function renderPaymentModal() {
+  const baseSubtotal = state.orderItems.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const isPromoValid = state.form.promoCode === 'DINOSAVE10';
+  const promoDiscount = isPromoValid ? baseSubtotal * 0.10 : 0;
+  const deliveryFee = state.form.orderMethod === 'Self Pick-up at Outlet' ? 0.00 : 5.00;
+  const sstTax = Math.max(0, (baseSubtotal - promoDiscount)) * 0.08;
+  const grandTotal = baseSubtotal - promoDiscount + deliveryFee + sstTax;
+
+  const showBadges = state.showAssignmentAnnotations;
+
+  return `
+    <div class="modal-overlay active">
+      <div class="modal-container max-w-md p-6 overflow-y-auto max-h-[90vh] space-y-5">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div>
+            <h2 class="text-base font-black text-slate-900">Payment Details & Checkout</h2>
+            <p class="text-xs text-slate-500 font-medium">Select payment method and enter credentials</p>
+          </div>
+          <button onclick="window.closePaymentModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+        </div>
+
+        <!-- Payable Amount Summary Box -->
+        <div class="p-4 bg-emerald-50/80 rounded-2xl border border-emerald-200 text-center space-y-1">
+          <span class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider block">Grand Total to Pay</span>
+          <strong class="text-3xl font-black text-emerald-700 block">RM ${grandTotal.toFixed(2)}</strong>
+          <span class="text-[10px] text-emerald-700 font-bold block">✓ Amount auto-imported from order summary</span>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="space-y-3">
+          <div>
+            <label class="form-label text-xs">
+              <span>Select Payment Method</span>
+              ${showBadges ? '<span class="val-tag val-tag-none">Drop-down</span>' : ''}
+            </label>
+            <select onchange="window.updateFormField('paymentChannel', this.value)" class="form-input text-xs font-bold text-slate-800">
+              <option value="card" ${state.form.paymentChannel === 'card' ? 'selected' : ''}>💳 Credit / Debit Card</option>
+              <option value="fpx" ${state.form.paymentChannel === 'fpx' ? 'selected' : ''}>🏦 Online Banking (FPX)</option>
+              <option value="ewallet" ${state.form.paymentChannel === 'ewallet' ? 'selected' : ''}>📱 E-Wallet (Touch 'n Go / GrabPay)</option>
+              <option value="cod" ${state.form.paymentChannel === 'cod' ? 'selected' : ''}>💵 Cash on Delivery</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Payment Credentials Input Box -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 text-xs">
+            ${state.form.paymentChannel === 'card' ? `
+              <div>
+                <label class="form-label text-[11px] mb-1">
+                  <span>Cardholder Name</span>
+                  ${showBadges ? '<span class="val-tag val-tag-active">Presence Check</span>' : ''}
+                </label>
+                <input type="text" value="${state.form.cardName}" oninput="window.updateFormField('cardName', this.value)" placeholder="Enter name on card" class="form-input py-1.5 text-xs ${state.errors.cardName ? 'input-error' : ''}" />
+                ${state.errors.cardName ? `<div class="error-msg">${state.errors.cardName}</div>` : ''}
+              </div>
+
+              <div>
+                <label class="form-label text-[11px] mb-1">
+                  <span>Card Number (16 Digits)</span>
+                  ${showBadges ? '<span class="val-tag val-tag-active">Format Check</span>' : ''}
+                </label>
+                <input type="text" maxlength="19" value="${state.form.cardNumber}" oninput="window.updateFormField('cardNumber', this.value)" placeholder="4532 1098 7654 3210" class="form-input py-1.5 text-xs font-mono tracking-widest ${state.errors.cardNumber ? 'input-error' : ''}" />
+                ${state.errors.cardNumber ? `<div class="error-msg">${state.errors.cardNumber}</div>` : ''}
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="form-label text-[11px] mb-1">
+                    <span>Expiry Date</span>
+                    ${showBadges ? '<span class="val-tag val-tag-active">MM/YY</span>' : ''}
+                  </label>
+                  <input type="text" value="${state.form.cardExpiry}" oninput="window.updateFormField('cardExpiry', this.value)" placeholder="12/28" class="form-input py-1.5 text-xs" />
+                </div>
+                <div>
+                  <label class="form-label text-[11px] mb-1">
+                    <span>CVV Code</span>
+                    ${showBadges ? '<span class="val-tag val-tag-active">3 Digits</span>' : ''}
+                  </label>
+                  <input type="password" maxlength="4" value="${state.form.cardCvv}" oninput="window.updateFormField('cardCvv', this.value)" placeholder="***" class="form-input py-1.5 text-xs text-center font-mono" />
+                </div>
+              </div>
+            ` : ''}
+
+            ${state.form.paymentChannel === 'fpx' ? `
+              <div class="space-y-2">
+                <label class="form-label text-[11px] mb-1">Select Bank Portal</label>
+                <select class="form-input py-1.5 text-xs font-bold text-slate-800">
+                  <option value="maybank">Maybank2u (Maybank)</option>
+                  <option value="cimb">CIMB Clicks (CIMB Bank)</option>
+                  <option value="public">Public Bank Online</option>
+                  <option value="rhb">RHB Now</option>
+                </select>
+                <input type="text" placeholder="Bank Online User ID" class="form-input py-1.5 text-xs" />
+              </div>
+            ` : ''}
+
+            ${state.form.paymentChannel === 'ewallet' ? `
+              <div class="space-y-2">
+                <label class="form-label text-[11px] mb-1">E-Wallet Registered Phone</label>
+                <input type="tel" value="${state.form.contactPhone}" class="form-input py-1.5 text-xs font-bold" />
+                <input type="password" placeholder="6-Digit Security PIN" maxlength="6" class="form-input py-1.5 text-xs font-mono text-center" />
+              </div>
+            ` : ''}
+
+            ${state.form.paymentChannel === 'cod' ? `
+              <div>
+                <label class="form-label text-[11px] mb-1">Cash Change Request Note</label>
+                <input type="text" placeholder="e.g. Paying with RM 100 note, prepare change" class="form-input py-1.5 text-xs" />
+              </div>
+            ` : ''}
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 space-y-2">
+          <button onclick="window.validateAndSubmitOrder()" 
+                  class="btn-primary text-xs w-full py-3 font-black shadow-md flex items-center justify-center gap-2">
+            <span>Pay & Complete Order (RM ${grandTotal.toFixed(2)})</span>
+            <i class="fa-solid fa-lock text-xs"></i>
+          </button>
+
+          <button onclick="window.closePaymentModal()" 
+                  class="btn-secondary text-xs w-full py-2 font-bold text-slate-600">
+            ← Back to Order Details
+          </button>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================================
 // EVENT HANDLERS
 // ============================================================================
 
@@ -1038,6 +1141,35 @@ window.openHelpModal = function() {
 
 window.closeHelpModal = function() {
   state.isHelpOpen = false;
+  renderApp();
+};
+
+window.openPaymentModal = function() {
+  state.errors = {};
+  if (state.orderItems.length === 0) {
+    state.errors.general = 'Please add at least one food item before proceeding to payment.';
+    window.showToast('Please add food items first.', 'error');
+    renderApp();
+    return;
+  }
+  if (!state.form.contactPhone || state.form.contactPhone.trim() === '') {
+    state.errors.contactPhone = 'Phone number is required.';
+  }
+  if (!state.form.deliveryAddress || state.form.deliveryAddress.trim() === '') {
+    state.errors.deliveryAddress = 'Delivery address is required.';
+  }
+  if (Object.keys(state.errors).length > 0) {
+    window.showToast('Please complete contact phone and address.', 'error');
+    renderApp();
+    return;
+  }
+
+  state.isPaymentModalOpen = true;
+  renderApp();
+};
+
+window.closePaymentModal = function() {
+  state.isPaymentModalOpen = false;
   renderApp();
 };
 
@@ -1140,6 +1272,9 @@ window.validateAndSubmitOrder = function() {
   }
 
   if (state.form.paymentChannel === 'card') {
+    if (!state.form.cardName || state.form.cardName.trim() === '') {
+      state.errors.cardName = 'Cardholder name is required.';
+    }
     const cleanNum = (state.form.cardNumber || '').replace(/\s+/g, '');
     if (cleanNum.length !== 16 || !/^\d+$/.test(cleanNum)) {
       state.errors.cardNumber = 'Card number must be 16 digits';
@@ -1152,6 +1287,7 @@ window.validateAndSubmitOrder = function() {
     return;
   }
 
+  state.isPaymentModalOpen = false;
   window.showToast('Food order placed successfully! Tracking delivery...', 'success');
   state.activeTab = 'tracking';
   renderApp();
