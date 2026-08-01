@@ -1,152 +1,148 @@
 # System Design – Inputs
 **Company Name:** Food Dinosaur Sdn. Bhd.  
 **System Name:** Food Ordering and Delivery System  
-**Document Module:** System Design – Inputs (Task 1, Task 2 & Task 3)
+**Document Module:** Activity 10.0 System Design – Inputs (Task 1, Task 2 & Task 3 / Section 10.3)
 
 ---
 
-## Task 1 : Design Data Input Screen
+## 10.1 Design Data Input Screen (Task 1)
 
-### 1.1 Overview & Screen Selection
-To support daily business operations and transaction processing for **Food Dinosaur Sdn. Bhd.**, the data input screen selected is **"Create Food Order"**. This screen supports business transactions (online order placement and checkout processing) rather than master data maintenance. 
+### Overview & Screen Selection
+To support daily transaction processing for **Food Dinosaur Sdn. Bhd.**, the data input screen selected is **"Create Food Order"** (located under the primary navigation module **Create Order** alongside **Manage / Cancel Order** and **Order Tracking / Check-in**).
 
-### 1.2 Criteria Compliance & Design Principles
-1. **Meaningful Screen Title**: Positioned prominently at the top-left corner as **"Create Food Order"**.
-2. **Business Transaction Focus**: Designed specifically to record customer food purchases, item selections, delivery requirements, and payment transactions.
-3. **Logical Sequence & Visual Grouping**: Data fields are arranged in visual card containers following a natural left-to-right, top-to-bottom workflow:
-   - **Header Section**: Order ID, Order Date & Time.
-   - **Section A (Customer & Delivery Information)**: Customer Name, Contact Phone, Delivery Address, Postal Code.
-   - **Section B (Restaurant & Order Details)**: Selected Restaurant, Delivery Method, Preferred Delivery Time.
-   - **Section C (Order Items List)**: Food Item Code/Name, Unit Price, Quantity, Special Preparation Instructions, Subtotal.
-   - **Section D (Payment & Billing Summary)**: Subtotal, SST Tax (8%), Delivery Fee, Promo Code, Payment Method, Total Payable.
-4. **Relevance of Displayed Data**: Displays a combination of auto-generated system fields, imported customer profile data, drop-down selection options, and manual entry fields to streamline data input.
+* **Meaningful Screen Title**: Positioned prominently at the top left-hand corner as **`Create Food Order`**.
+* **Business Transaction Focus**: Designed specifically to record customer food purchases, item selections, delivery requirements, payment credentials, and transaction processing rather than maintaining master data (e.g. creating customer master or menu master).
 
 ---
 
-### 1.3 High-Fidelity Data Input Screen Mockup
+### High-Fidelity Wireframe Specification (Create Food Order Screen)
 
-![Create Food Order Data Input Screen](C:/Users/jiaho/.gemini/antigravity/brain/392a950a-d116-4bca-a472-fa4640dba723/create_food_order_input_screen_1785593736991.jpg)
+```text
+===================================================================================================================
+  Food Dinosaur | Food Ordering System    [ Create Order ]   Manage / Cancel Order   Order Tracking    "Now Everyone Can Eat"  [ ? Help ]
+===================================================================================================================
 
----
+  Create Food Order
 
-### 1.4 Wireframe / Visual Screen Specification with Numbered Fields
-
-```
-+-------------------------------------------------------------------------------------------------------------------+
-|  [FD] FOOD DINOSAUR - ORDER MANAGEMENT                                                         User: Cashier/Admin |
-|===================================================================================================================|
-|                                                                                                                   |
-|  Create Food Order                                                                                                |
-|                                                                                                                   |
-|  +-----------------------------------------------------+  +----------------------------------------------------+  |
-|  | GENERAL INFORMATION                                 |  | RESTAURANT & DELIVERY DETAILS                      |  |
-|  | --------------------------------------------------- |  | -------------------------------------------------- |  |
-|  | [1] Order ID: [ FD-ORD-20260801-094  ] (Auto)      |  | [7] Restaurant Name: [ Dino Grill (Mid Valley) v ] |  |
-|  | [2] Order Date & Time: [ 01/08/2026 14:30  ] (System)  |  | [8] Delivery Method: [ Standard Rider Delivery  v ]|  |
-|  +-----------------------------------------------------+  | [9] Preferred Time:  [ 15:00 - 15:30            v ]|  |
-|                                                           +----------------------------------------------------+  |
-|  +-------------------------------------------------------------------------------------------------------------+  |
-|  | CUSTOMER & DELIVERY INFORMATION                                                                             |  |
-|  | ----------------------------------------------------------------------------------------------------------- |  |
-|  | [3] Customer ID:   [ CUST-88204           ] (Imported)   [4] Contact Phone:   [ 012-3456789             ]   |  |
-|  | [5] Delivery Addr: [ No. 12, Jalan Genting Klang, Setapak, 53300 Kuala Lumpur                             ]   |  |
-|  | [6] Postal Code:   [ 53300               ]                                                                |  |
-|  +-------------------------------------------------------------------------------------------------------------+  |
-|                                                                                                                   |
-|  +-------------------------------------------------------------------------------------------------------------+  |
-|  | ORDER ITEM DETAILS                                                                                          |  |
-|  | ----------------------------------------------------------------------------------------------------------- |  |
-|  | No. | [10] Food Item Selection            | [11] Unit Price | [12] Qty | [13] Special Instructions | Subtotal |  |
-|  | --- | ----------------------------------- | --------------- | -------- | ------------------------- | -------- |  |
-|  | 1.  | [ Dino Burger Combo Extra Large  v] | RM 18.50 (Imp)  | [ 2    ] | [ Extra cheese, no onion ] | RM 37.00 |  |
-|  | 2.  | [ Dinosaur Iced Lemon Tea        v] | RM  5.00 (Imp)  | [ 2    ] | [ Less ice, 50% sugar    ] | RM 10.00 |  |
-|  |                                                                                                             |  |
-|  | [+ Add Another Item]                                                                                        |  |
-|  +-------------------------------------------------------------------------------------------------------------+  |
-|                                                                                                                   |
-|  +-------------------------------------------------------------------------------------------------------------+  |
-|  | PAYMENT & SUMMARY SECTION                                                                                   |  |
-|  | ----------------------------------------------------------------------------------------------------------- |  |
-|  | [14] Promo Code: [ DINOSAVE10       ]  [Apply]          Subtotal:              RM 47.00                    |  |
-|  | [15] Payment Method: [ Online Banking (FPX) v ]         Service Tax (SST 8%):  RM  3.76                    |  |
-|  |                                                         Delivery Fee:          RM  5.00                    |  |
-|  |                                                         Discount (10%):       -RM  4.70                    |  |
-|  |                                                         -------------------------------------------         |  |
-|  |                                                         TOTAL PAYABLE:         RM 51.06                    |  |
-|  +-------------------------------------------------------------------------------------------------------------+  |
-|                                                                                                                   |
-|                                                    [ CANCEL ]   [ SUBMIT & PROCESS ORDER ]                        |  |
-+-------------------------------------------------------------------------------------------------------------------+
+  +-----------------------------------------------------------------------+  +----------------------------------------------------+
+  | | 1. Order Details & Restaurant Selection                             |  | Order Summary & Payment                            |
+  | --------------------------------------------------------------------- |  | -------------------------------------------------- |
+  | [1] Select Restaurant Outlet         [2] Order Type / Method          |  | Dino Grill (Mid Valley) -> Setapak, KL             |
+  | [ Dino Grill (Mid Valley)         v] [ Standard Rider Delivery     v] |  |                                                    |
+  |                                                                       |  | [13] Booking / Order Date:     01/08/2026          |
+  | [3] Preferred Delivery Date          [4] Preferred Delivery Time      |  | [14] Total Servings / Pax:     2 Items             |
+  | [ 01/08/2026                     📅] [ 15:30 PM                     v] |  | -------------------------------------------------- |
+  |                                                                       |  | Base Items Subtotal:           RM  47.00          |
+  | [5] Number of Portions / Servings:                                    |  | Promo Discount:               -RM   4.70          |
+  |     Adult Servings (Standard Portion)       [ 2 ]                     |  | Pre-order Add-ons / Extras:    RM   8.00          |
+  |     Child Servings (Kids Meal Portion)      [ 0 ]                     |  | Govt. Tax (SST 8%):            RM   4.02          |
+  |     Senior Citizen Servings (Soft Portion)  [ 0 ]                     |  | Delivery Fee:                  RM   5.00          |
+  +-----------------------------------------------------------------------+  | -------------------------------------------------- |
+  | | 2. Primary Customer Information                                     |  | [15] Payment Method Channel                        |
+  | --------------------------------------------------------------------- |  | [ 💳 Credit / Debit Card                         v]|
+  | [6] Customer Name (Auto-imported from Account PAS-2026-00001)         |  |                                                    |
+  | [ Chan Pei Xuan                                                     ] |  | [16] Cardholder Name                               |
+  |                                                                       |  | [ Chan Pei Xuan                                  ] |
+  | [7] MyKad / Passport Number          [8] Contact Phone Number         |  |                                                    |
+  | [ 010324-14-5582                  ]  [ 012-3456789                  ] |  | [17] Card Number (16 Digits)                       |
+  |                                                                       |  | [ 4532 1098 7654 3210                            ] |
+  | [9] Delivery Address                                                  |  |                                                    |
+  | [ No. 12, Jalan Genting Klang, Setapak, 53300 Kuala Lumpur            ] |  | [18] Expiry Date          [19] CVV Code            |
+  | +---------------------------------------------------------------------+  | [ 12/28               ]   [ ***                ] |
+  | | 3. Individual Menu Items & Add-ons                                  |  | -------------------------------------------------- |
+  | --------------------------------------------------------------------- |  | [20] Grand Total:              RM 59.32            |
+  |   + Item 1 Details                                                    |  | -------------------------------------------------- |
+  |   1. [10] Select Food Item & Combo:                                  |  |                                                    |
+  |      [ Dino Burger Combo Extra Large (RM 18.50)                     v] |  |          [ Proceed & Pay RM 59.32 🔒 ]             |
+  |   2. [11] Select Customization / Add-on:                              |  |                 [ Cancel Request ]                 |
+  |      [ Extra Cheddar Cheese (+RM 2.00)                              v] |  |                                                    |
+  |   3. [12] Special Preparation Notes & Quantity:                       |  | By continuing, you agree to Food Dinosaur's Terms. |
+  |      [ Extra cheese, no onion                                       ]  [ 2 ] | +----------------------------------------------------+
+  +-----------------------------------------------------------------------+
 ```
 
 ---
 
-## Task 2 : Identify Validation Checks
+## 10.2 Identify Validation Checks (Task 2)
 
-### 2.1 Rule Summary for Validation Checks
-According to system analysis standards:
-1. **No Validation Check Required (`None`)**: Data input fields filled via:
-   - Scanning devices (e.g. barcode / RFID)
-   - System-filled default values (e.g. current date and time)
-   - Auto-generated primary keys (e.g. document number / Order ID)
-   - Imported data from master files/tables (e.g. customer name, unit prices)
-   - Selected data from drop-down pickers / radio buttons
-2. **Validation Check Required**: Only data fields entered **manually via keyboard** require explicit validation checks.
-
----
-
-### 2.2 Table Summary of Validation Checks (ALL 15 Data Fields)
+### Table Summary of Validation Checks (ALL 20 Data Fields)
 
 | No. | Field Name | Input Method | Validation Check | Explanation |
 | :---: | :--- | :--- | :--- | :--- |
-| **1** | Order ID | Auto-generated by system | **None** | Entry of data is auto-generated by the system using a standardized sequence number prefix (e.g. `FD-ORD-YYYYMMDD-XXX`). |
-| **2** | Order Date & Time | System-filled default value | **None** | Entry of data is automatically supplied by the system clock upon order creation. |
-| **3** | Customer ID | Imported data (from Customer Master / User Session) | **None** | Entry of data is imported automatically when the customer logs in or when an existing profile is selected. |
-| **4** | Contact Phone Number | Manual keying | **Format / Pattern Check & Length Check** | Entry of data is via keyboard by hand. The system verifies that the input contains only numeric digits and matches valid Malaysian phone number formats (e.g. 10 to 11 digits starting with `01`). |
-| **5** | Delivery Address | Manual keying | **Presence / Requirement Check** | Entry of data is via keyboard by hand. The check ensures the field is not left blank, guaranteeing delivery personnel receive complete address information. |
-| **6** | Postal Code | Manual keying | **Range & Length Check** | Entry of data is via keyboard by hand. The check enforces an exact length of 5 numeric digits corresponding to valid Malaysian postcodes (e.g. `10000` to `98859`). |
-| **7** | Restaurant Name | Selected data (from drop-down list) | **None** | Entry of data is by selecting an active restaurant partner from a pre-populated system drop-down list. |
-| **8** | Delivery Method | Selected data (from radio button / drop-down) | **None** | Entry of data is selected from predefined choices (e.g. Standard Rider Delivery, Express Delivery, Pick-up). |
-| **9** | Preferred Delivery Time Window | Selected data (from drop-down list) | **None** | Entry of data is selected from a dropdown list of available delivery time slots. |
-| **10** | Food Item Selection | Selected data (from drop-down list) | **None** | Entry of data is selected from the restaurant's active menu drop-down list. |
-| **11** | Unit Price | Imported data (from Menu Master Table) | **None** | Entry of data is automatically retrieved from the system's database based on the selected food item code. |
-| **12** | Quantity | Manual keying | **Range Check & Data Type Check** | Entry of data is via keyboard by hand. The check ensures the value is a positive integer greater than 0 and within a reasonable limit (e.g. 1 to 99 items per line). |
-| **13** | Special Instructions / Notes | Manual keying | **Length Check** | Entry of data is via keyboard by hand. The check restricts input length to a maximum of 150 characters to prevent database overflow and ensure concise instructions for kitchen staff. |
-| **14** | Promo Code | Manual keying | **Existence & Validity Check** | Entry of data is via keyboard by hand. The system checks whether the typed string exists in the active promotion table and is within its valid date range. |
-| **15** | Payment Method | Selected data (from drop-down list) | **None** | Entry of data is selected from pre-configured payment options (Online Banking / Credit Card / E-Wallet / Cash on Delivery). |
+| **1** | Restaurant Outlet Selection | Selected data (from drop-down list) | **None** | Entry of data is by selecting an active restaurant branch from a drop-down list. |
+| **2** | Order Type / Method | Selected data (from drop-down list) | **None** | Entry of data is selected from predefined choices (Standard Rider Delivery, Express, Pick-up). |
+| **3** | Preferred Delivery Date | Selected data (from date picker calendar) | **None** | Entry of data is selected using an interactive calendar pop-up picker. |
+| **4** | Preferred Delivery Time | Selected data (from drop-down list) | **None** | Entry of data is selected from available time slots. |
+| **5** | Number of Portions / Servings | Manual keying | **Range Check & Data Type Check** | Entry of data is via keyboard by hand. The check ensures positive integer input (`0 <= Servings <= 20`). |
+| **6** | Customer Name | Imported data (from Customer Master Table) | **None** | Entry of data is automatically populated when the logged-in customer account profile loads. |
+| **7** | MyKad / Passport Number | Manual keying | **Format Check & Length Check** | Entry of data is via keyboard by hand. System verifies exactly 12 numeric digits matching NRIC format (`010324-14-5582`). |
+| **8** | Contact Phone Number | Manual keying | **Format Check & Length Check** | Entry of data is via keyboard by hand. System verifies numeric input matching valid phone format (`01X-XXXXXXX`). |
+| **9** | Delivery Address | Manual keying | **Presence / Requirement Check** | Entry of data is via keyboard by hand. Ensures field is not left blank for complete delivery details. |
+| **10** | Food Item Selection | Selected data (from drop-down list) | **None** | Entry of data is selected from the restaurant's digital menu drop-down list. |
+| **11** | Customization / Add-on | Selected data (from drop-down list) | **None** | Entry of data is selected from predefined meal add-on choices. |
+| **12** | Special Preparation Notes | Manual keying | **Length Check** | Entry of data is via keyboard by hand. Restricts length to maximum 150 characters. |
+| **13** | Booking / Order Date | System-filled default value | **None** | Entry of data is automatically supplied by the system clock upon order creation. |
+| **14** | Total Servings / Pax | Auto-calculated system field | **None** | Entry of data is auto-computed by adding portion counts. |
+| **15** | Payment Method Channel | Selected data (from drop-down list) | **None** | Entry of data is selected from payment options (Credit Card, FPX, E-Wallet, COD). |
+| **16** | Cardholder Name | Manual keying | **Presence Check & Data Type Check** | Entry of data is via keyboard by hand. Ensures input contains valid alphabetical characters for payment processing. |
+| **17** | Card Number | Manual keying | **Format Check & Length Check** | Entry of data is via keyboard by hand. Checks that input contains exactly 16 numeric digits conforming to Luhn algorithm. |
+| **18** | Expiry Date (MM/YY) | Manual keying | **Format Check & Range Check** | Entry of data is via keyboard by hand. Verifies month `01–12` and future expiry year format (`MM/YY`). |
+| **19** | CVV Code | Manual keying | **Format Check & Length Check** | Entry of data is via keyboard by hand. Ensures input contains exactly 3 or 4 numeric digits. |
+| **20** | Grand Total | Auto-calculated system field | **None** | Entry of data is automatically calculated from item prices, taxes, delivery fees, and discounts. |
 
 ---
 
-### 2.3 In-Depth Explanation of Key Validation Checks
+## 10.3 Describe User-Friendliness Features (Task 3)
 
-> [!IMPORTANT]
-> **Detailed Explanation of Item 12: Quantity Field Validation (Range Check)**  
-> **Validation Check:** Range Check (Positive Integer: `1 <= Quantity <= 99`)  
-> **Explanation:** The Quantity field relies on manual keyboard keying. Applying a **Range Check** ensures that users cannot submit invalid negative numbers, zero (`0`), or unrealistically high numbers (e.g. `9999`) caused by accidental keystrokes. This enhances data entry accuracy, prevents downstream ordering system crashes, and speeds up input processing by instantly highlighting input errors before submission.
+### Main Screen (Create Order Page)
+
+#### 1. Ease of Data Entry (Error Prevention via Validation Checks)
+**Description:** The system provides built-in data validation checks in order to reduce potential human data entry errors. For example, a dynamic cascading logic is implemented where selecting a restaurant in the **"Select Restaurant Outlet"** drop-down list will automatically filter and update the available items in the **"Food Item Selection"** list. Additionally, a **Limit Check** restricts the **"Preferred Delivery Date"** so past dates cannot be selected. This prevents illogical order scheduling and stops errors at the source.
+
+#### 2. Meaningful Error Messages
+**Description:** The system ensures that all errors are reported in a simple, unambiguous, and highly visible manner to guide users in correcting their actions. To achieve this, two crucial dynamic validations are implemented in the food order screen:
+* **Business Rule Validation:** If a user attempts to order a **"Child Portion"** without selecting at least one **"Adult"** or **"Senior Citizen"** serving, the system immediately freezes the checkout process and displays a clear red warning:  
+  `Error: Child meal portion must be accompanied by at least one Adult or Senior Citizen serving.`
+* **Action/Submission Validation:** If a user clicks the **"Proceed to Payment"** button without selecting any items (i.e., 0 food items or Grand Total is RM 0.00), the system intercepts the checkout process and alerts the user via a pop-up:  
+  `Error: Please complete your food selection before proceeding to payment.`
+* Both targeted messages successfully prevent illogical or empty transactions from being processed and immediately suggest the exact course of action needed to fix the error.
+
+#### 3. Default Values (Automated Inputs)
+**Description:** To save time and avoid typographical errors, the primary contact information fields (**Customer Name**, **Passport/MyKad**, and **Contact Number**) are designed as read-only and use default values that are automatically imported from the user's account profile (`PAS-2026-00001`).
+
+#### 4. HELP Facilities (On-screen Help)
+**Description:** Based on Systems Analysis & Design (SAD) principles, we have implemented an on-screen HELP facility in the form of a pop-up modal. Users who are unsure how to use the system can click the **`[ ? Help ]`** button in the top navigation bar. This context-sensitive guide explains step-by-step how to fill in delivery details, customize food combos, and apply promo codes, thereby assisting users without them needing to navigate away from the order page.
+
+---
+
+### Payment Page
+
+#### 1. Automated Inputs (Ease of Data Entry)
+**Description:** The system automatically imports the **"Grand Total to Pay"** amount directly from the main order screen and sets the field as read-only. By automating this data transfer, the system eliminates the need for users to manually re-type the payable amount, thereby saving time and completely preventing human typographical errors during the crucial checkout process.
+
+#### 2. Meaningful Error Messages
+**Description:** To prevent information overload and keep the interface clean, the Credit Card details section (**Card Number**, **Expiry Date**, **CVV**) is hidden by default and will dynamically appear only when the user selects **"Credit / Debit Card"** as their payment method. Furthermore, if a user enters an incomplete card number, the system provides a meaningful and unambiguous error message:  
+`Format Error: Credit Card Number must be exactly 16 digits`, explicitly guiding the user on how to correct the mistake.
 
 ---
 
-## Task 3 : Describe User-Friendliness Features
+### Cancel / Refund Page
 
-### 3.1 Annotated User-Friendliness Map
+#### 1. Pull-Down List
+**Description:** The screen utilizes pull-down lists for the **"Select Action"** and **"Reason Category"** fields. This allows users to easily select acceptable or approved values from a predefined list instead of manually typing them out, which drastically speeds up data entry and eliminates spelling errors.
 
-Referring to the **Create Food Order** data input screen designed in Task 1:
-
-- **Feature Indicator 1 (Top & Header Section)**: Automated & Pre-filled Header Information (Order ID `[1]` and Order Date & Time `[2]`).
-- **Feature Indicator 2 (Middle Section - Customer & Items)**: Clear Visual Grouping / Card-based Form Layout (`[3]-[6]` for Customer Info; `[10]-[13]` for Order Items).
-- **Feature Indicator 3 (Bottom Right Section)**: Auto-calculated Real-Time Billing & Totals Summary (`[14]-[15]`).
+#### 2. Auto-filled (Default Values)
+**Description:** After the Order Reference Number (`FD-ORD-20260801-094`) is searched, the **"Customer Name"** and **"Order Details"** fields are auto-imported and set to a read-only state. This saves the user from re-entering existing information and prevents accidental modification of critical database records, enhancing the overall ease of data entry.
 
 ---
 
-### 3.2 Description of Two (2) User-Friendly Interface Characteristics
+### Check-In & Tracking Page
 
-#### Characteristic 1: Logical Form Chunking and Visual Card Grouping
-- **Description**: The input screen organizes related data items into distinct, clearly demarcated visual cards (General Information, Customer & Delivery Info, Restaurant & Delivery Details, Order Items, and Payment Summary). 
-- **User Benefit**: Grouping fields logically following a natural top-to-bottom reading sequence reduces cognitive overload for operators. Users can scan the screen effortlessly, quickly identifying where specific information belongs without confusion or missed fields.
+#### 1. Checked Boxes
+**Description:** The **"Health & Food Hygiene Safety Declaration"** section utilizes a checkbox interface. This provides a quick and effortless way for customers to acknowledge and agree to mandatory safety rules and contactless delivery drop-off without needing to type out a formal declaration, making the interface highly user-friendly.
 
-#### Characteristic 2: Automated Data Entry and Smart Controls (Drop-downs & Pre-filled Fields)
-- **Description**: The screen minimizes manual typing by utilizing auto-generated fields (Order ID `[1]`), system-filled timestamps (`[2]`), imported values (Customer ID `[3]`, Unit Price `[11]`), and pre-populated drop-down pickers (Restaurant `[7]`, Delivery Method `[8]`, Food Items `[10]`, Payment Method `[15]`).
-- **User Benefit**: Restricting manual typing exclusively to essential unique fields (Phone Number, Address, Quantity) drastically reduces keystrokes, speeds up order creation time, and eliminates common typos or invalid entries, resulting in a fast and error-free user experience.
+#### 2. Input Guidance and Error Prevention (Auto-Capitalization)
+**Description:** The text input fields for **"Order Number"** and **"Promo Code"** are embedded with an auto-capitalization feature (converting all inputs to uppercase). Along with clear placeholder hints (e.g., `Hint: DINOSAVE10` or `FD-ORD-20260801-094`), this prevents case-sensitive data entry errors and makes the interface more forgiving and intuitive for the users.
 
 ---
-*End of System Design – Inputs Module for Food Dinosaur Sdn. Bhd.*
+*End of System Design – Inputs Module (Section 10.3 User-Friendliness Features) for Food Dinosaur Sdn. Bhd.*

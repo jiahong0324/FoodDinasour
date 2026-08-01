@@ -294,8 +294,14 @@ function renderApp() {
           <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 ml-1"></i>
         </div>
 
-        <!-- Right Controls: Role Selector Dropdown + Checkout & Basket -->
+        <!-- Right Controls: Help Facility + Role Selector Dropdown + Checkout & Basket -->
         <div class="flex items-center gap-2.5">
+          <!-- On-Screen Help Button -->
+          <button onclick="openHelpModal()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 text-xs font-black py-2 px-3 rounded-xl flex items-center gap-1.5 shadow-sm transition-all">
+            <i class="fa-solid fa-circle-question text-amber-600"></i>
+            <span>? Help</span>
+          </button>
+
           <!-- Sleek Role Selector Dropdown -->
           <div class="relative">
             <select onchange="switchTab(this.value)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold py-2 px-3 rounded-xl border border-slate-200 focus:outline-none cursor-pointer">
@@ -349,6 +355,11 @@ function renderApp() {
     <!-- Order Tracking Modal -->
     <div id="tracking-modal" class="modal-overlay">
       ${renderOrderTrackingModalContent()}
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal-overlay">
+      ${renderHelpModalContent()}
     </div>
 
     <div id="toast-container" class="toast-container"></div>
@@ -878,9 +889,10 @@ function renderCheckoutModalContent() {
   const totalPayable = subtotal + sst + deliveryFee - discount;
 
   const showBadges = state.showAssignmentAnnotations;
+  const currentPaymentChannel = state.selectedPaymentChannel || 'card';
 
   return `
-    <div class="modal-container p-6 max-w-3xl">
+    <div class="modal-container p-6 max-w-3xl overflow-y-auto max-h-[90vh]">
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
         <div>
           <div class="flex items-center gap-2 mb-1">
@@ -888,7 +900,7 @@ function renderCheckoutModalContent() {
               CREATE FOOD ORDER
             </span>
             <button type="button" onclick="toggleAssignmentAnnotations()" class="text-[11px] font-bold text-slate-600 hover:text-emerald-600 underline">
-              ${showBadges ? '⚡ Switch to Simple View' : '🎓 Show Assignment Badges [1]-[15]'}
+              ${showBadges ? '⚡ Switch to Simple View' : '🎓 Show Assignment Badges [1]-[16]'}
             </button>
           </div>
           <h2 class="text-xl font-extrabold text-slate-900">Checkout & Order Confirmation</h2>
@@ -898,6 +910,7 @@ function renderCheckoutModalContent() {
 
       <form onsubmit="handleFormSubmit(event)" class="space-y-5">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- LEFT COLUMN: ORDER INFO & DESTINATION -->
           <div class="space-y-4">
             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
               <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Order Information</h3>
@@ -997,12 +1010,13 @@ function renderCheckoutModalContent() {
             ` : ''}
           </div>
 
+          <!-- RIGHT COLUMN: ITEMS SUMMARY & DYNAMIC PAYMENT DETAILS -->
           <div class="space-y-4 flex flex-col justify-between">
             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
               <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Order Items (${state.cart.length})</h3>
-              <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+              <div class="space-y-2 max-h-36 overflow-y-auto pr-1">
                 ${state.cart.map(item => `
-                  <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
+                  <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 text-xs">
                     <div>
                       <span class="font-bold text-slate-900 block">${item.quantity}x ${item.name}</span>
                       <span class="text-[10px] text-slate-500">${item.sizeName} ${item.instructions ? `• "${item.instructions}"` : ''}</span>
@@ -1013,6 +1027,7 @@ function renderCheckoutModalContent() {
               </div>
             </div>
 
+            <!-- PAYMENT CHANNEL & DYNAMIC PAYMENT DETAILS -->
             <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
               <div>
                 <label class="form-label mb-1">
@@ -1030,12 +1045,88 @@ function renderCheckoutModalContent() {
                   <span>${showBadges ? '[15] ' : ''}Payment Channel</span>
                   ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
                 </label>
-                <select class="form-input py-1.5 font-semibold text-slate-800">
-                  <option selected>💳 Online Banking (FPX)</option>
-                  <option>📱 Touch 'n Go E-Wallet</option>
-                  <option>💳 Credit / Debit Card</option>
-                  <option>💵 Cash on Delivery</option>
+                <select onchange="changePaymentChannel(this.value)" class="form-input py-1.5 font-semibold text-slate-800 border-emerald-600 bg-emerald-50/50">
+                  <option value="card" ${currentPaymentChannel === 'card' ? 'selected' : ''}>💳 Credit / Debit Card</option>
+                  <option value="fpx" ${currentPaymentChannel === 'fpx' ? 'selected' : ''}>🏛️ Online Banking (FPX)</option>
+                  <option value="ewallet" ${currentPaymentChannel === 'ewallet' ? 'selected' : ''}>📱 Touch 'n Go / GrabPay E-Wallet</option>
+                  <option value="cod" ${currentPaymentChannel === 'cod' ? 'selected' : ''}>💵 Cash on Delivery</option>
                 </select>
+              </div>
+
+              <!-- DYNAMIC PAYMENT INPUT FIELDS -->
+              <div class="p-3 bg-white rounded-xl border border-emerald-200 space-y-2 text-xs">
+                <div class="flex items-center justify-between text-slate-700 font-extrabold uppercase text-[10px] tracking-wider pb-1 border-b border-slate-100">
+                  <span>Payment Credentials & Verification</span>
+                  <span class="text-emerald-600"><i class="fa-solid fa-lock"></i> 256-bit SSL</span>
+                </div>
+
+                ${currentPaymentChannel === 'card' ? `
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">
+                      <span>Cardholder Name</span>
+                      ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
+                    </label>
+                    <input type="text" value="Chan Pei Xuan" required class="form-input py-1 text-xs" />
+                  </div>
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">
+                      <span>Card Number (16 Digits)</span>
+                      ${showBadges ? '<span class="val-tag val-tag-active">16-Digit</span>' : ''}
+                    </label>
+                    <input type="text" value="4532 1098 7654 3210" maxlength="19" required class="form-input py-1 text-xs tracking-widest font-mono" />
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="form-label text-[11px] mb-0.5">
+                        <span>Expiry (MM/YY)</span>
+                        ${showBadges ? '<span class="val-tag val-tag-active">Date</span>' : ''}
+                      </label>
+                      <input type="text" value="12/28" placeholder="MM/YY" maxlength="5" required class="form-input py-1 text-xs text-center" />
+                    </div>
+                    <div>
+                      <label class="form-label text-[11px] mb-0.5">
+                        <span>CVV Code</span>
+                        ${showBadges ? '<span class="val-tag val-tag-active">3-Digit</span>' : ''}
+                      </label>
+                      <input type="password" value="882" maxlength="4" required class="form-input py-1 text-xs text-center font-mono" />
+                    </div>
+                  </div>
+                ` : ''}
+
+                ${currentPaymentChannel === 'fpx' ? `
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">Select FPX Bank Portal</label>
+                    <select class="form-input py-1 text-xs font-bold text-slate-800">
+                      <option selected>Maybank2u (Maybank)</option>
+                      <option>CIMB Clicks (CIMB Bank)</option>
+                      <option>Public Bank Online</option>
+                      <option>RHB Now Online Banking</option>
+                      <option>Hong Leong Connect</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">Online Banking User ID</label>
+                    <input type="text" value="chanpeixuan99" required class="form-input py-1 text-xs" />
+                  </div>
+                ` : ''}
+
+                ${currentPaymentChannel === 'ewallet' ? `
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">E-Wallet Registered Phone Number</label>
+                    <input type="tel" value="012-3456789" required class="form-input py-1 text-xs" />
+                  </div>
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">E-Wallet 6-Digit PIN</label>
+                    <input type="password" value="******" maxlength="6" required class="form-input py-1 text-xs text-center font-mono" />
+                  </div>
+                ` : ''}
+
+                ${currentPaymentChannel === 'cod' ? `
+                  <div>
+                    <label class="form-label text-[11px] mb-0.5">Cash Change Note (Optional)</label>
+                    <input type="text" value="Paying with RM 100 note, please prepare RM 37.18 change" class="form-input py-1 text-xs" />
+                  </div>
+                ` : ''}
               </div>
 
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1 text-xs">
@@ -1052,9 +1143,9 @@ function renderCheckoutModalContent() {
 
             <div class="flex items-center justify-end gap-2 pt-2">
               <button type="button" onclick="closeCheckoutModal()" class="btn-secondary text-xs py-2 px-4">Cancel</button>
-              <button type="submit" class="btn-primary text-xs py-2.5 px-6 font-extrabold shadow-md">
-                <span>Confirm & Place Order</span>
-                <i class="fa-solid fa-check-circle"></i>
+              <button type="submit" class="btn-primary text-xs py-2.5 px-6 font-extrabold shadow-md bg-emerald-600 hover:bg-emerald-700">
+                <span>Proceed & Pay RM ${totalPayable.toFixed(2)} 🔒</span>
+                <i class="fa-solid fa-arrow-right"></i>
               </button>
             </div>
           </div>
@@ -1064,40 +1155,243 @@ function renderCheckoutModalContent() {
   `;
 }
 
-// ORDER TRACKING MODAL
+// ORDER TRACKING MODAL (LIVE FOOD PROGRESS & STATUS TRACKER)
 function renderOrderTrackingModalContent() {
-  const activeOrder = state.orders[0];
-  if (!activeOrder) return '';
+  const activeOrder = state.orders[0] || {
+    orderId: 'FD-ORD-20260801-094',
+    dateTime: '01/08/2026 14:30',
+    customerId: 'CUST-88204',
+    customerName: 'Chan Pei Xuan',
+    contactPhone: '012-3456789',
+    deliveryAddress: 'No. 12, Jalan Genting Klang, Setapak, 53300 KL',
+    restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
+    items: [
+      { name: 'Dino Burger Combo Extra Large', qty: 2, price: 24.50, notes: 'Extra cheese, no onion' },
+      { name: 'Dinosaur Iced Lemon Tea', qty: 2, price: 5.00, notes: 'Less ice, 50% sugar' }
+    ],
+    subtotal: 59.00,
+    sst: 4.72,
+    deliveryFee: 5.00,
+    discount: 5.90,
+    totalPayable: 62.82,
+    status: 'Preparing',
+    riderName: 'Ahmad Delivery Rider',
+    riderGpsProgress: 45
+  };
+
+  const gpsProgress = activeOrder.riderGpsProgress || 45;
 
   return `
-    <div class="modal-container p-6">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+    <div class="modal-container p-6 max-w-3xl overflow-y-auto max-h-[92vh]">
+      <!-- HEADER BAR -->
+      <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
         <div>
-          <span class="badge badge-dino mb-1">Live Order Progress</span>
-          <h2 class="text-lg font-extrabold text-slate-900">Tracking Order: ${activeOrder.orderId}</h2>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300">
+              🔥 LIVE FOOD STATUS TRACKER
+            </span>
+            <span class="text-xs text-slate-400 font-bold">• Order #${activeOrder.orderId}</span>
+          </div>
+          <h2 class="text-xl font-extrabold text-slate-900">Your Order is Being Prepared! 👨‍🍳</h2>
         </div>
         <button onclick="closeTrackingModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
       </div>
 
-      <div class="grid grid-cols-4 gap-2 text-center text-xs mb-6 font-bold">
-        <div class="p-2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">1. Placed</div>
-        <div class="p-2 rounded bg-sky-100 text-sky-800 border border-sky-300">2. Preparing</div>
-        <div class="p-2 rounded bg-slate-100 text-slate-500">3. Delivering</div>
-        <div class="p-2 rounded bg-slate-100 text-slate-500">4. Delivered</div>
+      <!-- ESTIMATED ARRIVAL BANNER -->
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 mb-5 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <div class="text-emerald-100 text-xs font-bold uppercase tracking-wider mb-1">Estimated Arrival Time</div>
+          <div class="text-3xl font-black text-white flex items-center gap-2">
+            <span>⏱️ 18 - 22 Mins</span>
+            <span class="text-xs font-semibold bg-white/20 px-2 py-0.5 rounded text-emerald-50">(Est. 15:20 PM)</span>
+          </div>
+          <p class="text-xs text-emerald-100 mt-1 font-medium">Chef is flame-grilling your burgers at Dino Grill (Mid Valley)!</p>
+        </div>
+        <button onclick="simulateRiderMovement('${activeOrder.orderId}')" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-xs px-4 py-2.5 rounded-xl shadow-md transition-all shrink-0">
+          ⚡ Simulate Rider Progress (+20%)
+        </button>
       </div>
 
-      <div class="p-4 bg-slate-50 rounded border border-slate-200 text-center mb-4">
-        <div class="text-2xl mb-1">🛵</div>
-        <p class="text-sm font-bold text-slate-900">Rider ${activeOrder.riderName} is preparing your delivery</p>
-        <p class="text-xs text-slate-500 mt-0.5">Estimated Arrival: 15:22 PM</p>
+      <!-- 5-STEP VISUAL PROGRESS TRACKER -->
+      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 mb-5">
+        <h3 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-4">Real-Time Kitchen & Delivery Timeline</h3>
+        <div class="grid grid-cols-5 gap-2 text-center text-[11px] font-bold">
+          <div class="p-2.5 rounded-xl bg-emerald-500 text-white shadow-sm flex flex-col items-center gap-1">
+            <span class="text-base">✓</span>
+            <span>1. Placed</span>
+            <span class="text-[9px] text-emerald-100 font-medium">14:30 PM</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-amber-500 text-white shadow-sm flex flex-col items-center gap-1 animate-pulse">
+            <span class="text-base">👨‍🍳</span>
+            <span>2. Cooking</span>
+            <span class="text-[9px] text-amber-100 font-semibold">Active</span>
+          </div>
+          <div class="p-2.5 rounded-xl ${gpsProgress >= 40 ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'} flex flex-col items-center gap-1">
+            <span class="text-base">🛵</span>
+            <span>3. Picked Up</span>
+            <span class="text-[9px] font-medium">${gpsProgress >= 40 ? 'Done' : 'Pending'}</span>
+          </div>
+          <div class="p-2.5 rounded-xl ${gpsProgress >= 60 ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'} flex flex-col items-center gap-1">
+            <span class="text-base">📦</span>
+            <span>4. On The Way</span>
+            <span class="text-[9px] font-medium">${gpsProgress >= 60 ? 'Active' : 'Pending'}</span>
+          </div>
+          <div class="p-2.5 rounded-xl ${gpsProgress >= 100 ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-500'} flex flex-col items-center gap-1">
+            <span class="text-base">🏠</span>
+            <span>5. Delivered</span>
+            <span class="text-[9px] font-medium">${gpsProgress >= 100 ? 'Arrived' : 'Pending'}</span>
+          </div>
+        </div>
       </div>
 
-      <div class="flex justify-end">
-        <button onclick="closeTrackingModal()" class="btn-primary text-xs">Close Tracker</button>
+      <!-- LIVE GPS RIDER SIMULATION CARD -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+        <div class="md:col-span-2 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+              <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Live GPS Dispatch Map</h3>
+            </div>
+            <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">${gpsProgress}% Completed</span>
+          </div>
+
+          <!-- MAP SIMULATION CONTAINER -->
+          <div class="relative bg-slate-900 h-32 rounded-xl border border-slate-700 overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            
+            <div class="w-full px-6 flex items-center justify-between relative z-10 text-white text-xs">
+              <div class="flex flex-col items-center">
+                <span class="text-2xl">🥩</span>
+                <span class="font-bold text-[10px] mt-1 text-slate-300">Dino Grill</span>
+              </div>
+              
+              <!-- PROGRESS TRACK -->
+              <div class="flex-1 mx-4 h-2 bg-slate-700 rounded-full relative">
+                <div class="h-2 bg-gradient-to-r from-emerald-500 to-amber-400 rounded-full transition-all duration-500" style="width: ${gpsProgress}%;"></div>
+                <div class="absolute -top-3 text-lg transition-all duration-500" style="left: calc(${gpsProgress}% - 12px);">🛵</div>
+              </div>
+
+              <div class="flex flex-col items-center">
+                <span class="text-2xl">🏠</span>
+                <span class="font-bold text-[10px] mt-1 text-slate-300">Setapak Address</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-slate-600">
+            <span>Rider Location: <strong class="text-slate-900 font-bold">Jalan Genting Klang Expressway</strong></span>
+            <span>Speed: <strong class="text-emerald-600 font-bold">42 km/h</strong></span>
+          </div>
+        </div>
+
+        <!-- RIDER CONTACT CARD -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex flex-col justify-between">
+          <div>
+            <h3 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Delivery Rider</h3>
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-extrabold flex items-center justify-center text-sm shadow">
+                AR
+              </div>
+              <div>
+                <h4 class="text-xs font-extrabold text-slate-900">${activeOrder.riderName}</h4>
+                <p class="text-[10px] text-slate-500 font-semibold">Motorcycle • WXY 8820 (4.9 ★)</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-2">
+            <button onclick="showToast('Calling Rider Ahmad (+6012-9988776)...')" class="w-full btn-primary text-xs py-2">
+              <i class="fa-solid fa-phone"></i> Call Rider
+            </button>
+            <button onclick="showToast('Opening Live Chat with Rider...')" class="w-full btn-secondary text-xs py-2">
+              <i class="fa-solid fa-comment-dots"></i> Message Rider
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDERED MEAL RECAP TABLE -->
+      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 mb-5">
+        <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Food Items Ordered</h3>
+        <div class="space-y-2">
+          ${(activeOrder.items || []).map(item => `
+            <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-slate-200 text-xs">
+              <div>
+                <span class="font-bold text-slate-900 block">${item.qty || item.quantity || 1}x ${item.name}</span>
+                <span class="text-[10px] text-slate-500">${item.notes ? `Note: "${item.notes}"` : 'Standard Prep'}</span>
+              </div>
+              <span class="font-extrabold text-slate-900">RM ${((item.price || 0) * (item.qty || 1)).toFixed(2)}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="border-t border-slate-200 pt-2 flex items-center justify-between text-xs text-slate-600">
+          <span>Delivery Address: <strong class="text-slate-800">${activeOrder.deliveryAddress}</strong></span>
+          <span>Total Paid: <strong class="text-emerald-600 font-extrabold text-sm">RM ${(activeOrder.totalPayable || 62.82).toFixed(2)}</strong></span>
+        </div>
+      </div>
+
+      <!-- BOTTOM ACTIONS -->
+      <div class="flex items-center justify-between pt-2 border-t border-slate-200">
+        <button onclick="showToast('E-Receipt downloaded & sent to email!');" class="btn-secondary text-xs py-2 px-4">
+          <i class="fa-solid fa-file-invoice"></i> Download E-Receipt
+        </button>
+        <button onclick="closeTrackingModal()" class="btn-primary text-xs py-2 px-6">
+          Close Tracker
+        </button>
       </div>
     </div>
   `;
 }
+
+// HELP MODAL FACILITY
+function renderHelpModalContent() {
+  return `
+    <div class="modal-container p-6 max-w-xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">❓</span>
+          <h2 class="text-lg font-extrabold text-slate-900">Food Dinosaur On-Screen HELP Guide</h2>
+        </div>
+        <button onclick="closeHelpModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
+      </div>
+
+      <div class="space-y-3.5 text-xs text-slate-700 max-h-[70vh] overflow-y-auto pr-1">
+        <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200">
+          <h3 class="font-black text-emerald-900 text-sm mb-1">1. Selecting & Customizing Food Combos</h3>
+          <p>Browse menu items by category or restaurant outlet. Click any food card to select sizes, extra cheddar cheese/bacon add-ons, and add custom kitchen notes.</p>
+        </div>
+
+        <div class="p-3 bg-sky-50 rounded-xl border border-sky-200">
+          <h3 class="font-black text-sky-900 text-sm mb-1">2. Applying Promo Voucher Vouchers</h3>
+          <p>Enter promo code <strong>DINOSAVE10</strong> during checkout or in your shopping basket to automatically receive 10% discount off your total order value.</p>
+        </div>
+
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+          <h3 class="font-black text-amber-900 text-sm mb-1">3. Business Rules & Validation Checks</h3>
+          <p>Children meal portions must be ordered alongside at least 1 Adult or Senior Citizen serving. Credit card payment requires a valid 16-digit card number.</p>
+        </div>
+
+        <div class="p-3 bg-slate-100 rounded-xl border border-slate-200">
+          <h3 class="font-black text-slate-900 text-sm mb-1">4. Real-Time Food Progress Tracking</h3>
+          <p>After completing payment, the system automatically redirects to the 5-stage live tracker showing kitchen preparation and rider GPS dispatch.</p>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-200 flex justify-end">
+        <button onclick="closeHelpModal()" class="btn-primary text-xs py-2 px-5 font-bold">Close Help Guide</button>
+      </div>
+    </div>
+  `;
+}
+
+window.openHelpModal = function() {
+  document.getElementById('help-modal')?.classList.add('active');
+};
+
+window.closeHelpModal = function() {
+  document.getElementById('help-modal')?.classList.remove('active');
+};
 
 // EVENT HANDLERS
 window.switchTab = function(tabName) {
@@ -1265,6 +1559,12 @@ window.closeCheckoutModal = function() {
   document.getElementById('checkout-modal')?.classList.remove('active');
 };
 
+window.changePaymentChannel = function(channel) {
+  state.selectedPaymentChannel = channel;
+  renderApp();
+  openCheckoutModal();
+};
+
 window.openTrackingModal = function() {
   document.getElementById('tracking-modal')?.classList.add('active');
 };
@@ -1288,7 +1588,8 @@ window.applyPromoCode = function() {
 window.handleFormSubmit = function(event) {
   event.preventDefault();
   closeCheckoutModal();
-  showToast('Order successfully created & submitted!');
+  showToast('Payment Authorized & Food Order Submitted! 🚀');
+  renderApp();
   openTrackingModal();
 };
 
