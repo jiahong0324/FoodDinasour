@@ -1,21 +1,21 @@
-/* Food Dinosaur Enterprise Web Application - Foodpanda Theme & UI System */
+/* Food Dinosaur Enterprise Web Application Design System */
 
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   
-  --panda-pink: #d70f64; /* Authentic Foodpanda Pink */
-  --panda-pink-dark: #b00c52;
-  --panda-pink-light: #fff0f5;
-  --panda-pink-badge: #ffe4ee;
+  --dino-green: #059669; /* Crisp Emerald Green */
+  --dino-green-dark: #047857;
+  --dino-green-light: #ecfdf5;
+  --dino-green-badge: #dcfce7;
   
-  --bg-page: #f7f7f7; /* Foodpanda Soft Background */
+  --bg-page: #f8fafc; /* Clean Light Background */
   --bg-card: #ffffff;
-  --border-color: #e8e8e8;
+  --border-color: #e2e8f0;
   
-  --text-main: #2b2b2b;
-  --text-muted: #666666;
-  --text-light: #888888;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-light: #64748b;
 }
 
 * {
@@ -25,8 +25,8 @@
 }
 
 html, body {
-  background-color: #f7f7f7 !important;
-  color: #2b2b2b !important;
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
   font-family: var(--font-body);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -35,7 +35,7 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  color: #2b2b2b;
+  color: #0f172a;
 }
 
 /* Hide scrollbars */
@@ -47,33 +47,33 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: none;
 }
 
-/* Foodpanda Hero Banner */
-.panda-hero {
-  background: linear-gradient(135deg, #d70f64 0%, #a00a49 100%);
+/* Food Dinosaur Hero Banner */
+.dino-hero {
+  background: linear-gradient(135deg, #059669 0%, #064e3b 100%);
   color: #ffffff;
   border-radius: 1.5rem;
-  box-shadow: 0 12px 28px -6px rgba(215, 15, 100, 0.35);
+  box-shadow: 0 12px 28px -6px rgba(5, 150, 105, 0.35);
 }
 
 /* Modern Card */
 .solid-card {
   background-color: #ffffff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e2e8f0;
   border-radius: 1.25rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .solid-card-hover:hover {
-  border-color: #d70f64;
-  box-shadow: 0 12px 24px -6px rgba(215, 15, 100, 0.2);
+  border-color: #059669;
+  box-shadow: 0 12px 24px -6px rgba(5, 150, 105, 0.2);
   transform: translateY(-3px);
 }
 
 /* Outlet Cards */
 .outlet-card {
   background: #ffffff;
-  border: 1.5px solid #e8e8e8;
+  border: 1.5px solid #e2e8f0;
   border-radius: 1rem;
   padding: 0.85rem 1rem;
   transition: all 0.2s ease;
@@ -81,9 +81,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .outlet-card:hover, .outlet-card.active {
-  border-color: #d70f64;
-  background-color: #fff0f5;
-  box-shadow: 0 4px 12px rgba(215, 15, 100, 0.15);
+  border-color: #059669;
+  background-color: #f0fdf4;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
 }
 
 /* Category Pill Badges */
@@ -92,25 +92,25 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 9999px;
   font-size: 0.8125rem;
   font-weight: 700;
-  border: 1.5px solid #e8e8e8;
+  border: 1.5px solid #e2e8f0;
   background-color: #ffffff;
-  color: #444444;
+  color: #334155;
   transition: all 0.2s ease;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .cat-pill:hover {
-  border-color: #d70f64;
-  color: #d70f64;
-  background-color: #fff0f5;
+  border-color: #059669;
+  color: #059669;
+  background-color: #f0fdf4;
 }
 
 .cat-pill.active {
-  background-color: #d70f64;
+  background-color: #059669;
   color: #ffffff;
-  border-color: #a00a49;
-  box-shadow: 0 4px 12px rgba(215, 15, 100, 0.3);
+  border-color: #047857;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
 }
 
 /* Badges */
@@ -125,21 +125,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .badge-preparing {
-  background-color: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+  background-color: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
 }
 
 .badge-success {
-  background-color: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
-.badge-panda {
-  background-color: #fff0f5;
-  color: #d70f64;
-  border: 1px solid #ffccd9;
+.badge-dino {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
 }
 
 .val-tag {
@@ -151,24 +151,24 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.25rem;
 }
 .val-tag-none {
-  background-color: #f3f4f6;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
 }
 .val-tag-active {
-  background-color: #fff0f5;
-  color: #d70f64;
-  border: 1px solid #ffccd9;
+  background-color: #dcfce7;
+  color: #059669;
+  border: 1px solid #a7f3d0;
 }
 
 /* Form Inputs */
 .form-input {
   width: 100%;
   background-color: #ffffff;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid #cbd5e1;
   border-radius: 0.75rem;
   padding: 0.6rem 0.9rem;
-  color: #111827;
+  color: #0f172a;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.15s ease;
@@ -176,15 +176,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-input:focus {
   outline: none;
-  border-color: #d70f64;
-  box-shadow: 0 0 0 3px rgba(215, 15, 100, 0.18);
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.18);
 }
 
 .form-input[readonly] {
-  background-color: #f9fafb;
-  color: #6b7280;
+  background-color: #f8fafc;
+  color: #64748b;
   cursor: not-allowed;
-  border-color: #e5e7eb;
+  border-color: #e2e8f0;
 }
 
 .form-label {
@@ -193,7 +193,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
   font-size: 0.8125rem;
   font-weight: 700;
-  color: #374151;
+  color: #334155;
   margin-bottom: 0.375rem;
 }
 
@@ -201,7 +201,7 @@ h1, h2, h3, h4, h5, h6 {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(17, 24, 39, 0.65);
+  background-color: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(5px);
   z-index: 999;
   display: flex;
@@ -220,12 +220,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .modal-container {
   background-color: #ffffff;
-  border: 1px solid #e8e8e8;
+  border: 1px solid #e2e8f0;
   border-radius: 1.5rem;
   max-width: 780px;
   width: 100%;
   max-height: 88vh;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -242,7 +242,7 @@ h1, h2, h3, h4, h5, h6 {
 .cart-drawer-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(17, 24, 39, 0.5);
+  background-color: rgba(15, 23, 42, 0.5);
   backdrop-filter: blur(2px);
   z-index: 1000;
   opacity: 0;
@@ -275,43 +275,43 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateX(0);
 }
 
-/* Foodpanda Style Buttons */
+/* Buttons */
 .btn-primary {
-  background-color: #d70f64;
+  background-color: #059669;
   color: #ffffff;
   font-weight: 700;
   padding: 0.65rem 1.25rem;
   border-radius: 0.75rem;
-  border: 1px solid #a00a49;
+  border: 1px solid #047857;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.15s ease;
-  box-shadow: 0 4px 12px rgba(215, 15, 100, 0.25);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
 }
 
 .btn-primary:hover {
-  background-color: #b00c52;
+  background-color: #047857;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(215, 15, 100, 0.35);
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35);
 }
 
 .btn-secondary {
   background-color: #ffffff;
-  color: #374151;
+  color: #334155;
   font-weight: 700;
   padding: 0.65rem 1.25rem;
   border-radius: 0.75rem;
-  border: 1.5px solid #e5e7eb;
+  border: 1.5px solid #cbd5e1;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .btn-secondary:hover {
-  background-color: #f9fafb;
-  border-color: #d1d5db;
+  background-color: #f8fafc;
+  border-color: #94a3b8;
 }
 
 /* Option Cards for Customization */
@@ -320,7 +320,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border: 1.5px solid #e8e8e8;
+  border: 1.5px solid #e2e8f0;
   border-radius: 0.75rem;
   background-color: #ffffff;
   cursor: pointer;
@@ -328,8 +328,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .option-card:hover {
-  border-color: #d70f64;
-  background-color: #fff0f5;
+  border-color: #059669;
+  background-color: #f0fdf4;
 }
 
 /* Toast Notifications */
@@ -344,7 +344,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .toast {
-  background-color: #111827;
+  background-color: #0f172a;
   color: #ffffff;
   padding: 0.85rem 1.35rem;
   border-radius: 0.75rem;
