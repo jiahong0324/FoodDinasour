@@ -12,7 +12,7 @@ const state = {
       price: 18.50,
       quantity: 2,
       instructions: 'Extra cheese, no onion',
-      image: '/images/dino_burger_combo.jpg'
+      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80'
     },
     {
       id: 'item-2',
@@ -20,7 +20,7 @@ const state = {
       price: 5.00,
       quantity: 2,
       instructions: 'Less ice, 50% sugar',
-      image: '/images/dino_iced_lemon_tea.jpg'
+      image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80'
     }
   ],
   promoCode: 'DINOSAVE10',
@@ -59,9 +59,9 @@ const state = {
       price: 18.50,
       rating: 4.9,
       prepTime: '15 mins',
-      image: '/images/dino_burger_combo.jpg',
+      image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Double beef patty burger with cheddar cheese, french fries and soft drink.'
+      description: 'Double flame-grilled beef patty burger with melted cheddar cheese, french fries and iced tea.'
     },
     {
       id: 'item-2',
@@ -70,7 +70,7 @@ const state = {
       price: 5.00,
       rating: 4.8,
       prepTime: '5 mins',
-      image: '/images/dino_iced_lemon_tea.jpg',
+      image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80',
       available: true,
       description: 'Brewed black tea infused with natural honey lemon slices and cooling mint.'
     },
@@ -105,7 +105,7 @@ const state = {
       prepTime: '10 mins',
       image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Coconut rice served with crispy rendang chicken, sambal, egg & peanuts.'
+      description: 'Coconut rice served with crispy rendang chicken, sambal, boiled egg & peanuts.'
     },
     {
       id: 'item-6',
@@ -129,8 +129,8 @@ function initApp() {
 function renderApp() {
   const appElement = document.getElementById('app');
   appElement.innerHTML = `
-    <!-- Solid Navigation Bar -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <!-- Solid Top Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
         <!-- Logo -->
         <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('customer')">
@@ -147,23 +147,23 @@ function renderApp() {
 
         <!-- Navigation Tabs -->
         <nav class="hidden md:flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
-          <button onclick="switchTab('customer')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'customer' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
+          <button onclick="switchTab('customer')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'customer' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
             <i class="fa-solid fa-utensils mr-1.5"></i> Customer Ordering
           </button>
-          <button onclick="switchTab('kitchen')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'kitchen' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
+          <button onclick="switchTab('kitchen')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'kitchen' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
             <i class="fa-solid fa-fire-burner mr-1.5"></i> Kitchen Queue
           </button>
-          <button onclick="switchTab('rider')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'rider' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
+          <button onclick="switchTab('rider')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'rider' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
             <i class="fa-solid fa-motorcycle mr-1.5"></i> Rider Console
           </button>
-          <button onclick="switchTab('analytics')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'analytics' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
+          <button onclick="switchTab('analytics')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'analytics' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
             <i class="fa-solid fa-chart-line mr-1.5"></i> Analytics
           </button>
         </nav>
 
         <!-- Action Buttons -->
         <div class="flex items-center gap-2">
-          <button onclick="openCheckoutModal()" class="btn-primary text-xs py-2 px-3.5">
+          <button onclick="openCheckoutModal()" class="btn-primary text-xs py-2 px-3.5 shadow-sm">
             <i class="fa-solid fa-file-signature"></i>
             <span>Create Order (Task 1)</span>
           </button>
@@ -178,7 +178,7 @@ function renderApp() {
       </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Main Body Container -->
     <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6">
       ${renderActiveTabContent()}
     </main>
@@ -222,10 +222,10 @@ function renderCustomerPortal() {
   });
 
   return `
-    <!-- Top Banner -->
-    <div class="solid-card p-6 mb-6 bg-emerald-900 text-white flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Top Banner Card -->
+    <div class="solid-card p-6 mb-6 bg-emerald-800 text-white flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm border border-emerald-900">
       <div>
-        <span class="inline-block px-2.5 py-0.5 rounded bg-emerald-800 text-emerald-200 text-xs font-bold mb-2">
+        <span class="inline-block px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-200 text-xs font-bold mb-2">
           ⚡ 20-Min Express Food Delivery
         </span>
         <h2 class="text-2xl font-extrabold text-white">Food Dinosaur Ordering Platform</h2>
@@ -233,7 +233,7 @@ function renderCustomerPortal() {
       </div>
 
       <!-- Search Bar -->
-      <div class="w-full md:w-80 flex items-center bg-white rounded-lg p-1 border border-emerald-800">
+      <div class="w-full md:w-80 flex items-center bg-white rounded-lg p-1 border border-emerald-700 shadow-sm">
         <input type="text" placeholder="Search menu items..." 
                value="${state.searchQuery}"
                oninput="handleSearch(this.value)"
@@ -253,37 +253,37 @@ function renderCustomerPortal() {
         { id: 'desserts', label: 'Desserts' }
       ].map(cat => `
         <button onclick="selectCategory('${cat.id}')" 
-                class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all border ${state.selectedCategory === cat.id ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
+                class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all border ${state.selectedCategory === cat.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'}">
           ${cat.label}
         </button>
       `).join('')}
     </div>
 
-    <!-- Food Item Cards -->
+    <!-- Food Item Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       ${filteredMenu.map(item => `
         <div class="solid-card solid-card-hover flex flex-col justify-between overflow-hidden">
           <div>
-            <div class="relative h-44 bg-slate-100 overflow-hidden border-b border-slate-100">
+            <div class="relative h-48 bg-slate-100 overflow-hidden border-b border-slate-200">
               <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
-              <div class="absolute top-2.5 left-2.5 bg-white/90 px-2 py-0.5 rounded text-xs font-bold text-slate-800 shadow-sm border border-slate-200">
+              <div class="absolute top-2.5 left-2.5 bg-white/95 px-2 py-0.5 rounded text-xs font-bold text-slate-800 shadow-sm border border-slate-200">
                 ★ ${item.rating}
               </div>
-              <div class="absolute top-2.5 right-2.5 bg-emerald-700 text-white px-2 py-0.5 rounded text-xs font-bold">
+              <div class="absolute top-2.5 right-2.5 bg-emerald-700 text-white px-2 py-0.5 rounded text-xs font-bold shadow-sm">
                 ⏱️ ${item.prepTime}
               </div>
             </div>
 
             <div class="p-4">
               <h3 class="text-base font-bold text-slate-900 mb-1">${item.name}</h3>
-              <p class="text-slate-500 text-xs line-clamp-2 leading-normal mb-3">${item.description}</p>
+              <p class="text-slate-500 text-xs line-clamp-2 leading-relaxed mb-3">${item.description}</p>
             </div>
           </div>
 
           <div class="px-4 pb-4 pt-3 flex items-center justify-between border-t border-slate-100">
             <div>
               <span class="text-[10px] text-slate-400 font-bold block uppercase">Price</span>
-              <span class="text-lg font-extrabold text-emerald-600">RM ${item.price.toFixed(2)}</span>
+              <span class="text-lg font-extrabold text-emerald-700">RM ${item.price.toFixed(2)}</span>
             </div>
             <button onclick="addToCart('${item.id}')" class="btn-primary text-xs py-1.5 px-3">
               + Add to Cart
@@ -312,7 +312,7 @@ function renderKitchenDashboard() {
       <!-- Order List -->
       <div class="lg:col-span-2 space-y-4">
         ${state.orders.map(order => `
-          <div class="solid-card p-5 border-l-4 ${order.status === 'Preparing' ? 'border-l-blue-600' : 'border-l-emerald-600'}">
+          <div class="solid-card p-5 border-l-4 ${order.status === 'Preparing' ? 'border-l-sky-600' : 'border-l-emerald-600'}">
             <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
               <div>
                 <span class="text-base font-extrabold text-slate-900 mr-2">${order.orderId}</span>
@@ -320,14 +320,14 @@ function renderKitchenDashboard() {
                 <span class="text-xs text-slate-500 block mt-0.5">${order.dateTime} | Customer: ${order.customerName}</span>
               </div>
               <div class="text-right">
-                <span class="text-sm font-extrabold text-emerald-600">RM ${order.totalPayable.toFixed(2)}</span>
+                <span class="text-sm font-extrabold text-emerald-700">RM ${order.totalPayable.toFixed(2)}</span>
                 <span class="text-xs text-slate-400 block">${order.paymentMethod}</span>
               </div>
             </div>
 
             <div class="space-y-1.5 mb-4">
               ${order.items.map(item => `
-                <div class="flex justify-between text-xs bg-slate-50 px-3 py-1.5 rounded border border-slate-100">
+                <div class="flex justify-between text-xs bg-slate-50 px-3 py-1.5 rounded border border-slate-200">
                   <span class="font-bold text-slate-800">${item.qty}x ${item.name}</span>
                   <span class="text-slate-500">${item.notes || 'Standard'}</span>
                 </div>
@@ -335,13 +335,13 @@ function renderKitchenDashboard() {
             </div>
 
             <div class="flex items-center justify-between">
-              <span class="text-xs text-slate-500">Store: ${order.restaurantName}</span>
+              <span class="text-xs text-slate-500 font-medium">Store: ${order.restaurantName}</span>
               ${order.status === 'Preparing' ? `
                 <button onclick="updateOrderStatus('${order.orderId}', 'Delivering')" class="btn-primary text-xs py-1.5 px-3">
                   Ready for Delivery Rider
                 </button>
               ` : `
-                <span class="text-xs text-emerald-600 font-bold"><i class="fa-solid fa-check"></i> Out with Rider</span>
+                <span class="text-xs text-emerald-700 font-bold"><i class="fa-solid fa-check"></i> Out with Rider</span>
               `}
             </div>
           </div>
@@ -357,9 +357,9 @@ function renderKitchenDashboard() {
             <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded border border-slate-200">
               <div>
                 <span class="text-xs font-bold text-slate-800 block">${item.name}</span>
-                <span class="text-[11px] text-emerald-600 font-bold">RM ${item.price.toFixed(2)}</span>
+                <span class="text-[11px] text-emerald-700 font-bold">RM ${item.price.toFixed(2)}</span>
               </div>
-              <button onclick="toggleMenuAvailability('${item.id}')" class="px-2.5 py-1 rounded text-xs font-bold ${item.available ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-rose-100 text-rose-700 border border-rose-300'}">
+              <button onclick="toggleMenuAvailability('${item.id}')" class="px-2.5 py-1 rounded text-xs font-bold ${item.available ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-rose-100 text-rose-800 border border-rose-300'}">
                 ${item.available ? 'In Stock' : 'Out of Stock'}
               </button>
             </div>
@@ -390,12 +390,12 @@ function renderRiderDashboard() {
 
           <div class="space-y-2 text-xs mb-4">
             <div class="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span class="text-slate-400 font-bold block mb-0.5">Pick-Up Store:</span>
-              <span class="text-slate-800 font-bold">${order.restaurantName}</span>
+              <span class="text-slate-500 font-bold block mb-0.5">Pick-Up Store:</span>
+              <span class="text-slate-900 font-bold">${order.restaurantName}</span>
             </div>
             <div class="p-2.5 bg-slate-50 rounded border border-slate-200">
-              <span class="text-slate-400 font-bold block mb-0.5">Customer Address:</span>
-              <span class="text-slate-800 font-bold">${order.customerName} (${order.contactPhone})</span>
+              <span class="text-slate-500 font-bold block mb-0.5">Customer Address:</span>
+              <span class="text-slate-900 font-bold">${order.customerName} (${order.contactPhone})</span>
               <span class="text-slate-600 block mt-0.5">${order.deliveryAddress}</span>
             </div>
           </div>
@@ -404,7 +404,7 @@ function renderRiderDashboard() {
           <div class="mb-4">
             <div class="flex justify-between text-xs mb-1 font-bold">
               <span class="text-slate-500">Delivery Route Progress</span>
-              <span class="text-emerald-600">${order.riderGpsProgress}%</span>
+              <span class="text-emerald-700">${order.riderGpsProgress}%</span>
             </div>
             <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
               <div class="h-full bg-emerald-600 rounded-full transition-all" style="width: ${order.riderGpsProgress}%"></div>
@@ -439,22 +439,22 @@ function renderAnalyticsDashboard() {
       <div class="solid-card p-4 border-l-4 border-l-emerald-600">
         <span class="text-xs text-slate-500 font-bold block">Annual Revenue</span>
         <span class="text-xl font-extrabold text-slate-900">RM 1,466,000</span>
-        <span class="text-[11px] text-emerald-600 font-bold block mt-0.5">Year 1 Target Met</span>
+        <span class="text-[11px] text-emerald-700 font-bold block mt-0.5">Year 1 Target Met</span>
       </div>
       <div class="solid-card p-4 border-l-4 border-l-amber-500">
         <span class="text-xs text-slate-500 font-bold block">Daily Orders</span>
         <span class="text-xl font-extrabold text-slate-900">200 / day</span>
-        <span class="text-[11px] text-amber-600 font-bold block mt-0.5">Avg RM10 profit</span>
+        <span class="text-[11px] text-amber-700 font-bold block mt-0.5">Avg RM10 profit</span>
       </div>
-      <div class="solid-card p-4 border-l-4 border-l-blue-500">
+      <div class="solid-card p-4 border-l-4 border-l-sky-500">
         <span class="text-xs text-slate-500 font-bold block">Avg Delivery Time</span>
         <span class="text-xl font-extrabold text-slate-900">18.4 mins</span>
-        <span class="text-[11px] text-blue-600 font-bold block mt-0.5">94% on-time</span>
+        <span class="text-[11px] text-sky-700 font-bold block mt-0.5">94% on-time</span>
       </div>
       <div class="solid-card p-4 border-l-4 border-l-purple-500">
         <span class="text-xs text-slate-500 font-bold block">Customer Rating</span>
         <span class="text-xl font-extrabold text-slate-900">4.9 / 5.0</span>
-        <span class="text-[11px] text-purple-600 font-bold block mt-0.5">1,420 Reviews</span>
+        <span class="text-[11px] text-purple-700 font-bold block mt-0.5">1,420 Reviews</span>
       </div>
     </div>
 
@@ -722,7 +722,7 @@ function renderOrderTrackingModalContent() {
       <!-- Simple Stepper -->
       <div class="grid grid-cols-4 gap-2 text-center text-xs mb-6 font-bold">
         <div class="p-2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">1. Placed</div>
-        <div class="p-2 rounded bg-blue-100 text-blue-800 border border-blue-300">2. Preparing</div>
+        <div class="p-2 rounded bg-sky-100 text-sky-800 border border-sky-300">2. Preparing</div>
         <div class="p-2 rounded bg-slate-100 text-slate-500">3. Delivering</div>
         <div class="p-2 rounded bg-slate-100 text-slate-500">4. Delivered</div>
       </div>
