@@ -698,7 +698,8 @@ function renderCreateOrderScreen() {
                        value="${state.form.icNumber}" 
                        oninput="window.updateFormField('icNumber', this.value)"
                        placeholder="e.g. 010324-14-5582"
-                       class="form-input text-xs font-mono font-bold" />
+                       class="form-input text-xs font-mono font-bold ${state.errors.icNumber ? 'input-error' : ''}" />
+                ${state.errors.icNumber ? `<div class="error-msg">${state.errors.icNumber}</div>` : ''}
               </div>
 
               <!-- Delivery Address -->
@@ -1043,7 +1044,7 @@ function renderPaymentModal() {
               <div>
                 <label class="form-label text-[11px] mb-1">
                   <span>Card Number (16 Digits)</span>
-                  ${showBadges ? '<span class="val-tag val-tag-active">Format Check</span>' : ''}
+                  ${showBadges ? '<span class="val-tag val-tag-active">Format Check (16 Digits)</span>' : ''}
                 </label>
                 <input type="text" maxlength="19" value="${state.form.cardNumber}" oninput="window.updateFormField('cardNumber', this.value)" placeholder="4532 1098 7654 3210" class="form-input py-1.5 text-xs font-mono tracking-widest ${state.errors.cardNumber ? 'input-error' : ''}" />
                 ${state.errors.cardNumber ? `<div class="error-msg">${state.errors.cardNumber}</div>` : ''}
@@ -1053,16 +1054,18 @@ function renderPaymentModal() {
                 <div>
                   <label class="form-label text-[11px] mb-1">
                     <span>Expiry Date</span>
-                    ${showBadges ? '<span class="val-tag val-tag-active">MM/YY</span>' : ''}
+                    ${showBadges ? '<span class="val-tag val-tag-active">MM/YY Format</span>' : ''}
                   </label>
-                  <input type="text" value="${state.form.cardExpiry}" oninput="window.updateFormField('cardExpiry', this.value)" placeholder="12/28" class="form-input py-1.5 text-xs" />
+                  <input type="text" value="${state.form.cardExpiry}" oninput="window.updateFormField('cardExpiry', this.value)" placeholder="12/28" class="form-input py-1.5 text-xs ${state.errors.cardExpiry ? 'input-error' : ''}" />
+                  ${state.errors.cardExpiry ? `<div class="error-msg">${state.errors.cardExpiry}</div>` : ''}
                 </div>
                 <div>
                   <label class="form-label text-[11px] mb-1">
                     <span>CVV Code</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">3 Digits</span>' : ''}
                   </label>
-                  <input type="password" maxlength="4" value="${state.form.cardCvv}" oninput="window.updateFormField('cardCvv', this.value)" placeholder="***" class="form-input py-1.5 text-xs text-center font-mono" />
+                  <input type="password" maxlength="4" value="${state.form.cardCvv}" oninput="window.updateFormField('cardCvv', this.value)" placeholder="***" class="form-input py-1.5 text-xs text-center font-mono ${state.errors.cardCvv ? 'input-error' : ''}" />
+                  ${state.errors.cardCvv ? `<div class="error-msg">${state.errors.cardCvv}</div>` : ''}
                 </div>
               </div>
             ` : ''}
@@ -1076,15 +1079,23 @@ function renderPaymentModal() {
                   <option value="public">Public Bank Online</option>
                   <option value="rhb">RHB Now</option>
                 </select>
-                <input type="text" placeholder="Bank Online User ID" class="form-input py-1.5 text-xs" />
+                <div>
+                  <label class="form-label text-[11px] mb-1">Online Banking User ID</label>
+                  <input type="text" value="${state.form.fpxUser || ''}" oninput="window.updateFormField('fpxUser', this.value)" placeholder="Enter bank user ID" class="form-input py-1.5 text-xs ${state.errors.fpxUser ? 'input-error' : ''}" />
+                  ${state.errors.fpxUser ? `<div class="error-msg">${state.errors.fpxUser}</div>` : ''}
+                </div>
               </div>
             ` : ''}
 
             ${state.form.paymentChannel === 'ewallet' ? `
               <div class="space-y-2">
                 <label class="form-label text-[11px] mb-1">E-Wallet Registered Phone</label>
-                <input type="tel" value="${state.form.contactPhone}" class="form-input py-1.5 text-xs font-bold" />
-                <input type="password" placeholder="6-Digit Security PIN" maxlength="6" class="form-input py-1.5 text-xs font-mono text-center" />
+                <input type="tel" value="${state.form.contactPhone}" readonly class="form-input py-1.5 text-xs font-bold bg-slate-100" />
+                <div>
+                  <label class="form-label text-[11px] mb-1">6-Digit Security PIN</label>
+                  <input type="password" maxlength="6" value="${state.form.ewalletPin || ''}" oninput="window.updateFormField('ewalletPin', this.value)" placeholder="e.g. 123456" class="form-input py-1.5 text-xs font-mono text-center ${state.errors.ewalletPin ? 'input-error' : ''}" />
+                  ${state.errors.ewalletPin ? `<div class="error-msg">${state.errors.ewalletPin}</div>` : ''}
+                </div>
               </div>
             ` : ''}
 
@@ -1141,20 +1152,25 @@ window.closeHelpModal = function() {
 
 window.openPaymentModal = function() {
   state.errors = {};
+
   if (state.orderItems.length === 0) {
     state.errors.general = 'Please add at least one food item before proceeding to payment.';
     window.showToast('Please add food items first.', 'error');
     renderApp();
     return;
   }
-  if (!state.form.contactPhone || state.form.contactPhone.trim() === '') {
-    state.errors.contactPhone = 'Phone number is required.';
+  if (!state.form.contactPhone || !/^01\d[-]?\d{7,8}$/.test(state.form.contactPhone.trim())) {
+    state.errors.contactPhone = 'Please enter a valid phone number (e.g. 012-3456789).';
   }
-  if (!state.form.deliveryAddress || state.form.deliveryAddress.trim() === '') {
-    state.errors.deliveryAddress = 'Delivery address is required.';
+  if (!state.form.icNumber || state.form.icNumber.trim() === '') {
+    state.errors.icNumber = 'Customer IC / Identification No. is required.';
   }
+  if (!state.form.deliveryAddress || state.form.deliveryAddress.trim().length < 5) {
+    state.errors.deliveryAddress = 'Please enter a complete delivery address.';
+  }
+
   if (Object.keys(state.errors).length > 0) {
-    window.showToast('Please complete contact phone and address.', 'error');
+    window.showToast('Please complete contact & delivery details highlighted in red.', 'error');
     renderApp();
     return;
   }
@@ -1176,7 +1192,7 @@ window.updateFormField = function(field, value) {
   if (field === 'cardNumber') {
     const cleanNum = value.replace(/\s+/g, '');
     if (cleanNum.length > 0 && cleanNum.length !== 16) {
-      state.errors.cardNumber = 'Card number must be 16 digits';
+      state.errors.cardNumber = 'Format Error: Card number must be 16 digits';
     } else {
       delete state.errors.cardNumber;
     }
@@ -1258,26 +1274,41 @@ window.validateAndSubmitOrder = function() {
     state.errors.general = 'Please add at least one food item before placing order.';
   }
 
-  if (!state.form.contactPhone || state.form.contactPhone.trim() === '') {
-    state.errors.contactPhone = 'Phone number is required.';
+  if (!state.form.contactPhone || !/^01\d[-]?\d{7,8}$/.test(state.form.contactPhone.trim())) {
+    state.errors.contactPhone = 'Please enter a valid phone number (e.g. 012-3456789).';
   }
 
-  if (!state.form.deliveryAddress || state.form.deliveryAddress.trim() === '') {
-    state.errors.deliveryAddress = 'Delivery address is required.';
+  if (!state.form.deliveryAddress || state.form.deliveryAddress.trim().length < 5) {
+    state.errors.deliveryAddress = 'Please enter a complete delivery address.';
   }
 
+  // Channel Specific Validation Checks
   if (state.form.paymentChannel === 'card') {
     if (!state.form.cardName || state.form.cardName.trim() === '') {
       state.errors.cardName = 'Cardholder name is required.';
     }
     const cleanNum = (state.form.cardNumber || '').replace(/\s+/g, '');
-    if (cleanNum.length !== 16 || !/^\d+$/.test(cleanNum)) {
-      state.errors.cardNumber = 'Card number must be 16 digits';
+    if (!/^\d{16}$/.test(cleanNum)) {
+      state.errors.cardNumber = 'Format Error: Card number must be 16 numeric digits';
+    }
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test((state.form.cardExpiry || '').trim())) {
+      state.errors.cardExpiry = 'Format Error: Use MM/YY format (e.g. 12/28)';
+    }
+    if (!/^\d{3,4}$/.test((state.form.cardCvv || '').trim())) {
+      state.errors.cardCvv = 'CVV must be 3 or 4 numeric digits';
+    }
+  } else if (state.form.paymentChannel === 'fpx') {
+    if (!state.form.fpxUser || state.form.fpxUser.trim() === '') {
+      state.errors.fpxUser = 'Online Banking User ID is required.';
+    }
+  } else if (state.form.paymentChannel === 'ewallet') {
+    if (!/^\d{6}$/.test((state.form.ewalletPin || '').trim())) {
+      state.errors.ewalletPin = 'Security PIN must be 6 numeric digits';
     }
   }
 
   if (Object.keys(state.errors).length > 0) {
-    window.showToast('Please correct highlighted fields.', 'error');
+    window.showToast('Validation failed. Please correct highlighted fields.', 'error');
     renderApp();
     return;
   }
