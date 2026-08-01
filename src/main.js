@@ -902,9 +902,6 @@ function renderCheckoutModalContent() {
               <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                 SECURE CHECKOUT
               </span>
-              <button type="button" onclick="fillSampleData()" class="text-[11px] font-extrabold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-2.5 py-0.5 rounded-md border border-emerald-300 transition-all">
-                ⚡ Fill Sample Data
-              </button>
             </div>
             <h2 class="text-xl font-extrabold text-slate-900">Payment Processing</h2>
           </div>
@@ -1039,9 +1036,6 @@ function renderCheckoutModalContent() {
             <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
               CREATE FOOD ORDER
             </span>
-            <button type="button" onclick="fillSampleData()" class="text-[11px] font-extrabold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-2.5 py-0.5 rounded-md border border-emerald-300 transition-all">
-              ⚡ Fill Sample Data
-            </button>
             <button type="button" onclick="toggleAssignmentAnnotations()" class="text-[11px] font-bold text-slate-600 hover:text-emerald-600 underline">
               ${showBadges ? '⚡ Switch to Simple View' : '🎓 Show Assignment Badges [1]-[16]'}
             </button>
