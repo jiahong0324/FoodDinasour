@@ -892,7 +892,7 @@ function renderCheckoutModalContent() {
   const currentPaymentChannel = state.selectedPaymentChannel || 'card';
   const isPaymentStep = state.checkoutStep === 2;
 
-  // STEP 2: PAYMENT PROCESSING PAGE (MATCHING SAMPLE IMAGE 3 & GRABFOOD UI)
+  // STEP 2: PAYMENT PROCESSING PAGE (MATCHING GRABFOOD EMERALD THEME)
   if (isPaymentStep) {
     return `
       <div class="modal-container p-6 max-w-lg overflow-y-auto max-h-[90vh]">
@@ -913,10 +913,10 @@ function renderCheckoutModalContent() {
 
         <form onsubmit="handleFormSubmit(event)" class="space-y-5" novalidate>
           <!-- AUTO-IMPORTED GRAND TOTAL CARD -->
-          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-1">
+          <div class="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 text-center space-y-1">
             <div class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Grand Total to Pay</div>
-            <div class="text-3xl font-black text-rose-600">RM ${totalPayable.toFixed(2)}</div>
-            <p class="text-[11px] text-slate-400 font-medium">✓ Amount auto-imported from booking summary</p>
+            <div class="text-3xl font-black text-emerald-600">RM ${totalPayable.toFixed(2)}</div>
+            <p class="text-[11px] text-slate-500 font-medium">✓ Amount auto-imported from order summary</p>
           </div>
 
           <!-- SELECT PAYMENT METHOD DROPDOWN -->
@@ -925,7 +925,7 @@ function renderCheckoutModalContent() {
               <span>Select Payment Method</span>
               ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
             </label>
-            <select onchange="changePaymentChannel(this.value)" class="form-input py-2 font-bold text-slate-800 border-slate-300">
+            <select onchange="changePaymentChannel(this.value)" class="form-input py-2 font-bold text-slate-800 border-slate-300 focus:border-emerald-600">
               <option value="card" ${currentPaymentChannel === 'card' ? 'selected' : ''}>Credit / Debit Card</option>
               <option value="fpx" ${currentPaymentChannel === 'fpx' ? 'selected' : ''}>Online Banking (FPX)</option>
               <option value="ewallet" ${currentPaymentChannel === 'ewallet' ? 'selected' : ''}>Touch 'n Go / GrabPay E-Wallet</option>
@@ -941,7 +941,7 @@ function renderCheckoutModalContent() {
                   <span>Cardholder Name</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
                 </label>
-                <input type="text" id="input-cardholder" value="" placeholder="e.g. Chan Pei Xuan" class="form-input py-2 text-xs" />
+                <input type="text" id="input-cardholder" value="" placeholder="Enter name on credit/debit card" class="form-input py-2 text-xs" />
               </div>
               <div>
                 <label class="form-label text-xs mb-1">
@@ -957,7 +957,7 @@ function renderCheckoutModalContent() {
                     <span>Expiry Date</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">Date</span>' : ''}
                   </label>
-                  <input type="text" id="input-cardexpiry" value="" placeholder="e.g. October, 2029" class="form-input py-2 text-xs" />
+                  <input type="text" id="input-cardexpiry" value="" placeholder="e.g. October, 2029 or MM/YY" class="form-input py-2 text-xs" />
                 </div>
                 <div>
                   <label class="form-label text-xs mb-1">
@@ -1005,16 +1005,16 @@ function renderCheckoutModalContent() {
             ` : ''}
           </div>
 
-          <!-- PRIMARY RED ACTION BUTTON: PAY NOW 🔒 -->
-          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-black text-sm py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+          <!-- PRIMARY EMERALD GREEN ACTION BUTTON: PAY NOW 🔒 -->
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 transition-all flex items-center justify-center gap-2">
             <span>Pay Now</span>
             <i class="fa-solid fa-lock text-xs"></i>
           </button>
 
-          <!-- RETURN TO BOOKING LINK -->
+          <!-- RETURN TO ORDER SUMMARY LINK -->
           <div class="text-center">
-            <button type="button" onclick="goToBookingStep()" class="text-xs font-extrabold text-slate-500 hover:text-slate-800 underline">
-              -- Return to Booking --
+            <button type="button" onclick="goToBookingStep()" class="text-xs font-extrabold text-slate-500 hover:text-emerald-700 underline">
+              -- Return to Order Summary --
             </button>
           </div>
 
@@ -1030,7 +1030,7 @@ function renderCheckoutModalContent() {
     `;
   }
 
-  // STEP 1: CREATE FOOD ORDER & BOOKING SUMMARY PAGE (MATCHING SAMPLE IMAGE 1 & GRABFOOD UI)
+  // STEP 1: CREATE FOOD ORDER & ORDER SUMMARY PAGE (FOOD DINOSAUR / GRABFOOD EMERALD THEME)
   return `
     <div class="modal-container p-6 max-w-3xl overflow-y-auto max-h-[90vh]">
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
@@ -1055,7 +1055,7 @@ function renderCheckoutModalContent() {
         <!-- LEFT COLUMN: NUMBERED SECTIONS 1, 2, 3 -->
         <div class="space-y-4">
           <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-            <h3 class="text-xs font-extrabold text-rose-600 uppercase tracking-wider mb-2">| 1. Order Details & Options</h3>
+            <h3 class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider mb-2">| 1. Order Details & Options</h3>
             <div class="grid grid-cols-2 gap-3 text-xs">
               <div>
                 <label class="form-label mb-1">
@@ -1075,28 +1075,27 @@ function renderCheckoutModalContent() {
           </div>
 
           <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-            <h3 class="text-xs font-extrabold text-rose-600 uppercase tracking-wider">| 2. Primary Contact Information</h3>
+            <h3 class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider">| 2. Primary Contact Information</h3>
             
             <div>
               <label class="form-label mb-1">
-                <span>${showBadges ? '[3] ' : ''}Passenger / Customer Name</span>
-                ${showBadges ? '<span class="val-tag val-tag-none">Imported</span>' : ''}
+                <span>${showBadges ? '[3] ' : ''}Customer Full Name</span>
+                ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
               </label>
-              <input type="text" value="Chan Pei Xuan" readonly class="form-input py-1.5 bg-slate-100" />
-              <p class="text-[10px] text-slate-400 mt-0.5">✓ Auto-imported from Account (PAS-2026-00001)</p>
+              <input type="text" id="input-customer-name" value="" placeholder="Enter your full name" class="form-input py-1.5" />
             </div>
 
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="form-label mb-1">
-                  <span>${showBadges ? '[7] ' : ''}Passport / MyKad</span>
+                  <span>${showBadges ? '[7] ' : ''}MyKad IC / Passport</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">12-Digit</span>' : ''}
                 </label>
-                <input type="text" id="input-passport" value="" placeholder="e.g. A1234567" class="form-input py-1.5" />
+                <input type="text" id="input-passport" value="" placeholder="e.g. 010324145582" class="form-input py-1.5" />
               </div>
               <div>
                 <label class="form-label mb-1">
-                  <span>${showBadges ? '[8] ' : ''}Contact Number</span>
+                  <span>${showBadges ? '[8] ' : ''}Contact Phone</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Phone Check</span>' : ''}
                 </label>
                 <input type="tel" id="input-phone" value="" placeholder="e.g. 012-3456789" class="form-input py-1.5" />
@@ -1113,7 +1112,7 @@ function renderCheckoutModalContent() {
           </div>
 
           <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-            <h3 class="text-xs font-extrabold text-rose-600 uppercase tracking-wider mb-2">| 3. Individual Menu Options & Add-ons</h3>
+            <h3 class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider mb-2">| 3. Individual Menu Options & Add-ons</h3>
             <div class="space-y-2 text-xs">
               <div>
                 <label class="form-label mb-1">
@@ -1128,7 +1127,7 @@ function renderCheckoutModalContent() {
               <div class="grid grid-cols-2 gap-2">
                 <div>
                   <label class="form-label mb-1">
-                    <span>${showBadges ? '[11] ' : ''}Method</span>
+                    <span>${showBadges ? '[11] ' : ''}Fulfillment Method</span>
                     ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
                   </label>
                   <select class="form-input py-1.5">
@@ -1138,7 +1137,7 @@ function renderCheckoutModalContent() {
                 </div>
                 <div>
                   <label class="form-label mb-1">
-                    <span>${showBadges ? '[12] ' : ''}Time Slot</span>
+                    <span>${showBadges ? '[12] ' : ''}Delivery Slot</span>
                     ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
                   </label>
                   <select class="form-input py-1.5">
@@ -1151,49 +1150,49 @@ function renderCheckoutModalContent() {
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: STICKY BOOKING SUMMARY CARD -->
+        <!-- RIGHT COLUMN: STICKY ORDER SUMMARY CARD -->
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-4 flex flex-col justify-between">
           <div>
-            <h3 class="text-center font-black text-slate-900 text-sm mb-3">Booking Summary</h3>
+            <h3 class="text-center font-black text-slate-900 text-sm mb-3">Order Summary</h3>
             
             <div class="text-center pb-3 border-b border-slate-200 mb-3">
-              <span class="text-xs font-extrabold text-rose-600">Dino Grill (Mid Valley) ✈ Setapak (KL)</span>
+              <span class="text-xs font-extrabold text-emerald-700">Dino Grill (Mid Valley) 🛵 Setapak (KL)</span>
             </div>
 
             <div class="space-y-1.5 text-xs text-slate-600 mb-4">
-              <div class="flex justify-between"><span>Booking Date:</span><span class="font-bold text-slate-900">01/08/2026</span></div>
+              <div class="flex justify-between"><span>Order Date:</span><span class="font-bold text-slate-900">01/08/2026</span></div>
               <div class="flex justify-between"><span>Total Items:</span><span class="font-bold text-slate-900">${state.cart.length} Items</span></div>
               <div class="flex justify-between"><span>Base Items Subtotal:</span><span class="font-bold text-slate-900">RM ${subtotal.toFixed(2)}</span></div>
               <div class="flex justify-between text-emerald-600 font-bold"><span>Promo Discount:</span><span>- RM ${discount.toFixed(2)}</span></div>
-              <div class="flex justify-between"><span>Pre-order Add-ons:</span><span class="font-bold text-slate-900">RM ${deliveryFee.toFixed(2)}</span></div>
-              <div class="flex justify-between"><span>Govt. Tax (SST 8%):</span><span class="font-bold text-slate-900">RM ${sst.toFixed(2)}</span></div>
+              <div class="flex justify-between"><span>Delivery Fee:</span><span class="font-bold text-slate-900">RM ${deliveryFee.toFixed(2)}</span></div>
+              <div class="flex justify-between"><span>SST Tax (8%):</span><span class="font-bold text-slate-900">RM ${sst.toFixed(2)}</span></div>
             </div>
 
             <div class="space-y-2 mb-4">
               <label class="form-label text-xs mb-1">
-                <span>Apply Promo Code</span>
+                <span>Apply Promo Voucher</span>
                 ${showBadges ? '<span class="val-tag val-tag-active">Check</span>' : ''}
               </label>
               <div class="flex gap-2">
-                <input type="text" id="promo-input" value="${state.promoCode}" class="form-input py-1.5 uppercase text-xs" />
-                <button type="button" onclick="applyPromoCode()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3 rounded-lg">Apply</button>
+                <input type="text" id="promo-input" value="${state.promoCode}" placeholder="e.g. DINOSAVE10" class="form-input py-1.5 uppercase text-xs" />
+                <button type="button" onclick="applyPromoCode()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs px-3 rounded-lg">Apply</button>
               </div>
               ${state.promoCode === 'DINOSAVE10' ? '<p class="text-[10px] text-emerald-600 font-bold">✓ Promo applied: RM 5.90 Off</p>' : ''}
             </div>
 
             <div class="pt-3 border-t border-slate-200 flex items-center justify-between">
               <span class="text-sm font-black text-slate-900">Grand Total</span>
-              <span class="text-xl font-black text-rose-600">RM ${totalPayable.toFixed(2)}</span>
+              <span class="text-xl font-black text-emerald-600">RM ${totalPayable.toFixed(2)}</span>
             </div>
           </div>
 
           <!-- STEP 1 ACTION BUTTONS -->
           <div class="space-y-2 pt-3">
-            <button type="button" onclick="goToPaymentStep()" class="w-full bg-red-600 hover:bg-red-700 text-white font-black text-xs py-3 rounded-xl shadow-md transition-all">
+            <button type="button" onclick="goToPaymentStep()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl shadow-md shadow-emerald-600/30 transition-all">
               Continue to Payment
             </button>
             <button type="button" onclick="closeCheckoutModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs py-2 rounded-xl">
-              Cancel Request
+              Cancel Order
             </button>
             <p class="text-[10px] text-slate-400 text-center font-medium">By continuing, you agree to Food Dinosaur's Terms and Conditions.</p>
           </div>
@@ -1614,6 +1613,7 @@ window.goToPaymentStep = function() {
     return;
   }
 
+  const nameInput = document.getElementById('input-customer-name');
   const passportInput = document.getElementById('input-passport');
   const phoneInput = document.getElementById('input-phone');
   const addressInput = document.getElementById('input-address');
@@ -1621,13 +1621,20 @@ window.goToPaymentStep = function() {
   let isValid = true;
 
   // Clear previous errors
-  [passportInput, phoneInput, addressInput].forEach(el => el?.classList.remove('input-error'));
+  [nameInput, passportInput, phoneInput, addressInput].forEach(el => el?.classList.remove('input-error'));
   document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+  // Customer Full Name Validation
+  if (!nameInput?.value.trim()) {
+    nameInput?.classList.add('input-error');
+    nameInput?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Customer Full Name is required</div>');
+    isValid = false;
+  }
 
   // Passport / MyKad Validation
   if (!passportInput?.value.trim()) {
     passportInput?.classList.add('input-error');
-    passportInput?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Passport / MyKad IC number is required</div>');
+    passportInput?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ MyKad IC or Passport number is required</div>');
     isValid = false;
   }
 
@@ -1773,15 +1780,17 @@ window.handleFormSubmit = function(event) {
 
 window.fillSampleData = function() {
   if (state.checkoutStep === 1) {
+    const nameInput = document.getElementById('input-customer-name');
     const passportInput = document.getElementById('input-passport');
     const phoneInput = document.getElementById('input-phone');
     const addressInput = document.getElementById('input-address');
 
-    if (passportInput) passportInput.value = 'A1234567';
+    if (nameInput) nameInput.value = 'Tan Ah Kow';
+    if (passportInput) passportInput.value = '010324145582';
     if (phoneInput) phoneInput.value = '012-3456789';
     if (addressInput) addressInput.value = 'No. 12, Jalan Genting Klang, Setapak, 53300 KL';
 
-    [passportInput, phoneInput, addressInput].forEach(el => el?.classList.remove('input-error'));
+    [nameInput, passportInput, phoneInput, addressInput].forEach(el => el?.classList.remove('input-error'));
     document.querySelectorAll('.error-msg').forEach(el => el.remove());
     showToast('⚡ Sample Contact Data Filled!');
   } else {
@@ -1792,7 +1801,7 @@ window.fillSampleData = function() {
       const cardexpiry = document.getElementById('input-cardexpiry');
       const cardcvv = document.getElementById('input-cardcvv');
 
-      if (cardholder) cardholder.value = 'Chan Pei Xuan';
+      if (cardholder) cardholder.value = 'Tan Ah Kow';
       if (cardnumber) cardnumber.value = '1234567812345678';
       if (cardexpiry) cardexpiry.value = 'October, 2029';
       if (cardcvv) cardcvv.value = '882';
@@ -1802,7 +1811,7 @@ window.fillSampleData = function() {
       const bankSelect = document.getElementById('input-fpxbank');
       const fpxUser = document.getElementById('input-fpxuser');
       if (bankSelect) bankSelect.value = 'maybank';
-      if (fpxUser) fpxUser.value = 'chanpeixuan99';
+      if (fpxUser) fpxUser.value = 'tanahkow88';
       [bankSelect, fpxUser].forEach(el => el?.classList.remove('input-error'));
     } else if (channel === 'ewallet') {
       const ewalletPhone = document.getElementById('input-ewalletphone');

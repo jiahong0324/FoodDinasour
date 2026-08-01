@@ -38,11 +38,11 @@ To support daily transaction processing for **Food Dinosaur Sdn. Bhd.**, the dat
   |     Child Servings (Kids Meal Portion)      [ 0 ]                     |  | Govt. Tax (SST 8%):            RM   4.02          |
   |     Senior Citizen Servings (Soft Portion)  [ 0 ]                     |  | Delivery Fee:                  RM   5.00          |
   +-----------------------------------------------------------------------+  | -------------------------------------------------- |
-  | | 2. Primary Customer Information                                     |  | [15] Payment Method Channel                        |
+  | | 2. Primary Contact Information                                     |  | [15] Payment Method Channel                        |
   | --------------------------------------------------------------------- |  | [ 💳 Credit / Debit Card                         v]|
-  | [6] Customer Name (Auto-imported from Account PAS-2026-00001)         |  |                                                    |
-  | [ Chan Pei Xuan                                                     ] |  | [16] Cardholder Name                               |
-  |                                                                       |  | [ Chan Pei Xuan                                  ] |
+  | [6] Customer Full Name (User Manual Entry / Account Profile)         |  |                                                    |
+  | [ Enter your full name                                               ] |  | [16] Cardholder Name                               |
+  |                                                                       |  | [ Enter name on card                              ] |
   | [7] MyKad / Passport Number          [8] Contact Phone Number         |  |                                                    |
   | [ 010324-14-5582                  ]  [ 012-3456789                  ] |  | [17] Card Number (16 Digits)                       |
   |                                                                       |  | [ 4532 1098 7654 3210                            ] |
