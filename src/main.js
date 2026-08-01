@@ -6,12 +6,13 @@ const state = {
   selectedRestaurant: 'all', // 'all' | restaurant ID
   selectedCategory: 'all',
   searchQuery: '',
-  
+  showAssignmentAnnotations: false, // Toggle for Assignment Task 1 & 2 Badges vs Simple Modern UI
+
   // Currently customizing food item in modal
   customizingItem: null,
   customization: {
-    size: null, // selected size object
-    addons: [], // selected addon objects
+    size: null,
+    addons: [],
     notes: '',
     quantity: 1
   },
@@ -301,8 +302,8 @@ function renderApp() {
         <!-- Action Buttons -->
         <div class="flex items-center gap-2">
           <button onclick="openCheckoutModal()" class="btn-primary text-xs py-2 px-3.5 shadow-sm">
-            <i class="fa-solid fa-file-signature"></i>
-            <span>Create Order (Task 1)</span>
+            <i class="fa-solid fa-credit-card"></i>
+            <span>Checkout Order</span>
           </button>
           <button onclick="toggleCartDrawer(true)" class="btn-secondary text-xs py-2 px-3.5 flex items-center gap-2">
             <i class="fa-solid fa-bag-shopping text-emerald-700 text-sm"></i>
@@ -320,19 +321,19 @@ function renderApp() {
       ${renderActiveTabContent()}
     </main>
 
-    <!-- Food Detail & Customization Modal (GrabFood / UberEats Style) -->
+    <!-- Food Detail & Customization Modal -->
     <div id="food-detail-modal-overlay" class="modal-overlay">
       ${renderFoodDetailModalContent()}
     </div>
 
-    <!-- Sliding Cart Drawer (Right Side GrabFood Style) -->
+    <!-- Sliding Cart Drawer -->
     <div id="cart-drawer-overlay" class="cart-drawer-overlay">
       <div class="cart-drawer">
         ${renderCartDrawerContent()}
       </div>
     </div>
 
-    <!-- Task 1 & Task 2 Data Input Screen Modal -->
+    <!-- Simple & Modern Checkout Modal (Task 1 & Task 2 Screen) -->
     <div id="checkout-modal" class="modal-overlay">
       ${renderCheckoutModalContent()}
     </div>
@@ -383,7 +384,6 @@ function renderCustomerPortal() {
         <p class="text-emerald-100 text-xs mt-1">Select from 5 top partner restaurants with custom options & live GPS tracking.</p>
       </div>
 
-      <!-- Search Bar -->
       <div class="w-full md:w-80 flex items-center bg-white rounded-lg p-1 border border-emerald-700 shadow-sm">
         <input type="text" placeholder="Search dishes or restaurants..." 
                value="${state.searchQuery}"
@@ -433,7 +433,7 @@ function renderCustomerPortal() {
       `).join('')}
     </div>
 
-    <!-- Food Cards Grid (Click opens GrabFood Customization Modal) -->
+    <!-- Food Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       ${filteredMenu.map(item => `
         <div onclick="openFoodDetailModal('${item.id}')" 
@@ -658,7 +658,7 @@ function renderAnalyticsDashboard() {
   `;
 }
 
-// GRABFOOD / UBER EATS FOOD CUSTOMIZATION MODAL CONTENT
+// FOOD CUSTOMIZATION MODAL
 function renderFoodDetailModalContent() {
   const item = state.customizingItem;
   if (!item) return '';
@@ -670,7 +670,6 @@ function renderFoodDetailModalContent() {
 
   return `
     <div class="modal-container food-detail-modal">
-      <!-- Hero Image Header -->
       <div class="relative h-60 bg-slate-100">
         <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
         <button onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 text-slate-700 hover:text-slate-900 font-bold flex items-center justify-center shadow-md">
@@ -679,7 +678,6 @@ function renderFoodDetailModalContent() {
       </div>
 
       <div class="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
-        <!-- Title & Info -->
         <div>
           <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-1">${item.restaurantName}</span>
           <h2 class="text-2xl font-extrabold text-slate-900 mb-1">${item.name}</h2>
@@ -691,10 +689,9 @@ function renderFoodDetailModalContent() {
           </div>
         </div>
 
-        <!-- Portion Size Options -->
         ${item.sizes && item.sizes.length > 0 ? `
           <div class="border-t border-slate-200 pt-4">
-            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Choice of Size (Required)</h4>
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Choice of Size</h4>
             <div class="space-y-2">
               ${item.sizes.map((size, idx) => `
                 <label class="option-card">
@@ -712,10 +709,9 @@ function renderFoodDetailModalContent() {
           </div>
         ` : ''}
 
-        <!-- Addons / Extra Toppings -->
         ${item.addons && item.addons.length > 0 ? `
           <div class="border-t border-slate-200 pt-4">
-            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Add-ons & Toppings (Optional)</h4>
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Add-ons & Toppings</h4>
             <div class="space-y-2">
               ${item.addons.map(addon => `
                 <label class="option-card">
@@ -733,31 +729,23 @@ function renderFoodDetailModalContent() {
           </div>
         ` : ''}
 
-        <!-- Special Instructions -->
         <div class="border-t border-slate-200 pt-4">
           <label class="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-2">Special Instructions</label>
           <input type="text" 
                  value="${state.customization.notes}"
                  oninput="updateCustomNotes(this.value)"
-                 placeholder="e.g. Extra spicy, sauce on the side, no onion" 
+                 placeholder="e.g. Extra spicy, sauce on the side" 
                  class="form-input text-xs" />
         </div>
       </div>
 
-      <!-- Footer Action Bar -->
       <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-4">
-        <!-- Quantity Selector -->
         <div class="flex items-center border border-slate-300 bg-white rounded-lg p-1 shadow-sm">
-          <button type="button" onclick="adjustCustomQuantity(-1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">
-            -
-          </button>
+          <button type="button" onclick="adjustCustomQuantity(-1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">-</button>
           <span class="w-8 text-center text-sm font-extrabold text-slate-900">${state.customization.quantity}</span>
-          <button type="button" onclick="adjustCustomQuantity(1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">
-            +
-          </button>
+          <button type="button" onclick="adjustCustomQuantity(1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">+</button>
         </div>
 
-        <!-- Add to Order Button with Dynamic Price -->
         <button type="button" onclick="confirmAddCustomizedItemToCart()" class="btn-primary w-full text-xs py-3 font-extrabold">
           <span>Add to Basket</span>
           <span>•</span>
@@ -768,7 +756,7 @@ function renderFoodDetailModalContent() {
   `;
 }
 
-// SLIDING CART DRAWER CONTENT (GRABFOOD / UBER EATS STYLE)
+// SLIDING CART DRAWER CONTENT
 function renderCartDrawerContent() {
   const subtotal = state.cart.reduce((sum, i) => sum + (i.totalPricePerUnit * i.quantity), 0);
   const sst = subtotal * 0.08;
@@ -785,7 +773,6 @@ function renderCartDrawerContent() {
       <button onclick="toggleCartDrawer(false)" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
     </div>
 
-    <!-- Items Scroll Area -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4">
       ${state.cart.length === 0 ? `
         <div class="text-center py-12 text-slate-400">
@@ -820,10 +807,8 @@ function renderCartDrawerContent() {
       `).join('')}
     </div>
 
-    <!-- Footer Summary & Checkout Button -->
     ${state.cart.length > 0 ? `
       <div class="p-4 border-t border-slate-200 bg-slate-50 space-y-3">
-        <!-- Promo Code Input -->
         <div class="flex gap-2">
           <input type="text" id="drawer-promo-input" value="${state.promoCode}" placeholder="Promo code" class="form-input text-xs uppercase" />
           <button onclick="applyDrawerPromoCode()" class="btn-secondary text-xs py-1">Apply</button>
@@ -849,7 +834,7 @@ function renderCartDrawerContent() {
   `;
 }
 
-// TASK 1 & TASK 2 DATA INPUT SCREEN MODAL ("Create Food Order")
+// SIMPLE & MODERN CHECKOUT MODAL (TASK 1 & TASK 2 DATA INPUT SCREEN)
 function renderCheckoutModalContent() {
   const subtotal = state.cart.reduce((sum, i) => sum + (i.totalPricePerUnit * i.quantity), 0);
   const sst = subtotal * 0.08;
@@ -857,203 +842,194 @@ function renderCheckoutModalContent() {
   const discount = subtotal * (state.promoCode === 'DINOSAVE10' ? 0.10 : 0.00);
   const totalPayable = subtotal + sst + deliveryFee - discount;
 
+  const showBadges = state.showAssignmentAnnotations;
+
   return `
-    <div class="modal-container p-6">
+    <div class="modal-container p-6 max-w-3xl">
+      <!-- Modal Top Header -->
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
         <div>
-          <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">TASK 1 DATA INPUT SCREEN DESIGN</span>
-          <h2 class="text-xl font-extrabold text-slate-900">Create Food Order</h2>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              CREATE FOOD ORDER
+            </span>
+            <button type="button" onclick="toggleAssignmentAnnotations()" class="text-[11px] font-bold text-slate-600 hover:text-emerald-700 underline">
+              ${showBadges ? '⚡ Switch to Simple View' : '🎓 Show Assignment Badges [1]-[15]'}
+            </button>
+          </div>
+          <h2 class="text-xl font-extrabold text-slate-900">Checkout & Order Confirmation</h2>
         </div>
-        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">
-          ✕
-        </button>
+        <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
       </div>
 
       <form onsubmit="handleFormSubmit(event)" class="space-y-5">
-        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-          <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">General Information</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="form-label">
-                <span>[1] Order ID</span>
-                <span class="val-tag val-tag-none">None (Auto-Generated)</span>
-              </label>
-              <input type="text" value="FD-ORD-20260801-094" readonly class="form-input" />
+        <!-- 2-Column Grid Layout for Simple Clean View -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Left Column: Delivery & Customer Info -->
+          <div class="space-y-4">
+            <!-- General Info -->
+            <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
+              <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Order Information</h3>
+              <div class="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <label class="form-label mb-1">
+                    <span>${showBadges ? '[1] ' : ''}Order ID</span>
+                    ${showBadges ? '<span class="val-tag val-tag-none">Auto</span>' : ''}
+                  </label>
+                  <input type="text" value="FD-ORD-20260801-094" readonly class="form-input py-1.5" />
+                </div>
+                <div>
+                  <label class="form-label mb-1">
+                    <span>${showBadges ? '[2] ' : ''}Date & Time</span>
+                    ${showBadges ? '<span class="val-tag val-tag-none">System</span>' : ''}
+                  </label>
+                  <input type="text" value="01/08/2026 14:30" readonly class="form-input py-1.5" />
+                </div>
+              </div>
             </div>
-            <div>
-              <label class="form-label">
-                <span>[2] Order Date & Time</span>
-                <span class="val-tag val-tag-none">None (System-Filled)</span>
-              </label>
-              <input type="text" value="01/08/2026 14:30" readonly class="form-input" />
-            </div>
-          </div>
-        </div>
 
-        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-          <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">Customer & Delivery Details</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-            <div>
-              <label class="form-label">
-                <span>[3] Customer ID</span>
-                <span class="val-tag val-tag-none">None (Imported Data)</span>
-              </label>
-              <input type="text" value="CUST-88204 (John)" readonly class="form-input" />
-            </div>
-            <div>
-              <label class="form-label">
-                <span>[4] Contact Phone</span>
-                <span class="val-tag val-tag-active">Format & Length Check</span>
-              </label>
-              <input type="tel" id="input-phone" value="012-3456789" required class="form-input" />
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="md:col-span-2">
-              <label class="form-label">
-                <span>[5] Delivery Address</span>
-                <span class="val-tag val-tag-active">Presence Check</span>
-              </label>
-              <input type="text" id="input-address" value="No. 12, Jalan Genting Klang, Setapak, Kuala Lumpur" required class="form-input" />
-            </div>
-            <div>
-              <label class="form-label">
-                <span>[6] Postal Code</span>
-                <span class="val-tag val-tag-active">Range & 5-Digit Check</span>
-              </label>
-              <input type="text" id="input-postcode" value="53300" maxlength="5" pattern="[0-9]{5}" required class="form-input" />
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-          <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">Restaurant & Options</h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="form-label">
-                <span>[7] Restaurant Name</span>
-                <span class="val-tag val-tag-none">None (Selected Dropdown)</span>
-              </label>
-              <select class="form-input">
-                <option selected>Dino Grill & Steakhouse (Mid Valley)</option>
-                <option>Dinosaur Asian Kitchen (KLCC)</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">
-                <span>[8] Delivery Method</span>
-                <span class="val-tag val-tag-none">None (Selected)</span>
-              </label>
-              <select class="form-input">
-                <option selected>Standard Rider Delivery</option>
-                <option>Express Delivery</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">
-                <span>[9] Preferred Time</span>
-                <span class="val-tag val-tag-none">None (Selected)</span>
-              </label>
-              <select class="form-input">
-                <option selected>15:00 - 15:30 (ASAP)</option>
-                <option>16:00 - 16:30</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 overflow-x-auto">
-          <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">Order Items List</h3>
-          <table class="w-full text-left text-xs bg-white border border-slate-200 rounded">
-            <thead>
-              <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 font-bold">
-                <th class="p-2">[10] Food Item Selection</th>
-                <th class="p-2">[11] Unit Price</th>
-                <th class="p-2">[12] Quantity</th>
-                <th class="p-2">[13] Special Instructions</th>
-                <th class="p-2 text-right">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-200">
-              ${state.cart.map(item => `
-                <tr>
-                  <td class="p-2 font-bold text-slate-900">${item.name} (${item.sizeName})</td>
-                  <td class="p-2 text-emerald-700 font-bold">RM ${item.totalPricePerUnit.toFixed(2)}</td>
-                  <td class="p-2">
-                    <input type="number" min="1" max="99" value="${item.quantity}" 
-                           onchange="updateCartItemQty('${item.cartItemId}', this.value)"
-                           class="w-14 border border-slate-300 rounded px-1.5 py-0.5 text-center font-bold text-slate-900" />
-                  </td>
-                  <td class="p-2">
-                    <input type="text" value="${item.instructions || ''}" 
-                           onchange="updateCartItemNotes('${item.cartItemId}', this.value)"
-                           placeholder="Notes e.g. Less ice"
-                           class="border border-slate-300 rounded px-2 py-0.5 text-slate-700 w-full text-xs" />
-                  </td>
-                  <td class="p-2 text-right font-extrabold text-slate-900">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-
-        <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="space-y-3">
+            <!-- Customer & Delivery -->
+            <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+              <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Delivery Destination</h3>
+              
               <div>
-                <label class="form-label">
-                  <span>[14] Promo Code</span>
-                  <span class="val-tag val-tag-active">Existence Check</span>
+                <label class="form-label mb-1">
+                  <span>${showBadges ? '[3] ' : ''}Customer Profile</span>
+                  ${showBadges ? '<span class="val-tag val-tag-none">Imported</span>' : ''}
+                </label>
+                <input type="text" value="CUST-88204 (John)" readonly class="form-input py-1.5" />
+              </div>
+
+              <div>
+                <label class="form-label mb-1">
+                  <span>${showBadges ? '[4] ' : ''}Contact Phone</span>
+                  ${showBadges ? '<span class="val-tag val-tag-active">Format Check</span>' : ''}
+                </label>
+                <input type="tel" id="input-phone" value="012-3456789" required class="form-input py-1.5" />
+              </div>
+
+              <div class="grid grid-cols-3 gap-2">
+                <div class="col-span-2">
+                  <label class="form-label mb-1">
+                    <span>${showBadges ? '[5] ' : ''}Delivery Address</span>
+                    ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
+                  </label>
+                  <input type="text" id="input-address" value="No. 12, Jalan Genting Klang, Setapak, KL" required class="form-input py-1.5" />
+                </div>
+                <div>
+                  <label class="form-label mb-1">
+                    <span>${showBadges ? '[6] ' : ''}Postcode</span>
+                    ${showBadges ? '<span class="val-tag val-tag-active">5-Digit</span>' : ''}
+                  </label>
+                  <input type="text" id="input-postcode" value="53300" maxlength="5" pattern="[0-9]{5}" required class="form-input py-1.5 text-center" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Restaurant Options -->
+            <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
+              <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Fulfillment Options</h3>
+              <div class="space-y-2 text-xs">
+                <div>
+                  <label class="form-label mb-1">
+                    <span>${showBadges ? '[7] ' : ''}Restaurant Store</span>
+                    ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
+                  </label>
+                  <select class="form-input py-1.5">
+                    <option selected>Dino Grill & Steakhouse (Mid Valley)</option>
+                    <option>Dinosaur Asian Kitchen (KLCC)</option>
+                  </select>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="form-label mb-1">
+                      <span>${showBadges ? '[8] ' : ''}Method</span>
+                    </label>
+                    <select class="form-input py-1.5">
+                      <option selected>Standard Rider</option>
+                      <option>Express Delivery</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label mb-1">
+                      <span>${showBadges ? '[9] ' : ''}Delivery Slot</span>
+                    </label>
+                    <select class="form-input py-1.5">
+                      <option selected>15:00 - 15:30</option>
+                      <option>16:00 - 16:30</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Order Items Summary & Payment -->
+          <div class="space-y-4 flex flex-col justify-between">
+            <!-- Order Items List -->
+            <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
+              <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Order Items (${state.cart.length})</h3>
+              <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                ${state.cart.map(item => `
+                  <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
+                    <div>
+                      <span class="font-bold text-slate-900 block">${item.quantity}x ${item.name}</span>
+                      <span class="text-[10px] text-slate-500">${item.sizeName} ${item.instructions ? `• "${item.instructions}"` : ''}</span>
+                    </div>
+                    <span class="font-extrabold text-emerald-700">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Payment Method & Totals -->
+            <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
+              <div>
+                <label class="form-label mb-1">
+                  <span>${showBadges ? '[14] ' : ''}Promo Voucher Code</span>
+                  ${showBadges ? '<span class="val-tag val-tag-active">Check</span>' : ''}
                 </label>
                 <div class="flex gap-2">
-                  <input type="text" id="promo-input" value="${state.promoCode}" class="form-input uppercase" />
-                  <button type="button" onclick="applyPromoCode()" class="btn-secondary text-xs">Apply</button>
+                  <input type="text" id="promo-input" value="${state.promoCode}" class="form-input py-1.5 uppercase" />
+                  <button type="button" onclick="applyPromoCode()" class="btn-secondary text-xs py-1.5">Apply</button>
                 </div>
               </div>
 
               <div>
-                <label class="form-label">
-                  <span>[15] Payment Method</span>
-                  <span class="val-tag val-tag-none">None (Selected)</span>
+                <label class="form-label mb-1">
+                  <span>${showBadges ? '[15] ' : ''}Payment Channel</span>
+                  ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
                 </label>
-                <select class="form-input">
-                  <option selected>Online Banking (FPX)</option>
-                  <option>Touch 'n Go E-Wallet</option>
-                  <option>Credit / Debit Card</option>
+                <select class="form-input py-1.5 font-semibold text-slate-800">
+                  <option selected>💳 Online Banking (FPX)</option>
+                  <option>📱 Touch 'n Go E-Wallet</option>
+                  <option>💳 Credit / Debit Card</option>
+                  <option>💵 Cash on Delivery</option>
                 </select>
               </div>
+
+              <!-- Price Breakdown -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1 text-xs">
+                <div class="flex justify-between text-slate-600"><span>Subtotal:</span><span class="font-bold text-slate-900">RM ${subtotal.toFixed(2)}</span></div>
+                <div class="flex justify-between text-slate-600"><span>SST Tax (8%):</span><span class="font-bold text-slate-900">RM ${sst.toFixed(2)}</span></div>
+                <div class="flex justify-between text-slate-600"><span>Delivery Fee:</span><span class="font-bold text-slate-900">RM ${deliveryFee.toFixed(2)}</span></div>
+                <div class="flex justify-between text-emerald-700 font-bold"><span>Promo Discount (10%):</span><span>-RM ${discount.toFixed(2)}</span></div>
+                <div class="border-t border-slate-200 pt-2 flex justify-between text-sm font-extrabold text-slate-900">
+                  <span>TOTAL PAYABLE:</span>
+                  <span class="text-emerald-700">RM ${totalPayable.toFixed(2)}</span>
+                </div>
+              </div>
             </div>
 
-            <div class="bg-white p-3.5 rounded border border-slate-200 space-y-1.5 text-xs">
-              <div class="flex justify-between text-slate-600">
-                <span>Subtotal:</span>
-                <span class="font-bold text-slate-900">RM ${subtotal.toFixed(2)}</span>
-              </div>
-              <div class="flex justify-between text-slate-600">
-                <span>SST Tax (8%):</span>
-                <span class="font-bold text-slate-900">RM ${sst.toFixed(2)}</span>
-              </div>
-              <div class="flex justify-between text-slate-600">
-                <span>Delivery Fee:</span>
-                <span class="font-bold text-slate-900">RM ${deliveryFee.toFixed(2)}</span>
-              </div>
-              <div class="flex justify-between text-emerald-700">
-                <span>Discount (10%):</span>
-                <span class="font-bold">-RM ${discount.toFixed(2)}</span>
-              </div>
-              <div class="border-t border-slate-200 pt-2 flex justify-between text-sm font-extrabold text-emerald-700">
-                <span>TOTAL PAYABLE:</span>
-                <span class="text-base text-slate-900">RM ${totalPayable.toFixed(2)}</span>
-              </div>
+            <!-- Submit Button -->
+            <div class="flex items-center justify-end gap-2 pt-2">
+              <button type="button" onclick="closeCheckoutModal()" class="btn-secondary text-xs py-2 px-4">Cancel</button>
+              <button type="submit" class="btn-primary text-xs py-2.5 px-6 font-extrabold shadow-sm">
+                <span>Confirm & Place Order</span>
+                <i class="fa-solid fa-check-circle"></i>
+              </button>
             </div>
           </div>
-        </div>
-
-        <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
-          <button type="button" onclick="closeCheckoutModal()" class="btn-secondary text-xs">Cancel</button>
-          <button type="submit" class="btn-primary text-xs py-2 px-5">
-            Submit & Process Order
-          </button>
         </div>
       </form>
     </div>
@@ -1116,7 +1092,12 @@ window.handleSearch = function(query) {
   renderApp();
 };
 
-// Open Food Detail & Customization Modal
+window.toggleAssignmentAnnotations = function() {
+  state.showAssignmentAnnotations = !state.showAssignmentAnnotations;
+  renderApp();
+  openCheckoutModal();
+};
+
 window.openFoodDetailModal = function(itemId) {
   const item = state.menu.find(m => m.id === itemId);
   if (!item) return;
@@ -1194,7 +1175,6 @@ window.confirmAddCustomizedItemToCart = function() {
   toggleCartDrawer(true);
 };
 
-// Cart Drawer Handlers
 window.toggleCartDrawer = function(open) {
   const overlay = document.getElementById('cart-drawer-overlay');
   if (open) {
