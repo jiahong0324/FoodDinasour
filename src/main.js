@@ -35,10 +35,10 @@ const state = {
     // Payment Credentials
     promoCode: 'DINOSAVE10',
     paymentChannel: 'card',
-    cardName: 'John Doe',
-    cardNumber: '4532109876543210',
-    cardExpiry: '12/28',
-    cardCvv: '882'
+    cardName: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: ''
   },
 
   // Added Items in Current Order
