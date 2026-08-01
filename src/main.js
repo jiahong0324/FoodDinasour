@@ -926,39 +926,45 @@ function renderCheckoutModalContent() {
               </div>
             </div>
 
-            <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
-              <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Fulfillment Options</h3>
-              <div class="space-y-2 text-xs">
-                <div>
-                  <label class="form-label mb-1">
-                    <span>${showBadges ? '[7] ' : ''}Restaurant Store</span>
-                    ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
-                  </label>
-                  <select class="form-input py-1.5">
-                    <option selected>Dino Grill & Steakhouse (Mid Valley)</option>
-                    <option>Dinosaur Asian Kitchen (KLCC)</option>
-                  </select>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
+            ${showBadges ? `
+              <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
+                <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Fulfillment Options</h3>
+                <div class="space-y-2 text-xs">
                   <div>
                     <label class="form-label mb-1">
-                      <span>${showBadges ? '[8] ' : ''}Method</span>
+                      <span>[7] Restaurant Store</span>
+                      <span class="val-tag val-tag-none">Selected</span>
                     </label>
                     <select class="form-input py-1.5">
-                      <option selected>Standard Rider</option>
-                      <option>Express Delivery</option>
+                      <option selected>Dino Grill & Steakhouse (Mid Valley)</option>
+                      <option>Dinosaur Asian Kitchen (KLCC)</option>
                     </select>
                   </div>
-                  <div>
-                    <label class="form-label mb-1">
-                      <span>${showBadges ? '[9] ' : ''}Delivery Slot</span>
-                    </label>
-                    <select class="form-input py-1.5">
-                      <option selected>15:00 - 15:30</option>
-                      <option>16:00 - 16:30</option>
-                    </select>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="form-label mb-1">
+                        <span>[8] Method</span>
+                        <span class="val-tag val-tag-none">Selected</span>
+                      </label>
+                      <select class="form-input py-1.5">
+                        <option selected>Standard Rider</option>
+                        <option>Express Delivery</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="form-label mb-1">
+                        <span>[9] Delivery Slot</span>
+                        <span class="val-tag val-tag-none">Selected</span>
+                      </label>
+                      <select class="form-input py-1.5">
+                        <option selected>15:00 - 15:30</option>
+                        <option>16:00 - 16:30</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
+              </div>
+            ` : ''}       </div>
               </div>
             </div>
           </div>
