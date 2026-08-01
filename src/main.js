@@ -480,12 +480,6 @@ function renderApp() {
             <span>Create Order</span>
           </button>
 
-          <button onclick="window.switchTab('manage')" 
-                  class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${state.activeTab === 'manage' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}">
-            <i class="fa-solid fa-receipt"></i>
-            <span>Manage Order</span>
-          </button>
-
           <button onclick="window.switchTab('tracking')" 
                   class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${state.activeTab === 'tracking' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}">
             <i class="fa-solid fa-motorcycle"></i>
@@ -529,8 +523,6 @@ function renderActiveScreen() {
   switch (state.activeTab) {
     case 'create':
       return renderCreateOrderScreen();
-    case 'manage':
-      return renderManageOrderScreen();
     case 'tracking':
       return renderTrackingScreen();
     default:
@@ -932,95 +924,7 @@ function renderCreateOrderScreen() {
   `;
 }
 
-// ============================================================================
-// DATA INPUT SCREEN 2: MANAGE ORDER (SIMPLE)
-// ============================================================================
 
-function renderManageOrderScreen() {
-  const order = state.searchedOrder;
-
-  return `
-    <div class="max-w-3xl mx-auto space-y-6">
-      
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
-        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Manage Food Order</h1>
-        <p class="text-xs text-slate-500 font-medium">Enter your order reference number to view details or request order modifications.</p>
-      </div>
-
-      <!-- Search Section -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-        <label class="form-label text-xs font-bold">Order Reference Number</label>
-        <div class="flex items-center gap-3">
-          <input type="text" 
-                 value="${state.manageSearchQuery}"
-                 oninput="window.updateManageSearch(this.value.toUpperCase())"
-                 placeholder="e.g. FD-ORD-20260801-094"
-                 class="form-input text-xs font-mono font-bold uppercase" />
-          <button onclick="window.performManageSearch()" class="btn-primary text-xs py-2 px-4 shrink-0 font-bold">
-            Search Order
-          </button>
-        </div>
-      </div>
-
-      ${order ? `
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <div>
-              <h2 class="text-sm font-bold text-slate-900">Order #${order.orderId}</h2>
-              <span class="text-xs text-slate-500">${order.dateTime} • ${order.restaurantName}</span>
-            </div>
-            <span class="badge badge-preparing font-bold">● ${order.status}</span>
-          </div>
-
-          <!-- Cancellation Request Form -->
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 text-xs">
-            <h3 class="font-bold text-slate-800 uppercase tracking-wider text-[11px]">Request Action / Order Modification</h3>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label class="form-label text-[11px] mb-1">Select Action</label>
-                <select onchange="window.updateManageField('cancelAction', this.value)" class="form-input text-xs font-bold">
-                  <option value="cancel_order">Cancel Order</option>
-                  <option value="modify_items">Modify Order Items</option>
-                  <option value="reschedule">Reschedule Delivery Time</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="form-label text-[11px] mb-1">Reason Category</label>
-                <select onchange="window.updateManageField('cancelReasonCategory', this.value)" class="form-input text-xs font-bold">
-                  <option value="change_of_mind">Change of Mind / Plans</option>
-                  <option value="late_delivery">Expected Delivery Time Too Late</option>
-                  <option value="wrong_address">Incorrect Address Selected</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label class="form-label text-[11px] mb-1">Reason Details</label>
-              <textarea rows="2" 
-                        oninput="window.updateManageField('cancelNotes', this.value)"
-                        placeholder="Provide details for customer support..."
-                        class="form-input text-xs font-medium">${state.cancelNotes}</textarea>
-            </div>
-
-            ${state.cancelSubmitted ? `
-              <div class="p-3 bg-emerald-100 text-emerald-800 rounded-xl font-bold text-xs">
-                ✓ Request for #${order.orderId} submitted successfully.
-              </div>
-            ` : `
-              <button onclick="window.submitManageCancellation()" class="btn-primary text-xs py-2 px-4 font-bold">
-                Submit Request
-              </button>
-            `}
-          </div>
-
-        </div>
-      ` : ''}
-
-    </div>
-  `;
-}
 
 // ============================================================================
 // DATA INPUT SCREEN 3: TRACKING (SIMPLE)
@@ -1253,42 +1157,7 @@ window.validateAndSubmitOrder = function() {
   renderApp();
 };
 
-window.updateManageSearch = function(val) {
-  state.manageSearchQuery = val;
-};
 
-window.performManageSearch = function() {
-  if (state.manageSearchQuery === 'FD-ORD-20260801-094') {
-    state.searchedOrder = {
-      orderId: 'FD-ORD-20260801-094',
-      dateTime: '01/08/2026 14:30',
-      customerName: state.form.customerName,
-      contactPhone: state.form.contactPhone,
-      deliveryAddress: state.form.deliveryAddress,
-      restaurantName: 'Dino Grill & Steakhouse',
-      items: [
-        { name: 'Dino Burger Combo Extra Large', qty: 2, price: 20.50, notes: 'Extra cheese, no onion' }
-      ],
-      totalPayable: 49.38,
-      status: 'Preparing'
-    };
-    window.showToast('Order details loaded.');
-  } else {
-    window.showToast('Order not found. Try FD-ORD-20260801-094', 'error');
-  }
-  renderApp();
-};
-
-window.updateManageField = function(field, val) {
-  state[field] = val;
-  renderApp();
-};
-
-window.submitManageCancellation = function() {
-  state.cancelSubmitted = true;
-  window.showToast('Cancellation request submitted.');
-  renderApp();
-};
 
 window.updateTrackingField = function(field, val) {
   state[field] = val;
