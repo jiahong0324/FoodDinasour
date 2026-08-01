@@ -1,29 +1,62 @@
 import './style.css';
 
-// Initial Mock State for Food Dinosaur System
+// System State
 const state = {
   activeTab: 'customer', // 'customer' | 'kitchen' | 'rider' | 'analytics'
+  selectedRestaurant: 'all', // 'all' | restaurant ID
   selectedCategory: 'all',
   searchQuery: '',
+  
+  // Currently customizing food item in modal
+  customizingItem: null,
+  customization: {
+    size: null, // selected size object
+    addons: [], // selected addon objects
+    notes: '',
+    quantity: 1
+  },
+
   cart: [
     {
+      cartItemId: 'c-1',
       id: 'item-1',
       name: 'Dino Burger Combo Extra Large',
-      price: 18.50,
+      restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
+      basePrice: 18.50,
+      sizeName: 'Large Combo (+RM 4.00)',
+      sizePrice: 4.00,
+      addons: [{ name: 'Extra Cheddar Cheese', price: 2.00 }],
+      totalPricePerUnit: 24.50,
       quantity: 2,
       instructions: 'Extra cheese, no onion',
       image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80'
     },
     {
+      cartItemId: 'c-2',
       id: 'item-2',
       name: 'Dinosaur Iced Lemon Tea',
-      price: 5.00,
+      restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
+      basePrice: 5.00,
+      sizeName: 'Regular',
+      sizePrice: 0.00,
+      addons: [],
+      totalPricePerUnit: 5.00,
       quantity: 2,
       instructions: 'Less ice, 50% sugar',
       image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80'
     }
   ],
+  
   promoCode: 'DINOSAVE10',
+  
+  restaurants: [
+    { id: 'rest-1', name: 'Dino Grill & Steakhouse (Mid Valley)', tag: 'Burgers & Ribs', rating: 4.9, estTime: '15-20 mins', deliveryFee: 'RM 5.00' },
+    { id: 'rest-2', name: 'Dinosaur Asian Kitchen (KLCC)', tag: 'Nasi Lemak & Asian', rating: 4.8, estTime: '20-25 mins', deliveryFee: 'RM 4.00' },
+    { id: 'rest-3', name: 'Jurassic Pizzeria (Setapak)', tag: 'Wood-fired Pizza', rating: 4.9, estTime: '25-30 mins', deliveryFee: 'RM 5.00' },
+    { id: 'rest-4', name: 'T-Rex Crispy Chicken (Bukit Bintang)', tag: 'Fried Chicken & Wings', rating: 4.7, estTime: '15-20 mins', deliveryFee: 'RM 3.50' },
+    { id: 'rest-5', name: 'Rex Dessert & Cafe (Subang)', tag: 'Cakes & Coffee', rating: 4.9, estTime: '10-15 mins', deliveryFee: 'RM 3.00' }
+  ],
+
   orders: [
     {
       orderId: 'FD-ORD-20260801-094',
@@ -33,27 +66,30 @@ const state = {
       contactPhone: '012-3456789',
       deliveryAddress: 'No. 12, Jalan Genting Klang, Setapak, 53300 Kuala Lumpur',
       postalCode: '53300',
-      restaurantName: 'Dino Grill (Mid Valley)',
+      restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
       deliveryMethod: 'Standard Rider Delivery',
       deliveryTime: '15:00 - 15:30',
       paymentMethod: 'Online Banking (FPX)',
       items: [
-        { name: 'Dino Burger Combo Extra Large', qty: 2, price: 18.50, notes: 'Extra cheese, no onion' },
-        { name: 'Dinosaur Iced Lemon Tea', qty: 2, price: 5.00, notes: 'Less ice, 50% sugar' }
+        { name: 'Dino Burger Combo Extra Large (Large Combo)', qty: 2, price: 24.50, notes: 'Extra cheese, no onion' },
+        { name: 'Dinosaur Iced Lemon Tea (Regular)', qty: 2, price: 5.00, notes: 'Less ice, 50% sugar' }
       ],
-      subtotal: 47.00,
-      sst: 3.76,
+      subtotal: 59.00,
+      sst: 4.72,
       deliveryFee: 5.00,
-      discount: 4.70,
-      totalPayable: 51.06,
-      status: 'Preparing', // 'Pending' | 'Preparing' | 'Delivering' | 'Delivered'
+      discount: 5.90,
+      totalPayable: 62.82,
+      status: 'Preparing',
       riderName: 'Ahmad Delivery Rider',
-      riderGpsProgress: 45 // %
+      riderGpsProgress: 45
     }
   ],
+
   menu: [
     {
       id: 'item-1',
+      restaurantId: 'rest-1',
+      restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
       name: 'Dino Burger Combo Extra Large',
       category: 'burgers',
       price: 18.50,
@@ -61,10 +97,22 @@ const state = {
       prepTime: '15 mins',
       image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Double flame-grilled beef patty burger with melted cheddar cheese, french fries and iced tea.'
+      description: 'Double flame-grilled beef patty burger with melted cheddar cheese, french fries and iced tea.',
+      sizes: [
+        { name: 'Regular Combo', price: 0.00 },
+        { name: 'Large Combo (+RM 4.00)', price: 4.00 },
+        { name: 'Monster Size (+RM 8.00)', price: 8.00 }
+      ],
+      addons: [
+        { name: 'Extra Cheddar Cheese', price: 2.00 },
+        { name: 'Crispy Beef Bacon', price: 3.50 },
+        { name: 'Double Patty Upgrade', price: 6.00 }
+      ]
     },
     {
       id: 'item-2',
+      restaurantId: 'rest-1',
+      restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
       name: 'Dinosaur Iced Lemon Tea',
       category: 'drinks',
       price: 5.00,
@@ -72,10 +120,20 @@ const state = {
       prepTime: '5 mins',
       image: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Brewed black tea infused with natural honey lemon slices and cooling mint.'
+      description: 'Brewed black tea infused with natural honey lemon slices and cooling mint.',
+      sizes: [
+        { name: 'Regular 500ml', price: 0.00 },
+        { name: 'Large 700ml (+RM 2.00)', price: 2.00 }
+      ],
+      addons: [
+        { name: 'Add Honey Boba Pearls', price: 1.50 },
+        { name: 'Extra Fresh Lemon Slices', price: 1.00 }
+      ]
     },
     {
       id: 'item-3',
+      restaurantId: 'rest-1',
+      restaurantName: 'Dino Grill & Steakhouse (Mid Valley)',
       name: 'Jurassic Smoked BBQ Ribs',
       category: 'combos',
       price: 34.90,
@@ -83,10 +141,20 @@ const state = {
       prepTime: '25 mins',
       image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Slow-cooked hickory smoked ribs with Dino BBQ sauce served with corn on the cob.'
+      description: 'Slow-cooked hickory smoked ribs with Dino BBQ sauce served with corn on the cob.',
+      sizes: [
+        { name: 'Half Rack (6 ribs)', price: 0.00 },
+        { name: 'Full Rack (12 ribs) (+RM 28.00)', price: 28.00 }
+      ],
+      addons: [
+        { name: 'Grilled Butter Corn', price: 4.00 },
+        { name: 'Extra Smoky BBQ Dip', price: 2.50 }
+      ]
     },
     {
       id: 'item-4',
+      restaurantId: 'rest-4',
+      restaurantName: 'T-Rex Crispy Chicken (Bukit Bintang)',
       name: 'Crispy Dino Fried Chicken Basket',
       category: 'combos',
       price: 22.90,
@@ -94,10 +162,20 @@ const state = {
       prepTime: '15 mins',
       image: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: '3 pieces of spicy golden fried chicken with dipping garlic sauce and coleslaw.'
+      description: '3 pieces of spicy golden fried chicken with dipping garlic sauce and coleslaw.',
+      sizes: [
+        { name: '3-Piece Basket', price: 0.00 },
+        { name: '5-Piece Bucket (+RM 12.00)', price: 12.00 }
+      ],
+      addons: [
+        { name: 'Garlic Mayo Sauce', price: 1.50 },
+        { name: 'Spicy Cheese Sauce', price: 2.00 }
+      ]
     },
     {
       id: 'item-5',
+      restaurantId: 'rest-2',
+      restaurantName: 'Dinosaur Asian Kitchen (KLCC)',
       name: 'Jurassic Nasi Lemak Special',
       category: 'asian',
       price: 16.80,
@@ -105,10 +183,41 @@ const state = {
       prepTime: '10 mins',
       image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Coconut rice served with crispy rendang chicken, sambal, boiled egg & peanuts.'
+      description: 'Coconut rice served with crispy rendang chicken, sambal, boiled egg & peanuts.',
+      sizes: [
+        { name: 'Standard Portion', price: 0.00 },
+        { name: 'Double Chicken Portion (+RM 7.00)', price: 7.00 }
+      ],
+      addons: [
+        { name: 'Extra Sambal Tumis', price: 1.50 },
+        { name: 'Fried Sunny Egg', price: 2.00 }
+      ]
     },
     {
       id: 'item-6',
+      restaurantId: 'rest-3',
+      restaurantName: 'Jurassic Pizzeria (Setapak)',
+      name: 'T-Rex Pepperoni Pizza Supreme',
+      category: 'pizza',
+      price: 28.90,
+      rating: 4.9,
+      prepTime: '20 mins',
+      image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80',
+      available: true,
+      description: 'Hand-tossed sourdough pizza topped with double beef pepperoni and mozzarella.',
+      sizes: [
+        { name: '9-inch Regular', price: 0.00 },
+        { name: '12-inch Large (+RM 10.00)', price: 10.00 }
+      ],
+      addons: [
+        { name: 'Stuffed Crust Cheese', price: 5.00 },
+        { name: 'Extra Truffle Oil Drizzle', price: 3.50 }
+      ]
+    },
+    {
+      id: 'item-7',
+      restaurantId: 'rest-5',
+      restaurantName: 'Rex Dessert & Cafe (Subang)',
       name: 'Molten Lava Chocolate Cake',
       category: 'desserts',
       price: 12.50,
@@ -116,12 +225,40 @@ const state = {
       prepTime: '10 mins',
       image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80',
       available: true,
-      description: 'Warm dark chocolate cake with a molten center, topped with vanilla ice cream.'
+      description: 'Warm dark chocolate cake with a molten center, topped with vanilla ice cream.',
+      sizes: [
+        { name: 'Single Slice', price: 0.00 },
+        { name: 'Double Delight (+RM 10.00)', price: 10.00 }
+      ],
+      addons: [
+        { name: 'Extra Vanilla Ice Cream Scoop', price: 3.00 },
+        { name: 'Salted Caramel Drizzle', price: 2.00 }
+      ]
+    },
+    {
+      id: 'item-8',
+      restaurantId: 'rest-5',
+      restaurantName: 'Rex Dessert & Cafe (Subang)',
+      name: 'Iced Matcha Green Tea Latte',
+      category: 'drinks',
+      price: 11.00,
+      rating: 4.8,
+      prepTime: '5 mins',
+      image: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=600&q=80',
+      available: true,
+      description: 'Premium Japanese Uji matcha whisked with fresh milk and brown sugar syrup.',
+      sizes: [
+        { name: 'Medium 16oz', price: 0.00 },
+        { name: 'Large 22oz (+RM 3.00)', price: 3.00 }
+      ],
+      addons: [
+        { name: 'Oat Milk Upgrade', price: 2.50 },
+        { name: 'Matcha Cream Foam Cap', price: 2.00 }
+      ]
     }
   ]
 };
 
-// Initialize Application
 function initApp() {
   renderApp();
 }
@@ -129,26 +266,26 @@ function initApp() {
 function renderApp() {
   const appElement = document.getElementById('app');
   appElement.innerHTML = `
-    <!-- Solid Top Navigation Bar -->
+    <!-- Top Navigation Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
         <!-- Logo -->
         <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('customer')">
-          <div class="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xl font-bold shadow-sm">
+          <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xl font-bold shadow-sm">
             🦖
           </div>
           <div>
             <h1 class="text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-              FOOD DINOSAUR <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">Sdn. Bhd.</span>
+              FOOD DINOSAUR <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Sdn. Bhd.</span>
             </h1>
-            <p class="text-[11px] text-slate-500 font-medium">Food Ordering & Delivery System</p>
+            <p class="text-[11px] text-slate-500 font-medium">Food Ordering & Delivery Platform</p>
           </div>
         </div>
 
         <!-- Navigation Tabs -->
         <nav class="hidden md:flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
           <button onclick="switchTab('customer')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'customer' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
-            <i class="fa-solid fa-utensils mr-1.5"></i> Customer Ordering
+            <i class="fa-solid fa-utensils mr-1.5"></i> Customer Portal
           </button>
           <button onclick="switchTab('kitchen')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${state.activeTab === 'kitchen' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'}">
             <i class="fa-solid fa-fire-burner mr-1.5"></i> Kitchen Queue
@@ -167,10 +304,10 @@ function renderApp() {
             <i class="fa-solid fa-file-signature"></i>
             <span>Create Order (Task 1)</span>
           </button>
-          <button onclick="openCheckoutModal()" class="btn-secondary text-xs py-2 px-3 flex items-center gap-1.5">
-            <i class="fa-solid fa-cart-shopping text-slate-600"></i>
+          <button onclick="toggleCartDrawer(true)" class="btn-secondary text-xs py-2 px-3.5 flex items-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-emerald-700 text-sm"></i>
             <span>Cart</span>
-            <span class="bg-emerald-600 text-white font-bold text-[10px] px-1.5 py-0.5 rounded-full">
+            <span class="bg-emerald-600 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full">
               ${state.cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </button>
@@ -178,10 +315,22 @@ function renderApp() {
       </div>
     </header>
 
-    <!-- Main Body Container -->
+    <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6">
       ${renderActiveTabContent()}
     </main>
+
+    <!-- Food Detail & Customization Modal (GrabFood / UberEats Style) -->
+    <div id="food-detail-modal-overlay" class="modal-overlay">
+      ${renderFoodDetailModalContent()}
+    </div>
+
+    <!-- Sliding Cart Drawer (Right Side GrabFood Style) -->
+    <div id="cart-drawer-overlay" class="cart-drawer-overlay">
+      <div class="cart-drawer">
+        ${renderCartDrawerContent()}
+      </div>
+    </div>
 
     <!-- Task 1 & Task 2 Data Input Screen Modal -->
     <div id="checkout-modal" class="modal-overlay">
@@ -215,30 +364,54 @@ function renderActiveTabContent() {
 // 1. CUSTOMER PORTAL
 function renderCustomerPortal() {
   const filteredMenu = state.menu.filter(item => {
+    const matchesRest = state.selectedRestaurant === 'all' || item.restaurantId === state.selectedRestaurant;
     const matchesCategory = state.selectedCategory === 'all' || item.category === state.selectedCategory;
     const matchesSearch = item.name.toLowerCase().includes(state.searchQuery.toLowerCase()) || 
-                          item.description.toLowerCase().includes(state.searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+                          item.description.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+                          item.restaurantName.toLowerCase().includes(state.searchQuery.toLowerCase());
+    return matchesRest && matchesCategory && matchesSearch;
   });
 
   return `
-    <!-- Top Banner Card -->
-    <div class="solid-card p-6 mb-6 bg-emerald-800 text-white flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm border border-emerald-900">
+    <!-- Top GrabFood Style Banner -->
+    <div class="solid-card p-6 mb-6 bg-emerald-800 text-white flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
       <div>
-        <span class="inline-block px-2.5 py-0.5 rounded bg-emerald-900/60 text-emerald-200 text-xs font-bold mb-2">
+        <span class="inline-block px-2.5 py-0.5 rounded bg-emerald-900/80 text-emerald-200 text-xs font-bold mb-2">
           ⚡ 20-Min Express Food Delivery
         </span>
         <h2 class="text-2xl font-extrabold text-white">Food Dinosaur Ordering Platform</h2>
-        <p class="text-emerald-100 text-xs mt-1">Select from partner restaurants with real-time order tracking and secure payment processing.</p>
+        <p class="text-emerald-100 text-xs mt-1">Select from 5 top partner restaurants with custom options & live GPS tracking.</p>
       </div>
 
       <!-- Search Bar -->
       <div class="w-full md:w-80 flex items-center bg-white rounded-lg p-1 border border-emerald-700 shadow-sm">
-        <input type="text" placeholder="Search menu items..." 
+        <input type="text" placeholder="Search dishes or restaurants..." 
                value="${state.searchQuery}"
                oninput="handleSearch(this.value)"
                class="w-full text-slate-900 px-3 py-1.5 text-xs focus:outline-none font-medium" />
         <button class="btn-primary text-xs py-1.5 px-3">Search</button>
+      </div>
+    </div>
+
+    <!-- Restaurant Picker Carousel -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Partner Restaurants</h3>
+        <span class="text-xs text-emerald-700 font-bold cursor-pointer" onclick="selectRestaurant('all')">View All (${state.restaurants.length})</span>
+      </div>
+      <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+        <button onclick="selectRestaurant('all')" 
+                class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all border shrink-0 text-left ${state.selectedRestaurant === 'all' ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
+          <span class="block text-sm">🏪 All Outlets</span>
+          <span class="text-[10px] opacity-80 block font-normal">All cuisines</span>
+        </button>
+        ${state.restaurants.map(r => `
+          <button onclick="selectRestaurant('${r.id}')" 
+                  class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all border shrink-0 text-left ${state.selectedRestaurant === r.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
+            <span class="block text-sm font-bold line-clamp-1">${r.name}</span>
+            <span class="text-[10px] opacity-80 block font-normal">★ ${r.rating} | ${r.estTime}</span>
+          </button>
+        `).join('')}
       </div>
     </div>
 
@@ -248,24 +421,26 @@ function renderCustomerPortal() {
         { id: 'all', label: 'All Items' },
         { id: 'combos', label: 'Dino Combos' },
         { id: 'burgers', label: 'Burgers' },
-        { id: 'drinks', label: 'Beverages' },
+        { id: 'pizza', label: 'Pizzas' },
         { id: 'asian', label: 'Asian Delights' },
+        { id: 'drinks', label: 'Beverages' },
         { id: 'desserts', label: 'Desserts' }
       ].map(cat => `
         <button onclick="selectCategory('${cat.id}')" 
-                class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all border ${state.selectedCategory === cat.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'}">
+                class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all border ${state.selectedCategory === cat.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
           ${cat.label}
         </button>
       `).join('')}
     </div>
 
-    <!-- Food Item Cards Grid -->
+    <!-- Food Cards Grid (Click opens GrabFood Customization Modal) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       ${filteredMenu.map(item => `
-        <div class="solid-card solid-card-hover flex flex-col justify-between overflow-hidden">
+        <div onclick="openFoodDetailModal('${item.id}')" 
+             class="solid-card solid-card-hover flex flex-col justify-between overflow-hidden cursor-pointer group">
           <div>
             <div class="relative h-48 bg-slate-100 overflow-hidden border-b border-slate-200">
-              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
+              <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               <div class="absolute top-2.5 left-2.5 bg-white/95 px-2 py-0.5 rounded text-xs font-bold text-slate-800 shadow-sm border border-slate-200">
                 ★ ${item.rating}
               </div>
@@ -275,18 +450,19 @@ function renderCustomerPortal() {
             </div>
 
             <div class="p-4">
-              <h3 class="text-base font-bold text-slate-900 mb-1">${item.name}</h3>
+              <span class="text-[10px] font-bold text-emerald-700 block mb-0.5 line-clamp-1">${item.restaurantName}</span>
+              <h3 class="text-base font-bold text-slate-900 mb-1 group-hover:text-emerald-700 transition-colors">${item.name}</h3>
               <p class="text-slate-500 text-xs line-clamp-2 leading-relaxed mb-3">${item.description}</p>
             </div>
           </div>
 
-          <div class="px-4 pb-4 pt-3 flex items-center justify-between border-t border-slate-100">
+          <div class="px-4 pb-4 pt-3 flex items-center justify-between border-t border-slate-100 bg-slate-50/50">
             <div>
-              <span class="text-[10px] text-slate-400 font-bold block uppercase">Price</span>
+              <span class="text-[10px] text-slate-400 font-bold block uppercase">From</span>
               <span class="text-lg font-extrabold text-emerald-700">RM ${item.price.toFixed(2)}</span>
             </div>
-            <button onclick="addToCart('${item.id}')" class="btn-primary text-xs py-1.5 px-3">
-              + Add to Cart
+            <button class="btn-primary text-xs py-1.5 px-3">
+              <i class="fa-solid fa-sliders"></i> Customize
             </button>
           </div>
         </div>
@@ -309,7 +485,6 @@ function renderKitchenDashboard() {
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-      <!-- Order List -->
       <div class="lg:col-span-2 space-y-4">
         ${state.orders.map(order => `
           <div class="solid-card p-5 border-l-4 ${order.status === 'Preparing' ? 'border-l-sky-600' : 'border-l-emerald-600'}">
@@ -348,7 +523,6 @@ function renderKitchenDashboard() {
         `).join('')}
       </div>
 
-      <!-- Quick Menu Availability Controls -->
       <div class="solid-card p-5">
         <h3 class="text-sm font-bold text-slate-900 mb-1">Menu Management</h3>
         <p class="text-xs text-slate-500 mb-4">Toggle item availability</p>
@@ -400,7 +574,6 @@ function renderRiderDashboard() {
             </div>
           </div>
 
-          <!-- GPS Progress Bar -->
           <div class="mb-4">
             <div class="flex justify-between text-xs mb-1 font-bold">
               <span class="text-slate-500">Delivery Route Progress</span>
@@ -458,7 +631,6 @@ function renderAnalyticsDashboard() {
       </div>
     </div>
 
-    <!-- 11 Department Operational Status Grid -->
     <h3 class="text-sm font-bold text-slate-900 mb-3">11 Departments Matrix</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
       ${[
@@ -486,9 +658,200 @@ function renderAnalyticsDashboard() {
   `;
 }
 
+// GRABFOOD / UBER EATS FOOD CUSTOMIZATION MODAL CONTENT
+function renderFoodDetailModalContent() {
+  const item = state.customizingItem;
+  if (!item) return '';
+
+  const currentSizePrice = state.customization.size ? state.customization.size.price : 0.00;
+  const addonsPrice = state.customization.addons.reduce((sum, a) => sum + a.price, 0.00);
+  const unitPrice = item.price + currentSizePrice + addonsPrice;
+  const totalPrice = unitPrice * state.customization.quantity;
+
+  return `
+    <div class="modal-container food-detail-modal">
+      <!-- Hero Image Header -->
+      <div class="relative h-60 bg-slate-100">
+        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
+        <button onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 text-slate-700 hover:text-slate-900 font-bold flex items-center justify-center shadow-md">
+          ✕
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
+        <!-- Title & Info -->
+        <div>
+          <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-1">${item.restaurantName}</span>
+          <h2 class="text-2xl font-extrabold text-slate-900 mb-1">${item.name}</h2>
+          <p class="text-slate-600 text-xs leading-relaxed mb-3">${item.description}</p>
+          <div class="flex items-center gap-3 text-xs font-bold text-slate-700">
+            <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded">★ ${item.rating}</span>
+            <span>⏱️ ${item.prepTime}</span>
+            <span class="text-emerald-700 text-base font-extrabold">RM ${item.price.toFixed(2)}</span>
+          </div>
+        </div>
+
+        <!-- Portion Size Options -->
+        ${item.sizes && item.sizes.length > 0 ? `
+          <div class="border-t border-slate-200 pt-4">
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Choice of Size (Required)</h4>
+            <div class="space-y-2">
+              ${item.sizes.map((size, idx) => `
+                <label class="option-card">
+                  <div class="flex items-center gap-3">
+                    <input type="radio" name="food-size" 
+                           ${state.customization.size && state.customization.size.name === size.name ? 'checked' : idx === 0 ? 'checked' : ''} 
+                           onchange="selectCustomSize('${size.name}', ${size.price})"
+                           class="w-4 h-4 text-emerald-600 focus:ring-emerald-500" />
+                    <span class="text-xs font-bold text-slate-800">${size.name}</span>
+                  </div>
+                  <span class="text-xs font-bold text-slate-600">${size.price > 0 ? `+RM ${size.price.toFixed(2)}` : 'Standard'}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Addons / Extra Toppings -->
+        ${item.addons && item.addons.length > 0 ? `
+          <div class="border-t border-slate-200 pt-4">
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Add-ons & Toppings (Optional)</h4>
+            <div class="space-y-2">
+              ${item.addons.map(addon => `
+                <label class="option-card">
+                  <div class="flex items-center gap-3">
+                    <input type="checkbox" 
+                           ${state.customization.addons.some(a => a.name === addon.name) ? 'checked' : ''}
+                           onchange="toggleCustomAddon('${addon.name}', ${addon.price})"
+                           class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                    <span class="text-xs font-bold text-slate-800">${addon.name}</span>
+                  </div>
+                  <span class="text-xs font-bold text-emerald-700">+RM ${addon.price.toFixed(2)}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Special Instructions -->
+        <div class="border-t border-slate-200 pt-4">
+          <label class="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-2">Special Instructions</label>
+          <input type="text" 
+                 value="${state.customization.notes}"
+                 oninput="updateCustomNotes(this.value)"
+                 placeholder="e.g. Extra spicy, sauce on the side, no onion" 
+                 class="form-input text-xs" />
+        </div>
+      </div>
+
+      <!-- Footer Action Bar -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-4">
+        <!-- Quantity Selector -->
+        <div class="flex items-center border border-slate-300 bg-white rounded-lg p-1 shadow-sm">
+          <button type="button" onclick="adjustCustomQuantity(-1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">
+            -
+          </button>
+          <span class="w-8 text-center text-sm font-extrabold text-slate-900">${state.customization.quantity}</span>
+          <button type="button" onclick="adjustCustomQuantity(1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">
+            +
+          </button>
+        </div>
+
+        <!-- Add to Order Button with Dynamic Price -->
+        <button type="button" onclick="confirmAddCustomizedItemToCart()" class="btn-primary w-full text-xs py-3 font-extrabold">
+          <span>Add to Basket</span>
+          <span>•</span>
+          <span>RM ${totalPrice.toFixed(2)}</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// SLIDING CART DRAWER CONTENT (GRABFOOD / UBER EATS STYLE)
+function renderCartDrawerContent() {
+  const subtotal = state.cart.reduce((sum, i) => sum + (i.totalPricePerUnit * i.quantity), 0);
+  const sst = subtotal * 0.08;
+  const deliveryFee = subtotal > 0 ? 5.00 : 0.00;
+  const discount = subtotal * (state.promoCode === 'DINOSAVE10' ? 0.10 : 0.00);
+  const totalPayable = subtotal + sst + deliveryFee - discount;
+
+  return `
+    <div class="p-4 border-b border-slate-200 flex items-center justify-between bg-white">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-bag-shopping text-emerald-700 text-lg"></i>
+        <h3 class="text-base font-extrabold text-slate-900">Your Basket</h3>
+      </div>
+      <button onclick="toggleCartDrawer(false)" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+    </div>
+
+    <!-- Items Scroll Area -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-4">
+      ${state.cart.length === 0 ? `
+        <div class="text-center py-12 text-slate-400">
+          <i class="fa-solid fa-basket-shopping text-4xl mb-3 block text-slate-300"></i>
+          <p class="text-xs font-bold">Your basket is empty</p>
+          <p class="text-[11px] text-slate-400">Add delicious items from the menu to start!</p>
+        </div>
+      ` : state.cart.map(item => `
+        <div class="solid-card p-3 flex gap-3 relative border border-slate-200">
+          <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-lg object-cover shrink-0" />
+          <div class="flex-1 pr-6">
+            <h4 class="text-xs font-bold text-slate-900 leading-tight">${item.name}</h4>
+            <span class="text-[10px] text-slate-500 block mt-0.5">${item.sizeName}</span>
+            ${item.addons && item.addons.length > 0 ? `
+              <span class="text-[10px] text-emerald-700 block">+ ${item.addons.map(a => a.name).join(', ')}</span>
+            ` : ''}
+            ${item.instructions ? `
+              <span class="text-[10px] text-slate-400 italic block mt-0.5">"${item.instructions}"</span>
+            ` : ''}
+            
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs font-extrabold text-emerald-700">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</span>
+              <div class="flex items-center border border-slate-300 rounded bg-slate-50">
+                <button onclick="updateCartItemQty('${item.cartItemId}', ${item.quantity - 1})" class="px-2 py-0.5 text-xs font-bold text-slate-600 hover:text-slate-900">-</button>
+                <span class="px-2 text-xs font-bold text-slate-900">${item.quantity}</span>
+                <button onclick="updateCartItemQty('${item.cartItemId}', ${item.quantity + 1})" class="px-2 py-0.5 text-xs font-bold text-slate-600 hover:text-slate-900">+</button>
+              </div>
+            </div>
+          </div>
+          <button onclick="removeCartItem('${item.cartItemId}')" class="absolute top-2 right-2 text-slate-400 hover:text-rose-500 text-xs">✕</button>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- Footer Summary & Checkout Button -->
+    ${state.cart.length > 0 ? `
+      <div class="p-4 border-t border-slate-200 bg-slate-50 space-y-3">
+        <!-- Promo Code Input -->
+        <div class="flex gap-2">
+          <input type="text" id="drawer-promo-input" value="${state.promoCode}" placeholder="Promo code" class="form-input text-xs uppercase" />
+          <button onclick="applyDrawerPromoCode()" class="btn-secondary text-xs py-1">Apply</button>
+        </div>
+
+        <div class="space-y-1 text-xs text-slate-600">
+          <div class="flex justify-between"><span>Subtotal:</span><span class="font-bold text-slate-900">RM ${subtotal.toFixed(2)}</span></div>
+          <div class="flex justify-between"><span>SST Tax (8%):</span><span class="font-bold text-slate-900">RM ${sst.toFixed(2)}</span></div>
+          <div class="flex justify-between"><span>Delivery Fee:</span><span class="font-bold text-slate-900">RM ${deliveryFee.toFixed(2)}</span></div>
+          <div class="flex justify-between text-emerald-700 font-bold"><span>Promo Discount (10%):</span><span>-RM ${discount.toFixed(2)}</span></div>
+          <div class="flex justify-between text-sm font-extrabold text-slate-900 pt-2 border-t border-slate-200">
+            <span>Total Payable:</span>
+            <span class="text-emerald-700">RM ${totalPayable.toFixed(2)}</span>
+          </div>
+        </div>
+
+        <button onclick="proceedToCheckoutFromDrawer()" class="btn-primary w-full text-xs py-3 font-extrabold shadow-sm">
+          <span>Proceed to Checkout</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    ` : ''}
+  `;
+}
+
 // TASK 1 & TASK 2 DATA INPUT SCREEN MODAL ("Create Food Order")
 function renderCheckoutModalContent() {
-  const subtotal = state.cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+  const subtotal = state.cart.reduce((sum, i) => sum + (i.totalPricePerUnit * i.quantity), 0);
   const sst = subtotal * 0.08;
   const deliveryFee = subtotal > 0 ? 5.00 : 0.00;
   const discount = subtotal * (state.promoCode === 'DINOSAVE10' ? 0.10 : 0.00);
@@ -496,7 +859,6 @@ function renderCheckoutModalContent() {
 
   return `
     <div class="modal-container p-6">
-      <!-- Modal Header -->
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
         <div>
           <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">TASK 1 DATA INPUT SCREEN DESIGN</span>
@@ -508,7 +870,6 @@ function renderCheckoutModalContent() {
       </div>
 
       <form onsubmit="handleFormSubmit(event)" class="space-y-5">
-        <!-- Section 1: General Information -->
         <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
           <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">General Information</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -529,7 +890,6 @@ function renderCheckoutModalContent() {
           </div>
         </div>
 
-        <!-- Section 2: Customer & Delivery Details -->
         <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
           <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">Customer & Delivery Details</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
@@ -566,7 +926,6 @@ function renderCheckoutModalContent() {
           </div>
         </div>
 
-        <!-- Section 3: Restaurant & Delivery Options -->
         <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
           <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">Restaurant & Options</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -576,8 +935,8 @@ function renderCheckoutModalContent() {
                 <span class="val-tag val-tag-none">None (Selected Dropdown)</span>
               </label>
               <select class="form-input">
-                <option selected>Dino Grill (Mid Valley)</option>
-                <option>Dino Asian Kitchen (KLCC)</option>
+                <option selected>Dino Grill & Steakhouse (Mid Valley)</option>
+                <option>Dinosaur Asian Kitchen (KLCC)</option>
               </select>
             </div>
             <div>
@@ -603,7 +962,6 @@ function renderCheckoutModalContent() {
           </div>
         </div>
 
-        <!-- Section 4: Order Items List Table -->
         <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 overflow-x-auto">
           <h3 class="text-xs font-extrabold text-slate-700 uppercase mb-3">Order Items List</h3>
           <table class="w-full text-left text-xs bg-white border border-slate-200 rounded">
@@ -619,27 +977,26 @@ function renderCheckoutModalContent() {
             <tbody class="divide-y divide-slate-200">
               ${state.cart.map(item => `
                 <tr>
-                  <td class="p-2 font-bold text-slate-900">${item.name}</td>
-                  <td class="p-2 text-emerald-700 font-bold">RM ${item.price.toFixed(2)}</td>
+                  <td class="p-2 font-bold text-slate-900">${item.name} (${item.sizeName})</td>
+                  <td class="p-2 text-emerald-700 font-bold">RM ${item.totalPricePerUnit.toFixed(2)}</td>
                   <td class="p-2">
                     <input type="number" min="1" max="99" value="${item.quantity}" 
-                           onchange="updateCartQty('${item.id}', this.value)"
+                           onchange="updateCartItemQty('${item.cartItemId}', this.value)"
                            class="w-14 border border-slate-300 rounded px-1.5 py-0.5 text-center font-bold text-slate-900" />
                   </td>
                   <td class="p-2">
-                    <input type="text" value="${item.instructions}" 
-                           onchange="updateCartNotes('${item.id}', this.value)"
+                    <input type="text" value="${item.instructions || ''}" 
+                           onchange="updateCartItemNotes('${item.cartItemId}', this.value)"
                            placeholder="Notes e.g. Less ice"
                            class="border border-slate-300 rounded px-2 py-0.5 text-slate-700 w-full text-xs" />
                   </td>
-                  <td class="p-2 text-right font-extrabold text-slate-900">RM ${(item.price * item.quantity).toFixed(2)}</td>
+                  <td class="p-2 text-right font-extrabold text-slate-900">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</td>
                 </tr>
               `).join('')}
             </tbody>
           </table>
         </div>
 
-        <!-- Section 5: Billing & Payment Summary -->
         <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="space-y-3">
@@ -692,7 +1049,6 @@ function renderCheckoutModalContent() {
           </div>
         </div>
 
-        <!-- Submit Button -->
         <div class="flex justify-end gap-2 pt-2 border-t border-slate-200">
           <button type="button" onclick="closeCheckoutModal()" class="btn-secondary text-xs">Cancel</button>
           <button type="submit" class="btn-primary text-xs py-2 px-5">
@@ -704,7 +1060,7 @@ function renderCheckoutModalContent() {
   `;
 }
 
-// Order Tracking Modal
+// ORDER TRACKING MODAL
 function renderOrderTrackingModalContent() {
   const activeOrder = state.orders[0];
   if (!activeOrder) return '';
@@ -719,7 +1075,6 @@ function renderOrderTrackingModalContent() {
         <button onclick="closeTrackingModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
       </div>
 
-      <!-- Simple Stepper -->
       <div class="grid grid-cols-4 gap-2 text-center text-xs mb-6 font-bold">
         <div class="p-2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">1. Placed</div>
         <div class="p-2 rounded bg-sky-100 text-sky-800 border border-sky-300">2. Preparing</div>
@@ -740,9 +1095,14 @@ function renderOrderTrackingModalContent() {
   `;
 }
 
-// Event Handlers
+// EVENT HANDLERS & CONTROLLERS
 window.switchTab = function(tabName) {
   state.activeTab = tabName;
+  renderApp();
+};
+
+window.selectRestaurant = function(restId) {
+  state.selectedRestaurant = restId;
   renderApp();
 };
 
@@ -756,41 +1116,137 @@ window.handleSearch = function(query) {
   renderApp();
 };
 
-window.addToCart = function(itemId) {
-  const menuItem = state.menu.find(m => m.id === itemId);
-  if (!menuItem) return;
+// Open Food Detail & Customization Modal
+window.openFoodDetailModal = function(itemId) {
+  const item = state.menu.find(m => m.id === itemId);
+  if (!item) return;
 
-  const existingCartItem = state.cart.find(c => c.id === itemId);
-  if (existingCartItem) {
-    existingCartItem.quantity += 1;
-  } else {
-    state.cart.push({
-      id: menuItem.id,
-      name: menuItem.name,
-      price: menuItem.price,
-      quantity: 1,
-      instructions: '',
-      image: menuItem.image
-    });
-  }
+  state.customizingItem = item;
+  state.customization = {
+    size: item.sizes && item.sizes.length > 0 ? item.sizes[0] : null,
+    addons: [],
+    notes: '',
+    quantity: 1
+  };
 
-  showToast(`Added "${menuItem.name}" to cart`);
+  document.getElementById('food-detail-modal-overlay')?.classList.add('active');
   renderApp();
+  document.getElementById('food-detail-modal-overlay')?.classList.add('active');
 };
 
-window.updateCartQty = function(itemId, newQty) {
-  const item = state.cart.find(i => i.id === itemId);
+window.closeFoodDetailModal = function() {
+  document.getElementById('food-detail-modal-overlay')?.classList.remove('active');
+  state.customizingItem = null;
+};
+
+window.selectCustomSize = function(sizeName, price) {
+  state.customization.size = { name: sizeName, price: parseFloat(price) };
+  renderApp();
+  document.getElementById('food-detail-modal-overlay')?.classList.add('active');
+};
+
+window.toggleCustomAddon = function(addonName, price) {
+  const existingIdx = state.customization.addons.findIndex(a => a.name === addonName);
+  if (existingIdx >= 0) {
+    state.customization.addons.splice(existingIdx, 1);
+  } else {
+    state.customization.addons.push({ name: addonName, price: parseFloat(price) });
+  }
+  renderApp();
+  document.getElementById('food-detail-modal-overlay')?.classList.add('active');
+};
+
+window.updateCustomNotes = function(val) {
+  state.customization.notes = val;
+};
+
+window.adjustCustomQuantity = function(delta) {
+  state.customization.quantity = Math.max(1, state.customization.quantity + delta);
+  renderApp();
+  document.getElementById('food-detail-modal-overlay')?.classList.add('active');
+};
+
+window.confirmAddCustomizedItemToCart = function() {
+  const item = state.customizingItem;
+  if (!item) return;
+
+  const currentSizePrice = state.customization.size ? state.customization.size.price : 0.00;
+  const addonsPrice = state.customization.addons.reduce((sum, a) => sum + a.price, 0.00);
+  const totalPricePerUnit = item.price + currentSizePrice + addonsPrice;
+
+  state.cart.push({
+    cartItemId: 'c-' + Date.now(),
+    id: item.id,
+    name: item.name,
+    restaurantName: item.restaurantName,
+    basePrice: item.price,
+    sizeName: state.customization.size ? state.customization.size.name : 'Standard',
+    sizePrice: currentSizePrice,
+    addons: [...state.customization.addons],
+    totalPricePerUnit: totalPricePerUnit,
+    quantity: state.customization.quantity,
+    instructions: state.customization.notes,
+    image: item.image
+  });
+
+  closeFoodDetailModal();
+  showToast(`Added "${item.name}" to your basket! 🛒`);
+  toggleCartDrawer(true);
+};
+
+// Cart Drawer Handlers
+window.toggleCartDrawer = function(open) {
+  const overlay = document.getElementById('cart-drawer-overlay');
+  if (open) {
+    overlay?.classList.add('active');
+  } else {
+    overlay?.classList.remove('active');
+  }
+};
+
+window.updateCartItemQty = function(cartItemId, newQty) {
+  const qty = parseInt(newQty);
+  if (qty <= 0) {
+    removeCartItem(cartItemId);
+    return;
+  }
+  const item = state.cart.find(c => c.cartItemId === cartItemId);
   if (item) {
-    item.quantity = parseInt(newQty) || 1;
+    item.quantity = qty;
     renderApp();
+    toggleCartDrawer(true);
   }
 };
 
-window.updateCartNotes = function(itemId, newNotes) {
-  const item = state.cart.find(i => i.id === itemId);
+window.updateCartItemNotes = function(cartItemId, notes) {
+  const item = state.cart.find(c => c.cartItemId === cartItemId);
   if (item) {
-    item.instructions = newNotes;
+    item.instructions = notes;
   }
+};
+
+window.removeCartItem = function(cartItemId) {
+  state.cart = state.cart.filter(c => c.cartItemId !== cartItemId);
+  showToast('Item removed from basket');
+  renderApp();
+  toggleCartDrawer(true);
+};
+
+window.applyDrawerPromoCode = function() {
+  const input = document.getElementById('drawer-promo-input');
+  if (input && input.value.trim().toUpperCase() === 'DINOSAVE10') {
+    state.promoCode = 'DINOSAVE10';
+    showToast('Promo code DINOSAVE10 applied!');
+    renderApp();
+    toggleCartDrawer(true);
+  } else {
+    showToast('Invalid promo code. Try "DINOSAVE10"', 'error');
+  }
+};
+
+window.proceedToCheckoutFromDrawer = function() {
+  toggleCartDrawer(false);
+  openCheckoutModal();
 };
 
 window.openCheckoutModal = function() {

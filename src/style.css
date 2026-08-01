@@ -1,23 +1,20 @@
-/* Food Dinosaur Enterprise Web Application - Unified Modern Light Theme */
+/* Food Dinosaur Enterprise Web Application - Modern GrabFood / UberEats Aesthetic */
 
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   
-  --color-primary: #059669; /* Emerald 600 */
-  --color-primary-hover: #047857; /* Emerald 700 */
-  --color-primary-light: #ecfdf5; /* Emerald 50 */
+  --color-primary: #059669; /* Grab Emerald */
+  --color-primary-hover: #047857;
+  --color-primary-light: #ecfdf5;
   
-  --bg-page: #f8fafc; /* Slate 50 */
+  --bg-page: #f8fafc;
   --bg-card: #ffffff;
-  --bg-subtle: #f1f5f9;
-  
   --border-color: #e2e8f0;
-  --border-focus: #059669;
   
-  --text-main: #0f172a; /* Slate 900 */
-  --text-muted: #475569; /* Slate 600 */
-  --text-light: #64748b; /* Slate 500 */
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-light: #64748b;
 }
 
 * {
@@ -43,15 +40,15 @@ h1, h2, h3, h4, h5, h6 {
 .solid-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 0.875rem;
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
-  transition: all 0.2s ease;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .solid-card-hover:hover {
   border-color: #cbd5e1;
-  box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
-  transform: translateY(-1px);
+  box-shadow: 0 12px 20px -5px rgba(15, 23, 42, 0.08);
+  transform: translateY(-2px);
 }
 
 /* Badges */
@@ -63,13 +60,6 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.375rem;
   font-size: 0.75rem;
   font-weight: 700;
-  line-height: 1;
-}
-
-.badge-pending {
-  background-color: #fffbebf;
-  color: #b45309;
-  border: 1px solid #fde68a;
 }
 
 .badge-preparing {
@@ -90,7 +80,6 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #a7f3d0;
 }
 
-/* Task 2 Validation Check Tags */
 .val-tag {
   display: inline-flex;
   align-items: center;
@@ -146,7 +135,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.375rem;
 }
 
-/* Modal Overlay */
+/* Modal Overlay & Containers */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -178,13 +167,57 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
 }
 
+/* GrabFood Style Food Customization Dialog */
+.food-detail-modal {
+  max-width: 600px !important;
+  border-radius: 1.25rem !important;
+  overflow: hidden;
+}
+
+/* Right Sliding Cart Drawer */
+.cart-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.cart-drawer-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 420px;
+  background-color: #ffffff;
+  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-drawer-overlay.active .cart-drawer {
+  transform: translateX(0);
+}
+
 /* Buttons */
 .btn-primary {
   background-color: var(--color-primary);
   color: #ffffff;
   font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.625rem;
   border: 1px solid var(--color-primary-hover);
   cursor: pointer;
   display: inline-flex;
@@ -196,14 +229,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary:hover {
   background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
   background-color: #ffffff;
   color: #334155;
   font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.625rem;
   border: 1px solid #cbd5e1;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -214,12 +248,34 @@ h1, h2, h3, h4, h5, h6 {
   border-color: #94a3b8;
 }
 
+/* Checkbox & Radio option card controls for customization */
+.option-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.625rem;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.option-card:hover {
+  border-color: var(--color-primary);
+  background-color: #f0fdf4;
+}
+
+.option-card input:checked + div {
+  color: var(--color-primary);
+}
+
 /* Toast Notifications */
 .toast-container {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  z-index: 1000;
+  z-index: 1100;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -228,9 +284,9 @@ h1, h2, h3, h4, h5, h6 {
 .toast {
   background-color: #0f172a;
   color: #ffffff;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.625rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   gap: 0.625rem;
