@@ -49,7 +49,7 @@ To support daily transaction processing for **Food Dinosaur Sdn. Bhd.**, the dat
   | [9] Delivery Address                                                  |  |                                                    |
   | [ No. 12, Jalan Genting Klang, Setapak, 53300 Kuala Lumpur            ] |  | [18] Expiry Date          [19] CVV Code            |
   | +---------------------------------------------------------------------+  | [ 12/28               ]   [ ***                ] |
-  | | 3. Individual Menu Items & Add-ons                                  |  | -------------------------------------------------- |
+  | | 3. Delivery Options & Fulfillment Preferences                       |  | -------------------------------------------------- |
   | --------------------------------------------------------------------- |  | [20] Grand Total:              RM 59.32            |
   |   + Item 1 Details                                                    |  | -------------------------------------------------- |
   |   1. [10] Select Food Item & Combo:                                  |  |                                                    |

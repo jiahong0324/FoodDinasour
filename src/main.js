@@ -1112,39 +1112,39 @@ function renderCheckoutModalContent() {
           </div>
 
           <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-            <h3 class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider mb-2">| 3. Individual Menu Options & Add-ons</h3>
+            <h3 class="text-xs font-extrabold text-emerald-700 uppercase tracking-wider mb-2">| 3. Delivery Options & Fulfillment Preferences</h3>
             <div class="space-y-2 text-xs">
-              <div>
-                <label class="form-label mb-1">
-                  <span>${showBadges ? '[10] ' : ''}Select Outlet</span>
-                  ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
-                </label>
-                <select class="form-input py-1.5">
-                  <option selected>Dino Grill & Steakhouse (Mid Valley)</option>
-                  <option>Dinosaur Asian Kitchen (KLCC)</option>
-                </select>
-              </div>
               <div class="grid grid-cols-2 gap-2">
                 <div>
                   <label class="form-label mb-1">
-                    <span>${showBadges ? '[11] ' : ''}Fulfillment Method</span>
+                    <span>${showBadges ? '[10] ' : ''}Fulfillment Method</span>
                     ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
                   </label>
-                  <select class="form-input py-1.5">
-                    <option selected>Standard Rider</option>
-                    <option>Express Delivery</option>
+                  <select class="form-input py-1.5 font-semibold text-slate-800">
+                    <option selected>🛵 Standard Rider Delivery</option>
+                    <option>⚡ Priority Express Delivery</option>
+                    <option>🚶 Self Pick-Up at Outlet</option>
                   </select>
                 </div>
                 <div>
                   <label class="form-label mb-1">
-                    <span>${showBadges ? '[12] ' : ''}Delivery Slot</span>
+                    <span>${showBadges ? '[11] ' : ''}Delivery Time Slot</span>
                     ${showBadges ? '<span class="val-tag val-tag-none">Selected</span>' : ''}
                   </label>
-                  <select class="form-input py-1.5">
-                    <option selected>15:30 PM</option>
-                    <option>16:00 PM</option>
+                  <select class="form-input py-1.5 font-semibold text-slate-800">
+                    <option selected>⚡ ASAP (15 - 25 Mins)</option>
+                    <option>🕒 15:30 PM Slot</option>
+                    <option>🕒 16:00 PM Slot</option>
+                    <option>🕒 18:30 PM (Dinner)</option>
                   </select>
                 </div>
+              </div>
+              <div>
+                <label class="form-label mb-1">
+                  <span>${showBadges ? '[12] ' : ''}Drop-off Instructions</span>
+                  ${showBadges ? '<span class="val-tag val-tag-none">Optional</span>' : ''}
+                </label>
+                <input type="text" placeholder="e.g. Leave at guardhouse / Don't ring doorbell" class="form-input py-1.5 text-xs" />
               </div>
             </div>
           </div>
