@@ -912,12 +912,12 @@ function renderTrackingScreen() {
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="form-label text-xs mb-1">Order Number</label>
-            <input type="text" value="${state.trackingOrderId}" oninput="window.updateTrackingField('trackingOrderId', this.value.toUpperCase())" class="form-input text-xs font-mono font-bold uppercase" />
+            <input type="text" readonly value="${state.trackingOrderId}" class="form-input text-xs font-mono font-bold uppercase cursor-not-allowed bg-slate-50 text-slate-700" />
           </div>
 
           <div>
             <label class="form-label text-xs mb-1">Voucher Code</label>
-            <input type="text" value="${state.trackingPromoCode}" oninput="window.updateTrackingField('trackingPromoCode', this.value.toUpperCase())" class="form-input text-xs font-mono font-bold uppercase" />
+            <input type="text" readonly value="${state.trackingPromoCode}" class="form-input text-xs font-mono font-bold uppercase cursor-not-allowed bg-slate-50 text-slate-700" />
           </div>
         </div>
 
@@ -931,14 +931,9 @@ function renderTrackingScreen() {
       </div>
 
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 text-xs">
-          <div>
-            <strong class="text-slate-900 font-bold block">Estimated Delivery Time</strong>
-            <span class="text-slate-500 font-medium">15:30 PM (In 15 Mins)</span>
-          </div>
-          <button onclick="window.simulateRiderMovement()" class="btn-primary text-xs py-1.5 px-3 font-bold">
-            Simulate Movement
-          </button>
+        <div class="pb-3 border-b border-slate-100 text-xs">
+          <strong class="text-slate-900 font-bold block">Estimated Delivery Time</strong>
+          <span class="text-slate-500 font-medium">15:30 PM (In 15 Mins)</span>
         </div>
 
         <div class="space-y-1.5">
