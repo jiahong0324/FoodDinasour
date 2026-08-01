@@ -453,7 +453,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderApp();
 });
 
-function renderApp() {
+function renderApp(focusedId = null) {
+  const activeEl = document.activeElement;
+  const activeId = focusedId || (activeEl && activeEl.id ? activeEl.id : null);
+  let selStart = null;
+  let selEnd = null;
+  if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+    try {
+      selStart = activeEl.selectionStart;
+      selEnd = activeEl.selectionEnd;
+    } catch (e) {}
+  }
+
   const appElement = document.getElementById('app');
   if (!appElement) return;
 
@@ -521,6 +532,18 @@ function renderApp() {
 
     <div id="toast-container" class="toast-container"></div>
   `;
+
+  if (activeId) {
+    const targetInput = document.getElementById(activeId);
+    if (targetInput) {
+      targetInput.focus();
+      if (selStart !== null && selEnd !== null && targetInput.setSelectionRange) {
+        try {
+          targetInput.setSelectionRange(selStart, selEnd);
+        } catch (e) {}
+      }
+    }
+  }
 }
 
 function renderActiveScreen() {
@@ -681,6 +704,7 @@ function renderCreateOrderScreen() {
                   ${showBadges ? '<span class="val-tag val-tag-active">Format Check</span>' : ''}
                 </label>
                 <input type="text" 
+                       id="field-contactPhone"
                        value="${state.form.contactPhone}" 
                        oninput="window.updateFormField('contactPhone', this.value)"
                        placeholder="e.g. 012-3456789"
@@ -695,6 +719,7 @@ function renderCreateOrderScreen() {
                   ${showBadges ? '<span class="val-tag val-tag-active">Format Check</span>' : ''}
                 </label>
                 <input type="text" 
+                       id="field-icNumber"
                        value="${state.form.icNumber}" 
                        oninput="window.updateFormField('icNumber', this.value)"
                        placeholder="e.g. 010324-14-5582"
@@ -708,7 +733,7 @@ function renderCreateOrderScreen() {
                   <span>Delivery Address</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
                 </label>
-                <textarea rows="2" 
+                <textarea id="field-deliveryAddress" rows="2" 
                           oninput="window.updateFormField('deliveryAddress', this.value)"
                           placeholder="Enter house/unit number, street, city..."
                           class="form-input text-xs font-medium ${state.errors.deliveryAddress ? 'input-error' : ''}">${state.form.deliveryAddress}</textarea>
@@ -755,6 +780,7 @@ function renderCreateOrderScreen() {
               <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
                 <div class="sm:col-span-9">
                   <input type="text" 
+                         id="field-specialNotes"
                          maxlength="150"
                          value="${state.form.specialNotes}"
                          oninput="window.updateFormField('specialNotes', this.value)"
@@ -1089,7 +1115,7 @@ function renderPaymentModal() {
                   <span>Cardholder Name</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Presence Check</span>' : ''}
                 </label>
-                <input type="text" value="${state.form.cardName}" oninput="window.updateFormField('cardName', this.value)" placeholder="Enter name on card" class="form-input py-1.5 text-xs ${state.errors.cardName ? 'input-error' : ''}" />
+                <input type="text" id="field-cardName" value="${state.form.cardName}" oninput="window.updateFormField('cardName', this.value)" placeholder="Enter name on card" class="form-input py-1.5 text-xs ${state.errors.cardName ? 'input-error' : ''}" />
                 ${state.errors.cardName ? `<div class="error-msg">${state.errors.cardName}</div>` : ''}
               </div>
 
@@ -1098,7 +1124,7 @@ function renderPaymentModal() {
                   <span>Card Number (16 Digits)</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Format Check (16 Digits)</span>' : ''}
                 </label>
-                <input type="text" maxlength="19" value="${state.form.cardNumber}" oninput="window.updateFormField('cardNumber', this.value)" placeholder="4532 1098 7654 3210" class="form-input py-1.5 text-xs font-mono tracking-widest ${state.errors.cardNumber ? 'input-error' : ''}" />
+                <input type="text" id="field-cardNumber" maxlength="19" value="${state.form.cardNumber}" oninput="window.updateFormField('cardNumber', this.value)" placeholder="4532 1098 7654 3210" class="form-input py-1.5 text-xs font-mono tracking-widest ${state.errors.cardNumber ? 'input-error' : ''}" />
                 ${state.errors.cardNumber ? `<div class="error-msg">${state.errors.cardNumber}</div>` : ''}
               </div>
 
@@ -1108,7 +1134,7 @@ function renderPaymentModal() {
                     <span>Expiry Date</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">MM/YY Format</span>' : ''}
                   </label>
-                  <input type="text" value="${state.form.cardExpiry}" oninput="window.updateFormField('cardExpiry', this.value)" placeholder="12/28" class="form-input py-1.5 text-xs ${state.errors.cardExpiry ? 'input-error' : ''}" />
+                  <input type="text" id="field-cardExpiry" value="${state.form.cardExpiry}" oninput="window.updateFormField('cardExpiry', this.value)" placeholder="12/28" class="form-input py-1.5 text-xs ${state.errors.cardExpiry ? 'input-error' : ''}" />
                   ${state.errors.cardExpiry ? `<div class="error-msg">${state.errors.cardExpiry}</div>` : ''}
                 </div>
                 <div>
@@ -1116,7 +1142,7 @@ function renderPaymentModal() {
                     <span>CVV Code</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">3 Digits</span>' : ''}
                   </label>
-                  <input type="password" maxlength="4" value="${state.form.cardCvv}" oninput="window.updateFormField('cardCvv', this.value)" placeholder="***" class="form-input py-1.5 text-xs text-center font-mono ${state.errors.cardCvv ? 'input-error' : ''}" />
+                  <input type="password" id="field-cardCvv" maxlength="4" value="${state.form.cardCvv}" oninput="window.updateFormField('cardCvv', this.value)" placeholder="***" class="form-input py-1.5 text-xs text-center font-mono ${state.errors.cardCvv ? 'input-error' : ''}" />
                   ${state.errors.cardCvv ? `<div class="error-msg">${state.errors.cardCvv}</div>` : ''}
                 </div>
               </div>
@@ -1133,7 +1159,7 @@ function renderPaymentModal() {
                 </select>
                 <div>
                   <label class="form-label text-[11px] mb-1">Online Banking User ID</label>
-                  <input type="text" value="${state.form.fpxUser || ''}" oninput="window.updateFormField('fpxUser', this.value)" placeholder="Enter bank user ID" class="form-input py-1.5 text-xs ${state.errors.fpxUser ? 'input-error' : ''}" />
+                  <input type="text" id="field-fpxUser" value="${state.form.fpxUser || ''}" oninput="window.updateFormField('fpxUser', this.value)" placeholder="Enter bank user ID" class="form-input py-1.5 text-xs ${state.errors.fpxUser ? 'input-error' : ''}" />
                   ${state.errors.fpxUser ? `<div class="error-msg">${state.errors.fpxUser}</div>` : ''}
                 </div>
               </div>
@@ -1145,7 +1171,7 @@ function renderPaymentModal() {
                 <input type="tel" value="${state.form.contactPhone}" readonly class="form-input py-1.5 text-xs font-bold bg-slate-100" />
                 <div>
                   <label class="form-label text-[11px] mb-1">6-Digit Security PIN</label>
-                  <input type="password" maxlength="6" value="${state.form.ewalletPin || ''}" oninput="window.updateFormField('ewalletPin', this.value)" placeholder="e.g. 123456" class="form-input py-1.5 text-xs font-mono text-center ${state.errors.ewalletPin ? 'input-error' : ''}" />
+                  <input type="password" id="field-ewalletPin" maxlength="6" value="${state.form.ewalletPin || ''}" oninput="window.updateFormField('ewalletPin', this.value)" placeholder="e.g. 123456" class="form-input py-1.5 text-xs font-mono text-center ${state.errors.ewalletPin ? 'input-error' : ''}" />
                   ${state.errors.ewalletPin ? `<div class="error-msg">${state.errors.ewalletPin}</div>` : ''}
                 </div>
               </div>
@@ -1236,7 +1262,7 @@ window.closePaymentModal = function() {
   renderApp();
 };
 
-window.updateFormField = function(field, value) {
+window.updateFormField = function(field, value, shouldRender = false) {
   state.form[field] = value;
   delete state.errors[field];
   delete state.errors.general;
@@ -1250,7 +1276,10 @@ window.updateFormField = function(field, value) {
     }
   }
 
-  renderApp();
+  // Re-render only if explicitly needed (e.g. promo discount update or payment channel switch)
+  if (field === 'promoCode' || field === 'paymentChannel' || shouldRender) {
+    renderApp(`field-${field}`);
+  }
 };
 
 window.handleRestaurantChange = function(restId) {
