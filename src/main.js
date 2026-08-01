@@ -73,7 +73,7 @@ const state = {
     totalPayable: 49.38,
     status: 'Preparing'
   },
-  cancelAction: 'cancel_refund',
+  cancelAction: 'cancel_order',
   cancelReasonCategory: 'change_of_mind',
   cancelNotes: 'Change of plan, unable to receive delivery today.',
   cancelSubmitted: false,
@@ -943,8 +943,8 @@ function renderManageOrderScreen() {
     <div class="max-w-3xl mx-auto space-y-6">
       
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs">
-        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Manage / Cancel Food Order</h1>
-        <p class="text-xs text-slate-500 font-medium">Enter your order reference number to view details or request cancellation.</p>
+        <h1 class="text-xl font-extrabold text-slate-900 tracking-tight">Manage Food Order</h1>
+        <p class="text-xs text-slate-500 font-medium">Enter your order reference number to view details or request order modifications.</p>
       </div>
 
       <!-- Search Section -->
@@ -974,13 +974,13 @@ function renderManageOrderScreen() {
 
           <!-- Cancellation Request Form -->
           <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 text-xs">
-            <h3 class="font-bold text-slate-800 uppercase tracking-wider text-[11px]">Request Action / Cancellation</h3>
+            <h3 class="font-bold text-slate-800 uppercase tracking-wider text-[11px]">Request Action / Order Modification</h3>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
                 <label class="form-label text-[11px] mb-1">Select Action</label>
                 <select onchange="window.updateManageField('cancelAction', this.value)" class="form-input text-xs font-bold">
-                  <option value="cancel_refund">Cancel Order & Refund</option>
+                  <option value="cancel_order">Cancel Order</option>
                   <option value="modify_items">Modify Order Items</option>
                   <option value="reschedule">Reschedule Delivery Time</option>
                 </select>
@@ -1006,7 +1006,7 @@ function renderManageOrderScreen() {
 
             ${state.cancelSubmitted ? `
               <div class="p-3 bg-emerald-100 text-emerald-800 rounded-xl font-bold text-xs">
-                ✓ Cancellation request for #${order.orderId} submitted successfully. Refund will be processed.
+                ✓ Request for #${order.orderId} submitted successfully.
               </div>
             ` : `
               <button onclick="window.submitManageCancellation()" class="btn-primary text-xs py-2 px-4 font-bold">
