@@ -6,7 +6,7 @@ const state = {
   selectedRestaurant: 'all', // 'all' | restaurant ID
   selectedCategory: 'all',
   searchQuery: '',
-  showAssignmentAnnotations: false, // Toggle for Assignment Task 1 & 2 Badges vs Simple Modern UI
+  showAssignmentAnnotations: false,
 
   // Currently customizing food item in modal
   customizingItem: null,
@@ -51,11 +51,11 @@ const state = {
   promoCode: 'DINOSAVE10',
   
   restaurants: [
-    { id: 'rest-1', name: 'Dino Grill & Steakhouse (Mid Valley)', tag: 'Burgers & Ribs', rating: 4.9, estTime: '15-20 mins', deliveryFee: 'RM 5.00' },
-    { id: 'rest-2', name: 'Dinosaur Asian Kitchen (KLCC)', tag: 'Nasi Lemak & Asian', rating: 4.8, estTime: '20-25 mins', deliveryFee: 'RM 4.00' },
-    { id: 'rest-3', name: 'Jurassic Pizzeria (Setapak)', tag: 'Wood-fired Pizza', rating: 4.9, estTime: '25-30 mins', deliveryFee: 'RM 5.00' },
-    { id: 'rest-4', name: 'T-Rex Crispy Chicken (Bukit Bintang)', tag: 'Fried Chicken & Wings', rating: 4.7, estTime: '15-20 mins', deliveryFee: 'RM 3.50' },
-    { id: 'rest-5', name: 'Rex Dessert & Cafe (Subang)', tag: 'Cakes & Coffee', rating: 4.9, estTime: '10-15 mins', deliveryFee: 'RM 3.00' }
+    { id: 'rest-1', name: 'Dino Grill & Steakhouse', location: 'Mid Valley', tag: 'Burgers & Ribs', rating: 4.9, estTime: '15-20 mins' },
+    { id: 'rest-2', name: 'Dinosaur Asian Kitchen', location: 'KLCC', tag: 'Nasi Lemak & Asian', rating: 4.8, estTime: '20-25 mins' },
+    { id: 'rest-3', name: 'Jurassic Pizzeria', location: 'Setapak', tag: 'Wood-fired Pizza', rating: 4.9, estTime: '25-30 mins' },
+    { id: 'rest-4', name: 'T-Rex Crispy Chicken', location: 'Bukit Bintang', tag: 'Fried Chicken', rating: 4.7, estTime: '15-20 mins' },
+    { id: 'rest-5', name: 'Rex Dessert & Cafe', location: 'Subang', tag: 'Cakes & Coffee', rating: 4.9, estTime: '10-15 mins' }
   ],
 
   orders: [
@@ -267,7 +267,7 @@ function initApp() {
 function renderApp() {
   const appElement = document.getElementById('app');
   appElement.innerHTML = `
-    <!-- Top Navigation Header -->
+    <!-- Solid Top Navigation Bar -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
         <!-- Logo -->
@@ -321,7 +321,7 @@ function renderApp() {
       ${renderActiveTabContent()}
     </main>
 
-    <!-- Food Detail & Customization Modal -->
+    <!-- Food Detail Modal -->
     <div id="food-detail-modal-overlay" class="modal-overlay">
       ${renderFoodDetailModalContent()}
     </div>
@@ -333,7 +333,7 @@ function renderApp() {
       </div>
     </div>
 
-    <!-- Simple & Modern Checkout Modal (Task 1 & Task 2 Screen) -->
+    <!-- Simple Checkout Modal -->
     <div id="checkout-modal" class="modal-overlay">
       ${renderCheckoutModalContent()}
     </div>
@@ -362,7 +362,7 @@ function renderActiveTabContent() {
   }
 }
 
-// 1. CUSTOMER PORTAL
+// 1. CUSTOMER PORTAL (CLEAN & MODERN UI)
 function renderCustomerPortal() {
   const filteredMenu = state.menu.filter(item => {
     const matchesRest = state.selectedRestaurant === 'all' || item.restaurantId === state.selectedRestaurant;
@@ -374,51 +374,58 @@ function renderCustomerPortal() {
   });
 
   return `
-    <!-- Top GrabFood Style Banner -->
-    <div class="solid-card p-6 mb-6 bg-emerald-800 text-white flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+    <!-- Modern Sleek Header Bar -->
+    <div class="bg-white rounded-2xl p-5 mb-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
       <div>
-        <span class="inline-block px-2.5 py-0.5 rounded bg-emerald-900/80 text-emerald-200 text-xs font-bold mb-2">
-          ⚡ 20-Min Express Food Delivery
-        </span>
-        <h2 class="text-2xl font-extrabold text-white">Food Dinosaur Ordering Platform</h2>
-        <p class="text-emerald-100 text-xs mt-1">Select from 5 top partner restaurants with custom options & live GPS tracking.</p>
+        <h2 class="text-xl font-extrabold text-slate-900">Explore Restaurants & Menus</h2>
+        <p class="text-slate-500 text-xs mt-0.5">20-Min express delivery from 5 top outlets in Kuala Lumpur</p>
       </div>
 
-      <div class="w-full md:w-80 flex items-center bg-white rounded-lg p-1 border border-emerald-700 shadow-sm">
-        <input type="text" placeholder="Search dishes or restaurants..." 
+      <!-- Integrated Search Input -->
+      <div class="w-full md:w-80 flex items-center bg-slate-50 rounded-xl p-1 border border-slate-200">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 pl-3"></i>
+        <input type="text" placeholder="Search food or outlets..." 
                value="${state.searchQuery}"
                oninput="handleSearch(this.value)"
-               class="w-full text-slate-900 px-3 py-1.5 text-xs focus:outline-none font-medium" />
-        <button class="btn-primary text-xs py-1.5 px-3">Search</button>
+               class="w-full bg-transparent text-slate-900 px-2 py-1.5 text-xs focus:outline-none font-medium" />
+        ${state.searchQuery ? `<button onclick="handleSearch('')" class="text-slate-400 text-xs px-2">✕</button>` : ''}
       </div>
     </div>
 
-    <!-- Restaurant Picker Carousel -->
+    <!-- Clean Restaurant Selector Cards (No ugly scrollbars) -->
     <div class="mb-6">
       <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Partner Restaurants</h3>
-        <span class="text-xs text-emerald-700 font-bold cursor-pointer" onclick="selectRestaurant('all')">View All (${state.restaurants.length})</span>
+        <h3 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Select Outlet</h3>
+        <button onclick="selectRestaurant('all')" class="text-xs font-bold text-emerald-700 hover:underline">
+          ${state.selectedRestaurant === 'all' ? '● Showing All Outlets' : 'Show All Outlets'}
+        </button>
       </div>
-      <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
         <button onclick="selectRestaurant('all')" 
-                class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all border shrink-0 text-left ${state.selectedRestaurant === 'all' ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
-          <span class="block text-sm">🏪 All Outlets</span>
-          <span class="text-[10px] opacity-80 block font-normal">All cuisines</span>
+                class="p-3 rounded-xl text-xs font-bold transition-all border text-left flex flex-col justify-between ${state.selectedRestaurant === 'all' ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-800 border-slate-200 hover:bg-slate-50'}">
+          <span class="text-base mb-1 block">🏪</span>
+          <div>
+            <span class="block font-extrabold">All Outlets</span>
+            <span class="text-[10px] opacity-80 font-normal">All dishes</span>
+          </div>
         </button>
         ${state.restaurants.map(r => `
           <button onclick="selectRestaurant('${r.id}')" 
-                  class="px-4 py-2.5 rounded-xl text-xs font-bold transition-all border shrink-0 text-left ${state.selectedRestaurant === r.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
-            <span class="block text-sm font-bold line-clamp-1">${r.name}</span>
-            <span class="text-[10px] opacity-80 block font-normal">★ ${r.rating} | ${r.estTime}</span>
+                  class="p-3 rounded-xl text-xs font-bold transition-all border text-left flex flex-col justify-between ${state.selectedRestaurant === r.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-800 border-slate-200 hover:bg-slate-50'}">
+            <span class="text-xs opacity-70 block mb-1">★ ${r.rating}</span>
+            <div>
+              <span class="block font-bold leading-snug line-clamp-1">${r.name}</span>
+              <span class="text-[10px] opacity-80 font-normal">${r.location}</span>
+            </div>
           </button>
         `).join('')}
       </div>
     </div>
 
     <!-- Category Filter Chips -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-6">
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 mb-6">
       ${[
-        { id: 'all', label: 'All Items' },
+        { id: 'all', label: 'All Categories' },
         { id: 'combos', label: 'Dino Combos' },
         { id: 'burgers', label: 'Burgers' },
         { id: 'pizza', label: 'Pizzas' },
@@ -427,24 +434,24 @@ function renderCustomerPortal() {
         { id: 'desserts', label: 'Desserts' }
       ].map(cat => `
         <button onclick="selectCategory('${cat.id}')" 
-                class="px-3.5 py-1.5 rounded-md text-xs font-bold transition-all border ${state.selectedCategory === cat.id ? 'bg-emerald-600 text-white border-emerald-700 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
+                class="px-4 py-2 rounded-lg text-xs font-bold transition-all border whitespace-nowrap ${state.selectedCategory === cat.id ? 'bg-slate-900 text-white border-slate-900 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'}">
           ${cat.label}
         </button>
       `).join('')}
     </div>
 
-    <!-- Food Cards Grid -->
+    <!-- Clean GrabFood / Deliveroo Style Food Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       ${filteredMenu.map(item => `
         <div onclick="openFoodDetailModal('${item.id}')" 
-             class="solid-card solid-card-hover flex flex-col justify-between overflow-hidden cursor-pointer group">
+             class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group">
           <div>
-            <div class="relative h-48 bg-slate-100 overflow-hidden border-b border-slate-200">
+            <div class="relative h-44 bg-slate-100 overflow-hidden">
               <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-              <div class="absolute top-2.5 left-2.5 bg-white/95 px-2 py-0.5 rounded text-xs font-bold text-slate-800 shadow-sm border border-slate-200">
+              <div class="absolute top-2.5 left-2.5 bg-white/95 px-2 py-0.5 rounded-md text-xs font-bold text-slate-800 shadow-sm border border-slate-200">
                 ★ ${item.rating}
               </div>
-              <div class="absolute top-2.5 right-2.5 bg-emerald-700 text-white px-2 py-0.5 rounded text-xs font-bold shadow-sm">
+              <div class="absolute top-2.5 right-2.5 bg-slate-900/80 text-white px-2 py-0.5 rounded-md text-[11px] font-bold">
                 ⏱️ ${item.prepTime}
               </div>
             </div>
@@ -456,13 +463,13 @@ function renderCustomerPortal() {
             </div>
           </div>
 
-          <div class="px-4 pb-4 pt-3 flex items-center justify-between border-t border-slate-100 bg-slate-50/50">
+          <div class="px-4 pb-4 pt-3 flex items-center justify-between border-t border-slate-100 bg-slate-50/40">
             <div>
-              <span class="text-[10px] text-slate-400 font-bold block uppercase">From</span>
-              <span class="text-lg font-extrabold text-emerald-700">RM ${item.price.toFixed(2)}</span>
+              <span class="text-[10px] text-slate-400 font-bold block uppercase">Price</span>
+              <span class="text-lg font-extrabold text-slate-900">RM ${item.price.toFixed(2)}</span>
             </div>
             <button class="btn-primary text-xs py-1.5 px-3">
-              <i class="fa-solid fa-sliders"></i> Customize
+              + Customize
             </button>
           </div>
         </div>
@@ -834,7 +841,7 @@ function renderCartDrawerContent() {
   `;
 }
 
-// SIMPLE & MODERN CHECKOUT MODAL (TASK 1 & TASK 2 DATA INPUT SCREEN)
+// CHECKOUT MODAL
 function renderCheckoutModalContent() {
   const subtotal = state.cart.reduce((sum, i) => sum + (i.totalPricePerUnit * i.quantity), 0);
   const sst = subtotal * 0.08;
@@ -846,7 +853,6 @@ function renderCheckoutModalContent() {
 
   return `
     <div class="modal-container p-6 max-w-3xl">
-      <!-- Modal Top Header -->
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
         <div>
           <div class="flex items-center gap-2 mb-1">
@@ -863,11 +869,8 @@ function renderCheckoutModalContent() {
       </div>
 
       <form onsubmit="handleFormSubmit(event)" class="space-y-5">
-        <!-- 2-Column Grid Layout for Simple Clean View -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <!-- Left Column: Delivery & Customer Info -->
           <div class="space-y-4">
-            <!-- General Info -->
             <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
               <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Order Information</h3>
               <div class="grid grid-cols-2 gap-3 text-xs">
@@ -888,7 +891,6 @@ function renderCheckoutModalContent() {
               </div>
             </div>
 
-            <!-- Customer & Delivery -->
             <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
               <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Delivery Destination</h3>
               
@@ -926,7 +928,6 @@ function renderCheckoutModalContent() {
               </div>
             </div>
 
-            <!-- Restaurant Options -->
             <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
               <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Fulfillment Options</h3>
               <div class="space-y-2 text-xs">
@@ -964,9 +965,7 @@ function renderCheckoutModalContent() {
             </div>
           </div>
 
-          <!-- Right Column: Order Items Summary & Payment -->
           <div class="space-y-4 flex flex-col justify-between">
-            <!-- Order Items List -->
             <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200">
               <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider mb-2">Order Items (${state.cart.length})</h3>
               <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
@@ -982,7 +981,6 @@ function renderCheckoutModalContent() {
               </div>
             </div>
 
-            <!-- Payment Method & Totals -->
             <div class="p-3.5 bg-slate-50/70 rounded-xl border border-slate-200 space-y-3">
               <div>
                 <label class="form-label mb-1">
@@ -1008,7 +1006,6 @@ function renderCheckoutModalContent() {
                 </select>
               </div>
 
-              <!-- Price Breakdown -->
               <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1 text-xs">
                 <div class="flex justify-between text-slate-600"><span>Subtotal:</span><span class="font-bold text-slate-900">RM ${subtotal.toFixed(2)}</span></div>
                 <div class="flex justify-between text-slate-600"><span>SST Tax (8%):</span><span class="font-bold text-slate-900">RM ${sst.toFixed(2)}</span></div>
@@ -1021,7 +1018,6 @@ function renderCheckoutModalContent() {
               </div>
             </div>
 
-            <!-- Submit Button -->
             <div class="flex items-center justify-end gap-2 pt-2">
               <button type="button" onclick="closeCheckoutModal()" class="btn-secondary text-xs py-2 px-4">Cancel</button>
               <button type="submit" class="btn-primary text-xs py-2.5 px-6 font-extrabold shadow-sm">
@@ -1071,7 +1067,7 @@ function renderOrderTrackingModalContent() {
   `;
 }
 
-// EVENT HANDLERS & CONTROLLERS
+// EVENT HANDLERS
 window.switchTab = function(tabName) {
   state.activeTab = tabName;
   renderApp();
