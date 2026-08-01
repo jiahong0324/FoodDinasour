@@ -362,7 +362,7 @@ function renderActiveTabContent() {
   }
 }
 
-// 1. CUSTOMER PORTAL (CLEAN & MODERN UI)
+// 1. CUSTOMER PORTAL
 function renderCustomerPortal() {
   const filteredMenu = state.menu.filter(item => {
     const matchesRest = state.selectedRestaurant === 'all' || item.restaurantId === state.selectedRestaurant;
@@ -374,14 +374,12 @@ function renderCustomerPortal() {
   });
 
   return `
-    <!-- Modern Sleek Header Bar -->
     <div class="bg-white rounded-2xl p-5 mb-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
       <div>
         <h2 class="text-xl font-extrabold text-slate-900">Explore Restaurants & Menus</h2>
         <p class="text-slate-500 text-xs mt-0.5">20-Min express delivery from 5 top outlets in Kuala Lumpur</p>
       </div>
 
-      <!-- Integrated Search Input -->
       <div class="w-full md:w-80 flex items-center bg-slate-50 rounded-xl p-1 border border-slate-200">
         <i class="fa-solid fa-magnifying-glass text-slate-400 pl-3"></i>
         <input type="text" placeholder="Search food or outlets..." 
@@ -392,7 +390,6 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- Clean Restaurant Selector Cards (No ugly scrollbars) -->
     <div class="mb-6">
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-xs font-extrabold text-slate-700 uppercase tracking-wider">Select Outlet</h3>
@@ -422,7 +419,6 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- Category Filter Chips -->
     <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 mb-6">
       ${[
         { id: 'all', label: 'All Categories' },
@@ -440,7 +436,6 @@ function renderCustomerPortal() {
       `).join('')}
     </div>
 
-    <!-- Clean GrabFood / Deliveroo Style Food Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       ${filteredMenu.map(item => `
         <div onclick="openFoodDetailModal('${item.id}')" 
@@ -665,7 +660,7 @@ function renderAnalyticsDashboard() {
   `;
 }
 
-// FOOD CUSTOMIZATION MODAL
+// FOOD CUSTOMIZATION MODAL (FIXED PINNED ACTION FOOTER)
 function renderFoodDetailModalContent() {
   const item = state.customizingItem;
   if (!item) return '';
@@ -676,33 +671,35 @@ function renderFoodDetailModalContent() {
   const totalPrice = unitPrice * state.customization.quantity;
 
   return `
-    <div class="modal-container food-detail-modal">
-      <div class="relative h-60 bg-slate-100">
+    <div class="modal-container food-detail-modal flex flex-col">
+      <!-- Fixed Shrink-0 Hero Header Image -->
+      <div class="relative h-40 shrink-0 bg-slate-100">
         <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
-        <button onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 text-slate-700 hover:text-slate-900 font-bold flex items-center justify-center shadow-md">
+        <button onclick="closeFoodDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 text-slate-700 hover:text-slate-900 font-bold flex items-center justify-center shadow-md border border-slate-200">
           ✕
         </button>
       </div>
 
-      <div class="p-6 space-y-6 max-h-[60vh] overflow-y-auto">
+      <!-- Middle Scrollable Options Content (Takes remaining height) -->
+      <div class="p-5 space-y-5 overflow-y-auto flex-1">
         <div>
-          <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-1">${item.restaurantName}</span>
-          <h2 class="text-2xl font-extrabold text-slate-900 mb-1">${item.name}</h2>
-          <p class="text-slate-600 text-xs leading-relaxed mb-3">${item.description}</p>
+          <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block mb-0.5">${item.restaurantName}</span>
+          <h2 class="text-xl font-extrabold text-slate-900 mb-1">${item.name}</h2>
+          <p class="text-slate-600 text-xs leading-relaxed mb-2">${item.description}</p>
           <div class="flex items-center gap-3 text-xs font-bold text-slate-700">
             <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded">★ ${item.rating}</span>
             <span>⏱️ ${item.prepTime}</span>
-            <span class="text-emerald-700 text-base font-extrabold">RM ${item.price.toFixed(2)}</span>
+            <span class="text-emerald-700 text-sm font-extrabold">RM ${item.price.toFixed(2)}</span>
           </div>
         </div>
 
         ${item.sizes && item.sizes.length > 0 ? `
-          <div class="border-t border-slate-200 pt-4">
-            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Choice of Size</h4>
-            <div class="space-y-2">
+          <div class="border-t border-slate-200 pt-3">
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2">Choice of Size</h4>
+            <div class="space-y-1.5">
               ${item.sizes.map((size, idx) => `
                 <label class="option-card">
-                  <div class="flex items-center gap-3">
+                  <div class="flex items-center gap-2.5">
                     <input type="radio" name="food-size" 
                            ${state.customization.size && state.customization.size.name === size.name ? 'checked' : idx === 0 ? 'checked' : ''} 
                            onchange="selectCustomSize('${size.name}', ${size.price})"
@@ -717,12 +714,12 @@ function renderFoodDetailModalContent() {
         ` : ''}
 
         ${item.addons && item.addons.length > 0 ? `
-          <div class="border-t border-slate-200 pt-4">
-            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-3">Add-ons & Toppings</h4>
-            <div class="space-y-2">
+          <div class="border-t border-slate-200 pt-3">
+            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2">Add-ons & Toppings</h4>
+            <div class="space-y-1.5">
               ${item.addons.map(addon => `
                 <label class="option-card">
-                  <div class="flex items-center gap-3">
+                  <div class="flex items-center gap-2.5">
                     <input type="checkbox" 
                            ${state.customization.addons.some(a => a.name === addon.name) ? 'checked' : ''}
                            onchange="toggleCustomAddon('${addon.name}', ${addon.price})"
@@ -736,24 +733,25 @@ function renderFoodDetailModalContent() {
           </div>
         ` : ''}
 
-        <div class="border-t border-slate-200 pt-4">
-          <label class="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-2">Special Instructions</label>
+        <div class="border-t border-slate-200 pt-3">
+          <label class="text-xs font-extrabold text-slate-900 uppercase tracking-wider block mb-1.5">Special Instructions</label>
           <input type="text" 
                  value="${state.customization.notes}"
                  oninput="updateCustomNotes(this.value)"
                  placeholder="e.g. Extra spicy, sauce on the side" 
-                 class="form-input text-xs" />
+                 class="form-input text-xs py-1.5" />
         </div>
       </div>
 
-      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-4">
+      <!-- Pinned Action Footer (ALWAYS VISIBLE & ACCESSIBLE AT BOTTOM) -->
+      <div class="shrink-0 p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3 shadow-md">
         <div class="flex items-center border border-slate-300 bg-white rounded-lg p-1 shadow-sm">
-          <button type="button" onclick="adjustCustomQuantity(-1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">-</button>
-          <span class="w-8 text-center text-sm font-extrabold text-slate-900">${state.customization.quantity}</span>
-          <button type="button" onclick="adjustCustomQuantity(1)" class="w-8 h-8 font-bold text-slate-600 hover:text-slate-900 text-lg flex items-center justify-center">+</button>
+          <button type="button" onclick="adjustCustomQuantity(-1)" class="w-7 h-7 font-bold text-slate-600 hover:text-slate-900 text-base flex items-center justify-center">-</button>
+          <span class="w-7 text-center text-xs font-extrabold text-slate-900">${state.customization.quantity}</span>
+          <button type="button" onclick="adjustCustomQuantity(1)" class="w-7 h-7 font-bold text-slate-600 hover:text-slate-900 text-base flex items-center justify-center">+</button>
         </div>
 
-        <button type="button" onclick="confirmAddCustomizedItemToCart()" class="btn-primary w-full text-xs py-3 font-extrabold">
+        <button type="button" onclick="confirmAddCustomizedItemToCart()" class="btn-primary w-full text-xs py-2.5 font-extrabold shadow-sm">
           <span>Add to Basket</span>
           <span>•</span>
           <span>RM ${totalPrice.toFixed(2)}</span>
