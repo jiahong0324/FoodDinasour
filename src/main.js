@@ -960,21 +960,95 @@ function renderTrackingScreen() {
 function renderHelpModal() {
   return `
     <div class="modal-overlay active">
-      <div class="modal-container max-w-lg p-5 overflow-y-auto space-y-4 text-xs">
-        <div class="flex items-center justify-between pb-2 border-b border-slate-200">
-          <h2 class="text-sm font-bold text-slate-900">Food Ordering Guidance</h2>
-          <button onclick="window.closeHelpModal()" class="text-slate-400 hover:text-slate-600 font-bold text-base">✕</button>
+      <div class="modal-container max-w-xl p-6 overflow-y-auto max-h-[88vh] space-y-5">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-black">
+              ?
+            </div>
+            <div>
+              <h2 class="text-base font-black text-slate-900">Food Ordering & System Help Guide</h2>
+              <p class="text-xs text-slate-500 font-medium">Activity 10.0 System Design – Inputs User Guidance</p>
+            </div>
+          </div>
+          <button onclick="window.closeHelpModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
         </div>
 
-        <div class="space-y-2 leading-relaxed text-slate-600">
-          <p><strong>1. Create Order:</strong> Select your preferred outlet, delivery date & time, contact info, food combo, add-ons, and payment method.</p>
-          <p><strong>2. Dynamic Menu:</strong> Selecting a different outlet dynamically updates available menu items.</p>
-          <p><strong>3. Manage Order:</strong> Search <code>FD-ORD-20260801-094</code> to request cancellation or item modifications.</p>
+        <div class="space-y-4 text-xs">
+          
+          <!-- 1. Step-by-Step Food Ordering -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+            <h3 class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+              <span>🍔 1. Step-by-Step Food Ordering</span>
+            </h3>
+            <ul class="list-disc pl-4 space-y-1 text-slate-600 font-medium leading-relaxed">
+              <li><strong>Select Restaurant Outlet:</strong> Choose from 5 partner outlets (Dino Grill, Asian Kitchen, Jurassic Pizzeria, Crispy Chicken, Rex Dessert).</li>
+              <li><strong>Dynamic Cascading Menu:</strong> Changing the restaurant outlet automatically filters and updates available food items & add-on choices below.</li>
+              <li><strong>Add Items & Customize:</strong> Pick your meal, select add-ons, add special notes (up to 150 chars), adjust quantity, and click <em>Add Item to Order List</em>.</li>
+            </ul>
+          </div>
+
+          <!-- 2. Promo Vouchers -->
+          <div class="p-4 bg-emerald-50/70 rounded-2xl border border-emerald-200 space-y-2">
+            <h3 class="font-extrabold text-emerald-900 text-xs flex items-center gap-1.5">
+              <span>🏷️ 2. Promo Vouchers & Discounts</span>
+            </h3>
+            <p class="text-emerald-950 font-medium leading-relaxed">
+              Enter promo code <strong><code class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-mono font-bold">DINOSAVE10</code></strong> in the promo box on the Order Summary to get an instant <strong>10% discount</strong> on your food subtotal.
+            </p>
+          </div>
+
+          <!-- 3. 2-Step Checkout & Payment -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+            <h3 class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+              <span>💳 3. 2-Step Payment & Checkout</span>
+            </h3>
+            <ul class="list-disc pl-4 space-y-1 text-slate-600 font-medium leading-relaxed">
+              <li>Click <strong>Continue to Payment</strong> after adding food items and filling contact info.</li>
+              <li>Select your payment channel: <strong>Credit / Debit Card</strong>, <strong>Online Banking (FPX)</strong>, <strong>E-Wallet</strong>, or <strong>Cash on Delivery</strong>.</li>
+              <li>Enter payment credentials and click <strong>Pay & Complete Order</strong> to finalize your order.</li>
+            </ul>
+          </div>
+
+          <!-- 4. Data Validation Rules -->
+          <div class="p-4 bg-amber-50/70 rounded-2xl border border-amber-200 space-y-2">
+            <h3 class="font-extrabold text-amber-900 text-xs flex items-center gap-1.5">
+              <span>✅ 4. Input Validation Rules</span>
+            </h3>
+            <ul class="list-disc pl-4 space-y-1 text-amber-950 font-medium leading-relaxed">
+              <li><strong>Contact Phone:</strong> Requires valid phone number format (e.g. <code>012-3456789</code>).</li>
+              <li><strong>Customer IC:</strong> Requires valid NRIC identification format (e.g. <code>010324-14-5582</code>).</li>
+              <li><strong>Delivery Address:</strong> Presence check requiring a complete address (min 5 chars).</li>
+              <li><strong>Credit Card Number:</strong> Format Check requiring exactly 16 numeric digits.</li>
+              <li><strong>Expiry Date & CVV:</strong> Requires MM/YY format (e.g. <code>12/28</code>) and 3-digit CVV code.</li>
+            </ul>
+          </div>
+
+          <!-- 5. Order Tracking & Hygiene -->
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+            <h3 class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+              <span>🛵 5. Delivery Tracking & Hygiene Options</span>
+            </h3>
+            <p class="text-slate-600 font-medium leading-relaxed">
+              Switch to the <strong>Track Delivery</strong> tab to monitor live progress and enable contactless drop-off hygiene options. Order Reference Number and Promo Code are locked to read-only during delivery tracking.
+            </p>
+          </div>
+
+          <!-- 6. SAD Validation Badges Toggle -->
+          <div class="p-4 bg-slate-100 rounded-2xl border border-slate-300 space-y-1">
+            <h3 class="font-extrabold text-slate-800 text-xs">🏷️ Validation Badges Toggle (SAD Evaluation)</h3>
+            <p class="text-slate-600 font-medium leading-relaxed">
+              Click <strong>Show Badges</strong> in the top header navigation bar to toggle field validation check tags (Task 2 annotations) on all input fields for lecturer marking evaluation.
+            </p>
+          </div>
+
         </div>
 
-        <div class="pt-2 border-t border-slate-100 text-right">
-          <button onclick="window.closeHelpModal()" class="btn-primary text-xs py-1.5 px-4 font-bold">
-            Close Help
+        <div class="pt-3 border-t border-slate-200 flex justify-end">
+          <button onclick="window.closeHelpModal()" class="btn-primary text-xs py-2 px-5 font-bold">
+            Close Help Guide
           </button>
         </div>
       </div>
