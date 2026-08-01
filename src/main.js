@@ -936,14 +936,14 @@ function renderCheckoutModalContent() {
                   <span>Cardholder Name</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
                 </label>
-                <input type="text" value="Chan Pei Xuan" required class="form-input py-2 text-xs" />
+                <input type="text" value="" placeholder="e.g. Chan Pei Xuan" required class="form-input py-2 text-xs" />
               </div>
               <div>
                 <label class="form-label text-xs mb-1">
                   <span>Card Number</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">16-Digit</span>' : ''}
                 </label>
-                <input type="text" value="1234567812345678" maxlength="19" required class="form-input py-2 text-xs font-mono tracking-widest" placeholder="16-digit card number without spaces" />
+                <input type="text" value="" maxlength="19" required class="form-input py-2 text-xs font-mono tracking-widest" placeholder="16-digit card number without spaces" />
                 <p class="text-[10px] text-slate-400 mt-0.5">16-digit card number without spaces</p>
               </div>
               <div class="grid grid-cols-2 gap-3">
@@ -952,14 +952,14 @@ function renderCheckoutModalContent() {
                     <span>Expiry Date</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">Date</span>' : ''}
                   </label>
-                  <input type="text" value="October, 2029" required class="form-input py-2 text-xs" />
+                  <input type="text" value="" placeholder="e.g. October, 2029" required class="form-input py-2 text-xs" />
                 </div>
                 <div>
                   <label class="form-label text-xs mb-1">
                     <span>CVV</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">3-Digit</span>' : ''}
                   </label>
-                  <input type="password" value="882" maxlength="4" required class="form-input py-2 text-xs font-mono text-center" />
+                  <input type="password" value="" placeholder="e.g. 882" maxlength="4" required class="form-input py-2 text-xs font-mono text-center" />
                 </div>
               </div>
             ` : ''}
@@ -968,7 +968,8 @@ function renderCheckoutModalContent() {
               <div>
                 <label class="form-label text-xs mb-1">Select Bank Portal</label>
                 <select class="form-input py-2 text-xs font-bold text-slate-800">
-                  <option selected>Maybank2u (Maybank)</option>
+                  <option value="" disabled selected>-- Select FPX Bank --</option>
+                  <option>Maybank2u (Maybank)</option>
                   <option>CIMB Clicks (CIMB Bank)</option>
                   <option>Public Bank Online</option>
                   <option>RHB Now Online Banking</option>
@@ -976,25 +977,25 @@ function renderCheckoutModalContent() {
               </div>
               <div>
                 <label class="form-label text-xs mb-1">Online Banking User ID</label>
-                <input type="text" value="chanpeixuan99" required class="form-input py-2 text-xs" />
+                <input type="text" value="" placeholder="Enter bank user ID" required class="form-input py-2 text-xs" />
               </div>
             ` : ''}
 
             ${currentPaymentChannel === 'ewallet' ? `
               <div>
                 <label class="form-label text-xs mb-1">E-Wallet Registered Phone</label>
-                <input type="tel" value="012-3456789" required class="form-input py-2 text-xs" />
+                <input type="tel" value="" placeholder="e.g. 012-3456789" required class="form-input py-2 text-xs" />
               </div>
               <div>
                 <label class="form-label text-xs mb-1">6-Digit E-Wallet Security PIN</label>
-                <input type="password" value="******" maxlength="6" required class="form-input py-2 text-xs font-mono text-center" />
+                <input type="password" value="" placeholder="e.g. 123456" maxlength="6" required class="form-input py-2 text-xs font-mono text-center" />
               </div>
             ` : ''}
 
             ${currentPaymentChannel === 'cod' ? `
               <div>
                 <label class="form-label text-xs mb-1">Cash Change Request Note</label>
-                <input type="text" value="Paying with RM 100 note, please prepare RM 37.18 change" class="form-input py-2 text-xs" />
+                <input type="text" value="" placeholder="e.g. Paying with RM 100 note, please prepare RM 37.18 change" class="form-input py-2 text-xs" />
               </div>
             ` : ''}
           </div>
@@ -1083,14 +1084,14 @@ function renderCheckoutModalContent() {
                   <span>${showBadges ? '[7] ' : ''}Passport / MyKad</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">12-Digit</span>' : ''}
                 </label>
-                <input type="text" value="A1234567" class="form-input py-1.5" />
+                <input type="text" value="" placeholder="e.g. A1234567" class="form-input py-1.5" />
               </div>
               <div>
                 <label class="form-label mb-1">
                   <span>${showBadges ? '[8] ' : ''}Contact Number</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Phone Check</span>' : ''}
                 </label>
-                <input type="tel" value="012-3456789" class="form-input py-1.5" />
+                <input type="tel" value="" placeholder="e.g. 012-3456789" class="form-input py-1.5" />
               </div>
             </div>
 
@@ -1099,7 +1100,7 @@ function renderCheckoutModalContent() {
                 <span>${showBadges ? '[9] ' : ''}Delivery Address</span>
                 ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
               </label>
-              <input type="text" value="No. 12, Jalan Genting Klang, Setapak, 53300 KL" class="form-input py-1.5" />
+              <input type="text" value="" placeholder="e.g. No. 12, Jalan Genting Klang, Setapak, 53300 KL" class="form-input py-1.5" />
             </div>
           </div>
 
