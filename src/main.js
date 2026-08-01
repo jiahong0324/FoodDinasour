@@ -62,7 +62,7 @@ const state = {
       orderId: 'FD-ORD-20260801-094',
       dateTime: '01/08/2026 14:30',
       customerId: 'CUST-88204',
-      customerName: 'Lee Jia Hong',
+      customerName: 'John',
       contactPhone: '012-3456789',
       deliveryAddress: 'No. 12, Jalan Genting Klang, Setapak, 53300 Kuala Lumpur',
       postalCode: '53300',
@@ -898,7 +898,7 @@ function renderCheckoutModalContent() {
                 <span>[3] Customer ID</span>
                 <span class="val-tag val-tag-none">None (Imported Data)</span>
               </label>
-              <input type="text" value="CUST-88204 (Lee Jia Hong)" readonly class="form-input" />
+              <input type="text" value="CUST-88204 (John)" readonly class="form-input" />
             </div>
             <div>
               <label class="form-label">
