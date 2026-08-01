@@ -1012,35 +1012,13 @@ function renderHelpModal() {
             </ul>
           </div>
 
-          <!-- 4. Data Validation Rules -->
-          <div class="p-4 bg-amber-50/70 rounded-2xl border border-amber-200 space-y-2">
-            <h3 class="font-extrabold text-amber-900 text-xs flex items-center gap-1.5">
-              <span>✅ 4. Input Validation Rules</span>
-            </h3>
-            <ul class="list-disc pl-4 space-y-1 text-amber-950 font-medium leading-relaxed">
-              <li><strong>Contact Phone:</strong> Requires valid phone number format (e.g. <code>012-3456789</code>).</li>
-              <li><strong>Customer IC:</strong> Requires valid NRIC identification format (e.g. <code>010324-14-5582</code>).</li>
-              <li><strong>Delivery Address:</strong> Presence check requiring a complete address (min 5 chars).</li>
-              <li><strong>Credit Card Number:</strong> Format Check requiring exactly 16 numeric digits.</li>
-              <li><strong>Expiry Date & CVV:</strong> Requires MM/YY format (e.g. <code>12/28</code>) and 3-digit CVV code.</li>
-            </ul>
-          </div>
-
-          <!-- 5. Order Tracking & Hygiene -->
+          <!-- 4. Order Tracking & Hygiene -->
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
             <h3 class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
-              <span>🛵 5. Delivery Tracking & Hygiene Options</span>
+              <span>🛵 4. Delivery Tracking & Hygiene Options</span>
             </h3>
             <p class="text-slate-600 font-medium leading-relaxed">
               Switch to the <strong>Track Delivery</strong> tab to monitor live progress and enable contactless drop-off hygiene options. Order Reference Number and Promo Code are locked to read-only during delivery tracking.
-            </p>
-          </div>
-
-          <!-- 6. SAD Validation Badges Toggle -->
-          <div class="p-4 bg-slate-100 rounded-2xl border border-slate-300 space-y-1">
-            <h3 class="font-extrabold text-slate-800 text-xs">🏷️ Validation Badges Toggle (SAD Evaluation)</h3>
-            <p class="text-slate-600 font-medium leading-relaxed">
-              Click <strong>Show Badges</strong> in the top header navigation bar to toggle field validation check tags (Task 2 annotations) on all input fields for lecturer marking evaluation.
             </p>
           </div>
 
