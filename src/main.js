@@ -98,6 +98,7 @@ const state = {
 
   // Menu Items Master Data (Cascading per outlet)
   menu: [
+    // 1. Dino Grill & Steakhouse (Mid Valley) - rest-1
     {
       id: 'item-1',
       restaurantId: 'rest-1',
@@ -113,66 +114,330 @@ const state = {
     {
       id: 'item-2',
       restaurantId: 'rest-1',
-      name: 'Dinosaur Iced Lemon Tea',
-      price: 5.00,
+      name: 'Jurassic Smoked BBQ Ribs (Half Rack)',
+      price: 34.90,
       addons: [
-        { name: 'Add Honey Boba Pearls (+RM 1.50)', price: 1.50 },
-        { name: 'Extra Lemon Slices (+RM 1.00)', price: 1.00 },
+        { name: 'Grilled Butter Corn (+RM 4.00)', price: 4.00 },
+        { name: 'Extra Smoky BBQ Dip (+RM 2.50)', price: 2.50 },
+        { name: 'Full Rack Upgrade (+RM 28.00)', price: 28.00 },
         { name: 'No Add-ons (RM 0.00)', price: 0.00 }
       ]
     },
     {
       id: 'item-3',
       restaurantId: 'rest-1',
-      name: 'Jurassic Smoked BBQ Ribs',
-      price: 34.90,
+      name: 'T-Rex Flame-Grilled Wagyu Ribeye Steak (250g)',
+      price: 58.00,
       addons: [
-        { name: 'Grilled Butter Corn (+RM 4.00)', price: 4.00 },
-        { name: 'Extra Smoky BBQ Sauce (+RM 2.50)', price: 2.50 },
+        { name: 'Mushroom Truffle Sauce (+RM 4.50)', price: 4.50 },
+        { name: 'Black Pepper Herb Butter (+RM 3.00)', price: 3.00 },
+        { name: 'Mashed Potato Side (+RM 5.00)', price: 5.00 },
         { name: 'No Add-ons (RM 0.00)', price: 0.00 }
       ]
     },
     {
       id: 'item-4',
-      restaurantId: 'rest-2',
-      name: 'Jurassic Nasi Lemak Special',
-      price: 16.80,
+      restaurantId: 'rest-1',
+      name: 'Dino Chicken Chop with Black Pepper Sauce',
+      price: 21.90,
       addons: [
-        { name: 'Extra Sambal Tumis (+RM 1.50)', price: 1.50 },
-        { name: 'Fried Sunny Egg (+RM 2.00)', price: 2.00 },
+        { name: 'Melted Mozzarella Cheese (+RM 3.50)', price: 3.50 },
+        { name: 'Extra Black Pepper Gravy (+RM 2.00)', price: 2.00 },
         { name: 'No Add-ons (RM 0.00)', price: 0.00 }
       ]
     },
     {
       id: 'item-5',
-      restaurantId: 'rest-3',
-      name: 'T-Rex Pepperoni Pizza Supreme',
-      price: 28.90,
+      restaurantId: 'rest-1',
+      name: 'Dinosaur Loaded Cheesy Fries Bucket',
+      price: 11.50,
       addons: [
-        { name: 'Stuffed Crust Cheese (+RM 5.00)', price: 5.00 },
-        { name: 'Extra Truffle Oil (+RM 3.50)', price: 3.50 },
+        { name: 'Beef Bacon Bits (+RM 3.00)', price: 3.00 },
+        { name: 'Jalapeno Slices (+RM 2.00)', price: 2.00 },
         { name: 'No Add-ons (RM 0.00)', price: 0.00 }
       ]
     },
     {
       id: 'item-6',
-      restaurantId: 'rest-4',
-      name: 'Crispy Dino Fried Chicken Basket',
-      price: 22.90,
+      restaurantId: 'rest-1',
+      name: 'Dinosaur Iced Lemon Tea (700ml)',
+      price: 5.00,
       addons: [
-        { name: 'Garlic Mayo Dip (+RM 1.50)', price: 1.50 },
-        { name: 'Spicy Cheese Sauce (+RM 2.50)', price: 2.50 },
+        { name: 'Honey Boba Pearls (+RM 1.50)', price: 1.50 },
+        { name: 'Extra Fresh Lemon Slices (+RM 1.00)', price: 1.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+
+    // 2. Dinosaur Asian Kitchen (KLCC) - rest-2
+    {
+      id: 'item-7',
+      restaurantId: 'rest-2',
+      name: 'Jurassic Nasi Lemak Special with Crispy Chicken',
+      price: 16.80,
+      addons: [
+        { name: 'Extra Sambal Tumis (+RM 1.50)', price: 1.50 },
+        { name: 'Fried Sunny Side Egg (+RM 2.00)', price: 2.00 },
+        { name: 'Double Chicken Rendang (+RM 7.00)', price: 7.00 },
         { name: 'No Add-ons (RM 0.00)', price: 0.00 }
       ]
     },
     {
-      id: 'item-7',
+      id: 'item-8',
+      restaurantId: 'rest-2',
+      name: 'T-Rex Spicy Beef Rendang Noodle Bowl',
+      price: 19.50,
+      addons: [
+        { name: 'Extra Tender Braised Beef (+RM 5.00)', price: 5.00 },
+        { name: 'Soft-Boiled Ramen Egg (+RM 2.50)', price: 2.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-9',
+      restaurantId: 'rest-2',
+      name: 'Dino Seafood Char Kway Teow',
+      price: 15.90,
+      addons: [
+        { name: 'Extra Tiger Prawns (+RM 4.50)', price: 4.50 },
+        { name: 'Sunny Side Egg (+RM 2.00)', price: 2.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-10',
+      restaurantId: 'rest-2',
+      name: 'Dinosaur Hainanese Poached Chicken Rice',
+      price: 14.50,
+      addons: [
+        { name: 'Braised Egg & Tofu (+RM 3.00)', price: 3.00 },
+        { name: 'Extra Fragrant Rice (+RM 2.00)', price: 2.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-11',
+      restaurantId: 'rest-2',
+      name: 'Rex Thai Tom Yum Seafood Noodle Soup',
+      price: 22.00,
+      addons: [
+        { name: 'Extra Squid & Prawns (+RM 6.00)', price: 6.00 },
+        { name: 'Spicy Level Upgrade (+RM 1.00)', price: 1.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-12',
+      restaurantId: 'rest-2',
+      name: 'Dino Special Iced Milk Tea with Grass Jelly',
+      price: 6.50,
+      addons: [
+        { name: 'Less Sugar 50% (RM 0.00)', price: 0.00 },
+        { name: 'Extra Grass Jelly (+RM 1.50)', price: 1.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+
+    // 3. Jurassic Pizzeria (Setapak) - rest-3
+    {
+      id: 'item-13',
+      restaurantId: 'rest-3',
+      name: 'T-Rex Pepperoni Pizza Supreme (12-inch)',
+      price: 28.90,
+      addons: [
+        { name: 'Stuffed Crust Cheese (+RM 5.00)', price: 5.00 },
+        { name: 'Extra Truffle Oil Drizzle (+RM 3.50)', price: 3.50 },
+        { name: 'Extra Mozzarella Cheese (+RM 4.00)', price: 4.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-14',
+      restaurantId: 'rest-3',
+      name: 'Jurassic Four-Cheese Lava Pizza',
+      price: 32.00,
+      addons: [
+        { name: 'Garlic Butter Crust (+RM 3.00)', price: 3.00 },
+        { name: 'Honey Drizzle (+RM 2.00)', price: 2.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-15',
+      restaurantId: 'rest-3',
+      name: 'Dino Truffle Mushroom & Beef Pizza',
+      price: 35.50,
+      addons: [
+        { name: 'Extra Truffle Cream Base (+RM 4.00)', price: 4.00 },
+        { name: 'Parmesan Shavings (+RM 3.00)', price: 3.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-16',
+      restaurantId: 'rest-3',
+      name: 'Rex BBQ Grilled Chicken & Pineapple Pizza',
+      price: 29.90,
+      addons: [
+        { name: 'Extra Smoky BBQ Drizzle (+RM 2.00)', price: 2.00 },
+        { name: 'Jalapeno Pepper Coins (+RM 2.50)', price: 2.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-17',
+      restaurantId: 'rest-3',
+      name: 'Jurassic Garlic Butter Breadsticks with Dip',
+      price: 9.90,
+      addons: [
+        { name: 'Marinara Tomato Dip (+RM 2.00)', price: 2.00 },
+        { name: 'Melted Garlic Cheese Dip (+RM 2.50)', price: 2.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-18',
+      restaurantId: 'rest-3',
+      name: 'Sparkling Italian Blood Orange Soda',
+      price: 7.50,
+      addons: [
+        { name: 'Fresh Mint & Lime (+RM 1.00)', price: 1.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+
+    // 4. T-Rex Crispy Chicken (Bukit Bintang) - rest-4
+    {
+      id: 'item-19',
+      restaurantId: 'rest-4',
+      name: 'Crispy Dino Fried Chicken Basket (3-pc)',
+      price: 22.90,
+      addons: [
+        { name: 'Spicy Honey Garlic Dip (+RM 2.00)', price: 2.00 },
+        { name: 'Spicy Cheese Sauce (+RM 2.50)', price: 2.50 },
+        { name: '5-pc Bucket Upgrade (+RM 12.00)', price: 12.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-20',
+      restaurantId: 'rest-4',
+      name: 'T-Rex Nashville Hot Spicy Chicken Sandwich',
+      price: 17.50,
+      addons: [
+        { name: 'Extra Melted Cheddar (+RM 2.00)', price: 2.00 },
+        { name: 'Double Crispy Patty (+RM 6.00)', price: 6.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-21',
+      restaurantId: 'rest-4',
+      name: 'Dino Golden Chicken Tenders with Honey Mustard',
+      price: 14.90,
+      addons: [
+        { name: 'Extra Honey Mustard Dip (+RM 1.50)', price: 1.50 },
+        { name: 'Smoky Chipotle Sauce (+RM 2.00)', price: 2.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-22',
+      restaurantId: 'rest-4',
+      name: 'Jurassic Popcorn Chicken & Cheesy Fries Bucket',
+      price: 18.90,
+      addons: [
+        { name: 'Extra Cheese Sauce (+RM 2.50)', price: 2.50 },
+        { name: 'Chili Powder Seasoning (+RM 1.00)', price: 1.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-23',
+      restaurantId: 'rest-4',
+      name: 'Rex Creamy Coleslaw & Mashed Potato Combo',
+      price: 7.90,
+      addons: [
+        { name: 'Extra Black Pepper Gravy (+RM 1.50)', price: 1.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-24',
+      restaurantId: 'rest-4',
+      name: 'Dino Sparkling Peach Fizzy Drink',
+      price: 6.00,
+      addons: [
+        { name: 'Add Peach Popping Boba (+RM 2.00)', price: 2.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+
+    // 5. Rex Dessert & Cafe (Subang) - rest-5
+    {
+      id: 'item-25',
       restaurantId: 'rest-5',
-      name: 'Molten Lava Chocolate Cake',
+      name: 'Molten Lava Chocolate Cake with Vanilla Ice Cream',
       price: 12.50,
       addons: [
         { name: 'Vanilla Ice Cream Scoop (+RM 3.00)', price: 3.00 },
         { name: 'Salted Caramel Drizzle (+RM 2.00)', price: 2.00 },
+        { name: 'Double Lava Cake Upgrade (+RM 10.00)', price: 10.00 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-26',
+      restaurantId: 'rest-5',
+      name: 'Dino Strawberry Fluffy Souffle Pancake Tower',
+      price: 16.90,
+      addons: [
+        { name: 'Fresh Strawberry Compote (+RM 3.50)', price: 3.50 },
+        { name: 'Extra Maple Syrup (+RM 1.50)', price: 1.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-27',
+      restaurantId: 'rest-5',
+      name: 'Jurassic Uji Matcha Green Tea Latte',
+      price: 11.00,
+      addons: [
+        { name: 'Oat Milk Substitution (+RM 2.50)', price: 2.50 },
+        { name: 'Matcha Soft Serve Float (+RM 3.50)', price: 3.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-28',
+      restaurantId: 'rest-5',
+      name: 'T-Rex Basque Burnt Cheesecake Slice',
+      price: 14.00,
+      addons: [
+        { name: 'Warm Chocolate Sauce (+RM 2.00)', price: 2.00 },
+        { name: 'Whipped Cream (+RM 1.50)', price: 1.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-29',
+      restaurantId: 'rest-5',
+      name: 'Rex Caramel Macchiato Iced Coffee',
+      price: 12.50,
+      addons: [
+        { name: 'Extra Espresso Shot (+RM 2.50)', price: 2.50 },
+        { name: 'Vanilla Syrup (+RM 1.50)', price: 1.50 },
+        { name: 'No Add-ons (RM 0.00)', price: 0.00 }
+      ]
+    },
+    {
+      id: 'item-30',
+      restaurantId: 'rest-5',
+      name: 'Dino Mango Coconut Sago Dessert Bowl',
+      price: 9.50,
+      addons: [
+        { name: 'Fresh Mango Cubes (+RM 2.50)', price: 2.50 },
+        { name: 'Coconut Jelly (+RM 1.50)', price: 1.50 },
         { name: 'No Add-ons (RM 0.00)', price: 0.00 }
       ]
     }
