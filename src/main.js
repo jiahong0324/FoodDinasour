@@ -266,26 +266,26 @@ function initApp() {
 function renderApp() {
   const appElement = document.getElementById('app');
   appElement.innerHTML = `
-    <!-- Top Navigation Header (Grab & UberEats Style) -->
+    <!-- Top Navigation Header (Foodpanda Style) -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-4">
-        <!-- Logo & Location Badge -->
+        <!-- Logo & Location -->
         <div class="flex items-center gap-4 cursor-pointer" onclick="switchTab('customer')">
           <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-2xl font-black shadow-md shadow-emerald-600/30">
-              🦖
+            <div class="w-10 h-10 rounded-2xl bg-[#d70f64] text-white flex items-center justify-center text-2xl font-black shadow-md shadow-[#d70f64]/30">
+              🐼
             </div>
             <div>
-              <h1 class="text-base font-extrabold text-gray-900 tracking-tight leading-none flex items-center gap-1.5">
-                FoodDinosaur <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">Food</span>
+              <h1 class="text-base font-black text-[#d70f64] tracking-tight leading-none flex items-center gap-1.5">
+                fooddinosaur <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-[#fff0f5] text-[#d70f64] border border-[#ffccd9]">food & grocery</span>
               </h1>
-              <span class="text-[11px] text-gray-500 font-medium">Sdn. Bhd. • Ordering Platform</span>
+              <span class="text-[11px] text-gray-500 font-medium">Food Dinosaur Sdn. Bhd.</span>
             </div>
           </div>
 
           <!-- Location Selector -->
           <div class="hidden lg:flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-700 border border-gray-200 transition-colors">
-            <i class="fa-solid fa-location-dot text-emerald-600"></i>
+            <i class="fa-solid fa-location-dot text-[#d70f64]"></i>
             <span>Deliver to: <strong>Setapak, Kuala Lumpur</strong></span>
             <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
           </div>
@@ -293,30 +293,30 @@ function renderApp() {
 
         <!-- Role Tabs -->
         <nav class="hidden md:flex items-center bg-gray-100 p-1 rounded-xl border border-gray-200">
-          <button onclick="switchTab('customer')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'customer' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
+          <button onclick="switchTab('customer')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'customer' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
             <i class="fa-solid fa-utensils mr-1.5"></i> Customer Food
           </button>
-          <button onclick="switchTab('kitchen')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'kitchen' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
+          <button onclick="switchTab('kitchen')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'kitchen' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
             <i class="fa-solid fa-fire-burner mr-1.5"></i> Kitchen Queue
           </button>
-          <button onclick="switchTab('rider')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'rider' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
+          <button onclick="switchTab('rider')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'rider' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
             <i class="fa-solid fa-motorcycle mr-1.5"></i> Rider Console
           </button>
-          <button onclick="switchTab('analytics')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'analytics' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
+          <button onclick="switchTab('analytics')" class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${state.activeTab === 'analytics' ? 'bg-[#d70f64] text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
             <i class="fa-solid fa-chart-line mr-1.5"></i> Analytics
           </button>
         </nav>
 
-        <!-- Right Quick Action Controls -->
+        <!-- Right Action Controls -->
         <div class="flex items-center gap-2">
           <button onclick="openCheckoutModal()" class="btn-primary text-xs py-2 px-3.5 shadow-md">
             <i class="fa-solid fa-credit-card"></i>
-            <span>Checkout Order</span>
+            <span>Checkout</span>
           </button>
           <button onclick="toggleCartDrawer(true)" class="btn-secondary text-xs py-2 px-3.5 flex items-center gap-2">
-            <i class="fa-solid fa-bag-shopping text-emerald-600 text-sm"></i>
+            <i class="fa-solid fa-bag-shopping text-[#d70f64] text-sm"></i>
             <span>Basket</span>
-            <span class="bg-emerald-600 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full">
+            <span class="bg-[#d70f64] text-white font-extrabold text-[10px] px-2 py-0.5 rounded-full">
               ${state.cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </button>
@@ -370,7 +370,7 @@ function renderActiveTabContent() {
   }
 }
 
-// 1. CUSTOMER PORTAL (AUTHENTIC GRABFOOD / UBER EATS DESIGN)
+// 1. CUSTOMER PORTAL (AUTHENTIC FOODPANDA UI)
 function renderCustomerPortal() {
   const filteredMenu = state.menu.filter(item => {
     const matchesRest = state.selectedRestaurant === 'all' || item.restaurantId === state.selectedRestaurant;
@@ -382,31 +382,31 @@ function renderCustomerPortal() {
   });
 
   return `
-    <!-- GrabFood Vibrant Hero Banner -->
-    <div class="grab-hero p-6 md:p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <!-- Foodpanda Iconic Pink Hero Banner -->
+    <div class="panda-hero p-6 md:p-8 mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="max-w-xl">
         <div class="flex items-center gap-2 mb-3">
           <span class="bg-white/20 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
-            🔥 Promo Deal: DINOSAVE10 (10% OFF)
+            🐼 pandapro: DINOSAVE10 (10% OFF)
           </span>
           <span class="bg-amber-400 text-gray-900 text-xs font-black px-2.5 py-0.5 rounded-full">
-            ⚡ 20 MINS
+            ⚡ 20 MINS FREE DELIVERY
           </span>
         </div>
         <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2 leading-tight">
-          Crave it? Get it delivered. 🦖
+          Food and groceries delivered in minutes. 🐼
         </h2>
-        <p class="text-emerald-100 text-xs md:text-sm font-medium leading-relaxed">
-          Order online from 5 top partner outlets across Kuala Lumpur with real-time GPS tracking and customizable options.
+        <p class="text-pink-100 text-xs md:text-sm font-medium leading-relaxed">
+          Order your favorite meals from 5 top partner outlets with real-time GPS tracking and live customization.
         </p>
       </div>
 
       <!-- Hero Search Bar -->
-      <div class="w-full md:w-96 bg-white rounded-2xl p-2 shadow-2xl border border-emerald-400 flex items-center gap-2">
-        <div class="pl-3 text-emerald-600 text-base">
+      <div class="w-full md:w-96 bg-white rounded-2xl p-2 shadow-2xl border border-pink-300 flex items-center gap-2">
+        <div class="pl-3 text-[#d70f64] text-base">
           <i class="fa-solid fa-magnifying-glass"></i>
         </div>
-        <input type="text" placeholder="Search burgers, pizza, chicken..." 
+        <input type="text" placeholder="Search burgers, pizza, drinks..." 
                value="${state.searchQuery}"
                oninput="handleSearch(this.value)"
                class="w-full text-gray-900 px-1 py-2 text-xs md:text-sm focus:outline-none font-semibold placeholder:text-gray-400" />
@@ -417,7 +417,7 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- Category Pill Cards Bar (GrabFood / UberEats Style) -->
+    <!-- Category Carousel Bar (Foodpanda Style) -->
     <div class="mb-8">
       <h3 class="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">Categories</h3>
       <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2">
@@ -438,11 +438,11 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- Outlet Selection Cards Grid -->
+    <!-- Top Restaurants Grid -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-xs font-extrabold text-gray-500 uppercase tracking-wider">Top Restaurants</h3>
-        <button onclick="selectRestaurant('all')" class="text-xs font-bold text-emerald-600 hover:underline">
+        <button onclick="selectRestaurant('all')" class="text-xs font-bold text-[#d70f64] hover:underline">
           ${state.selectedRestaurant === 'all' ? '● All Outlets Selected' : 'Show All Outlets'}
         </button>
       </div>
@@ -467,7 +467,7 @@ function renderCustomerPortal() {
       </div>
     </div>
 
-    <!-- GrabFood Style Food Cards Grid -->
+    <!-- Foodpanda Food Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       ${filteredMenu.map(item => `
         <div onclick="openFoodDetailModal('${item.id}')" 
@@ -476,18 +476,18 @@ function renderCustomerPortal() {
             <div class="relative h-48 bg-gray-100 overflow-hidden">
               <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               
-              <!-- Rating & Time Floating Badges -->
-              <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-extrabold text-gray-800 shadow-md border border-gray-200 flex items-center gap-1">
-                <span class="text-amber-500">★</span> ${item.rating}
+              <!-- Foodpanda Pink Floating Badges -->
+              <div class="absolute top-3 left-3 bg-[#d70f64] text-white px-2.5 py-1 rounded-lg text-[11px] font-extrabold shadow-md flex items-center gap-1">
+                <span>🐼 Panda Pick</span>
               </div>
               <div class="absolute top-3 right-3 bg-gray-900/80 text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow-md">
-                ⏱️ ${item.prepTime}
+                ★ ${item.rating} • ${item.prepTime}
               </div>
             </div>
 
             <div class="p-5">
-              <span class="text-[11px] font-bold text-emerald-600 block mb-1 uppercase tracking-wider line-clamp-1">${item.restaurantName}</span>
-              <h3 class="text-base font-extrabold text-gray-900 mb-1 group-hover:text-emerald-600 transition-colors">${item.name}</h3>
+              <span class="text-[11px] font-bold text-[#d70f64] block mb-1 uppercase tracking-wider line-clamp-1">${item.restaurantName}</span>
+              <h3 class="text-base font-extrabold text-gray-900 mb-1 group-hover:text-[#d70f64] transition-colors">${item.name}</h3>
               <p class="text-gray-500 text-xs line-clamp-2 leading-relaxed mb-4">${item.description}</p>
             </div>
           </div>
@@ -531,7 +531,7 @@ function renderKitchenDashboard() {
                 <span class="text-xs text-gray-500 block mt-0.5">${order.dateTime} | Customer: ${order.customerName}</span>
               </div>
               <div class="text-right">
-                <span class="text-sm font-extrabold text-emerald-600">RM ${order.totalPayable.toFixed(2)}</span>
+                <span class="text-sm font-extrabold text-[#d70f64]">RM ${order.totalPayable.toFixed(2)}</span>
                 <span class="text-xs text-gray-400 block">${order.paymentMethod}</span>
               </div>
             </div>
@@ -567,7 +567,7 @@ function renderKitchenDashboard() {
             <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded border border-gray-200">
               <div>
                 <span class="text-xs font-bold text-gray-800 block">${item.name}</span>
-                <span class="text-[11px] text-emerald-600 font-bold">RM ${item.price.toFixed(2)}</span>
+                <span class="text-[11px] text-[#d70f64] font-bold">RM ${item.price.toFixed(2)}</span>
               </div>
               <button onclick="toggleMenuAvailability('${item.id}')" class="px-2.5 py-1 rounded text-xs font-bold ${item.available ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-rose-100 text-rose-800 border border-rose-300'}">
                 ${item.available ? 'In Stock' : 'Out of Stock'}
@@ -613,10 +613,10 @@ function renderRiderDashboard() {
           <div class="mb-4">
             <div class="flex justify-between text-xs mb-1 font-bold">
               <span class="text-gray-500">Delivery Route Progress</span>
-              <span class="text-emerald-600">${order.riderGpsProgress}%</span>
+              <span class="text-[#d70f64]">${order.riderGpsProgress}%</span>
             </div>
             <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden border border-gray-200">
-              <div class="h-full bg-emerald-600 rounded-full transition-all" style="width: ${order.riderGpsProgress}%"></div>
+              <div class="h-full bg-[#d70f64] rounded-full transition-all" style="width: ${order.riderGpsProgress}%"></div>
             </div>
           </div>
 
@@ -645,10 +645,10 @@ function renderAnalyticsDashboard() {
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="solid-card p-4 border-l-4 border-l-emerald-600">
+      <div class="solid-card p-4 border-l-4 border-l-[#d70f64]">
         <span class="text-xs text-gray-500 font-bold block">Annual Revenue</span>
         <span class="text-xl font-extrabold text-gray-900">RM 1,466,000</span>
-        <span class="text-[11px] text-emerald-600 font-bold block mt-0.5">Year 1 Target Met</span>
+        <span class="text-[11px] text-[#d70f64] font-bold block mt-0.5">Year 1 Target Met</span>
       </div>
       <div class="solid-card p-4 border-l-4 border-l-amber-500">
         <span class="text-xs text-gray-500 font-bold block">Daily Orders</span>
@@ -715,13 +715,13 @@ function renderFoodDetailModalContent() {
 
       <div class="p-5 space-y-5 overflow-y-auto flex-1">
         <div>
-          <span class="text-[11px] font-bold text-emerald-600 uppercase tracking-wider block mb-0.5">${item.restaurantName}</span>
+          <span class="text-[11px] font-bold text-[#d70f64] uppercase tracking-wider block mb-0.5">${item.restaurantName}</span>
           <h2 class="text-xl font-extrabold text-gray-900 mb-1">${item.name}</h2>
           <p class="text-gray-600 text-xs leading-relaxed mb-2">${item.description}</p>
           <div class="flex items-center gap-3 text-xs font-bold text-gray-700">
             <span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded">★ ${item.rating}</span>
             <span>⏱️ ${item.prepTime}</span>
-            <span class="text-emerald-600 text-sm font-extrabold">RM ${item.price.toFixed(2)}</span>
+            <span class="text-[#d70f64] text-sm font-extrabold">RM ${item.price.toFixed(2)}</span>
           </div>
         </div>
 
@@ -735,7 +735,7 @@ function renderFoodDetailModalContent() {
                     <input type="radio" name="food-size" 
                            ${state.customization.size && state.customization.size.name === size.name ? 'checked' : idx === 0 ? 'checked' : ''} 
                            onchange="selectCustomSize('${size.name}', ${size.price})"
-                           class="w-4 h-4 text-emerald-600 focus:ring-emerald-500" />
+                           class="w-4 h-4 text-[#d70f64] focus:ring-[#d70f64]" />
                     <span class="text-xs font-bold text-gray-800">${size.name}</span>
                   </div>
                   <span class="text-xs font-bold text-gray-600">${size.price > 0 ? `+RM ${size.price.toFixed(2)}` : 'Standard'}</span>
@@ -755,10 +755,10 @@ function renderFoodDetailModalContent() {
                     <input type="checkbox" 
                            ${state.customization.addons.some(a => a.name === addon.name) ? 'checked' : ''}
                            onchange="toggleCustomAddon('${addon.name}', ${addon.price})"
-                           class="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500" />
+                           class="w-4 h-4 text-[#d70f64] rounded focus:ring-[#d70f64]" />
                     <span class="text-xs font-bold text-gray-800">${addon.name}</span>
                   </div>
-                  <span class="text-xs font-bold text-emerald-600">+RM ${addon.price.toFixed(2)}</span>
+                  <span class="text-xs font-bold text-[#d70f64]">+RM ${addon.price.toFixed(2)}</span>
                 </label>
               `).join('')}
             </div>
@@ -803,7 +803,7 @@ function renderCartDrawerContent() {
   return `
     <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-white">
       <div class="flex items-center gap-2">
-        <i class="fa-solid fa-bag-shopping text-emerald-600 text-lg"></i>
+        <i class="fa-solid fa-bag-shopping text-[#d70f64] text-lg"></i>
         <h3 class="text-base font-extrabold text-gray-900">Your Basket</h3>
       </div>
       <button onclick="toggleCartDrawer(false)" class="text-gray-400 hover:text-gray-600 font-bold text-lg">✕</button>
@@ -823,14 +823,14 @@ function renderCartDrawerContent() {
             <h4 class="text-xs font-bold text-gray-900 leading-tight">${item.name}</h4>
             <span class="text-[10px] text-gray-500 block mt-0.5">${item.sizeName}</span>
             ${item.addons && item.addons.length > 0 ? `
-              <span class="text-[10px] text-emerald-600 block">+ ${item.addons.map(a => a.name).join(', ')}</span>
+              <span class="text-[10px] text-[#d70f64] block">+ ${item.addons.map(a => a.name).join(', ')}</span>
             ` : ''}
             ${item.instructions ? `
               <span class="text-[10px] text-gray-400 italic block mt-0.5">"${item.instructions}"</span>
             ` : ''}
             
             <div class="flex items-center justify-between mt-2">
-              <span class="text-xs font-extrabold text-emerald-600">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</span>
+              <span class="text-xs font-extrabold text-[#d70f64]">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</span>
               <div class="flex items-center border border-gray-300 rounded-lg bg-gray-50">
                 <button onclick="updateCartItemQty('${item.cartItemId}', ${item.quantity - 1})" class="px-2 py-0.5 text-xs font-bold text-gray-600 hover:text-gray-900">-</button>
                 <span class="px-2 text-xs font-bold text-gray-900">${item.quantity}</span>
@@ -854,10 +854,10 @@ function renderCartDrawerContent() {
           <div class="flex justify-between"><span>Subtotal:</span><span class="font-bold text-gray-900">RM ${subtotal.toFixed(2)}</span></div>
           <div class="flex justify-between"><span>SST Tax (8%):</span><span class="font-bold text-gray-900">RM ${sst.toFixed(2)}</span></div>
           <div class="flex justify-between"><span>Delivery Fee:</span><span class="font-bold text-gray-900">RM ${deliveryFee.toFixed(2)}</span></div>
-          <div class="flex justify-between text-emerald-600 font-bold"><span>Promo Discount (10%):</span><span>-RM ${discount.toFixed(2)}</span></div>
+          <div class="flex justify-between text-[#d70f64] font-bold"><span>Promo Discount (10%):</span><span>-RM ${discount.toFixed(2)}</span></div>
           <div class="flex justify-between text-sm font-extrabold text-gray-900 pt-2 border-t border-gray-200">
             <span>Total Payable:</span>
-            <span class="text-emerald-600">RM ${totalPayable.toFixed(2)}</span>
+            <span class="text-[#d70f64]">RM ${totalPayable.toFixed(2)}</span>
           </div>
         </div>
 
@@ -885,10 +885,10 @@ function renderCheckoutModalContent() {
       <div class="flex items-center justify-between pb-4 border-b border-gray-200 mb-5">
         <div>
           <div class="flex items-center gap-2 mb-1">
-            <span class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+            <span class="text-[10px] font-extrabold text-[#d70f64] uppercase tracking-widest bg-[#fff0f5] px-2 py-0.5 rounded border border-[#ffccd9]">
               CREATE FOOD ORDER
             </span>
-            <button type="button" onclick="toggleAssignmentAnnotations()" class="text-[11px] font-bold text-gray-600 hover:text-emerald-600 underline">
+            <button type="button" onclick="toggleAssignmentAnnotations()" class="text-[11px] font-bold text-gray-600 hover:text-[#d70f64] underline">
               ${showBadges ? '⚡ Switch to Simple View' : '🎓 Show Assignment Badges [1]-[15]'}
             </button>
           </div>
@@ -1008,7 +1008,7 @@ function renderCheckoutModalContent() {
                       <span class="font-bold text-gray-900 block">${item.quantity}x ${item.name}</span>
                       <span class="text-[10px] text-gray-500">${item.sizeName} ${item.instructions ? `• "${item.instructions}"` : ''}</span>
                     </div>
-                    <span class="font-extrabold text-emerald-600">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</span>
+                    <span class="font-extrabold text-[#d70f64]">RM ${(item.totalPricePerUnit * item.quantity).toFixed(2)}</span>
                   </div>
                 `).join('')}
               </div>
@@ -1043,10 +1043,10 @@ function renderCheckoutModalContent() {
                 <div class="flex justify-between text-gray-600"><span>Subtotal:</span><span class="font-bold text-gray-900">RM ${subtotal.toFixed(2)}</span></div>
                 <div class="flex justify-between text-gray-600"><span>SST Tax (8%):</span><span class="font-bold text-gray-900">RM ${sst.toFixed(2)}</span></div>
                 <div class="flex justify-between text-gray-600"><span>Delivery Fee:</span><span class="font-bold text-gray-900">RM ${deliveryFee.toFixed(2)}</span></div>
-                <div class="flex justify-between text-emerald-600 font-bold"><span>Promo Discount (10%):</span><span>-RM ${discount.toFixed(2)}</span></div>
+                <div class="flex justify-between text-[#d70f64] font-bold"><span>Promo Discount (10%):</span><span>-RM ${discount.toFixed(2)}</span></div>
                 <div class="border-t border-gray-200 pt-2 flex justify-between text-sm font-extrabold text-gray-900">
                   <span>TOTAL PAYABLE:</span>
-                  <span class="text-emerald-600">RM ${totalPayable.toFixed(2)}</span>
+                  <span class="text-[#d70f64]">RM ${totalPayable.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -1074,14 +1074,14 @@ function renderOrderTrackingModalContent() {
     <div class="modal-container p-6">
       <div class="flex items-center justify-between pb-3 border-b border-gray-200 mb-4">
         <div>
-          <span class="badge badge-preparing mb-1">Live Order Progress</span>
+          <span class="badge badge-panda mb-1">Live Order Progress</span>
           <h2 class="text-lg font-extrabold text-gray-900">Tracking Order: ${activeOrder.orderId}</h2>
         </div>
         <button onclick="closeTrackingModal()" class="text-gray-400 hover:text-gray-600 text-lg font-bold">✕</button>
       </div>
 
       <div class="grid grid-cols-4 gap-2 text-center text-xs mb-6 font-bold">
-        <div class="p-2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">1. Placed</div>
+        <div class="p-2 rounded bg-pink-100 text-[#d70f64] border border-pink-300">1. Placed</div>
         <div class="p-2 rounded bg-sky-100 text-sky-800 border border-sky-300">2. Preparing</div>
         <div class="p-2 rounded bg-gray-100 text-gray-500">3. Delivering</div>
         <div class="p-2 rounded bg-gray-100 text-gray-500">4. Delivered</div>
@@ -1327,7 +1327,7 @@ function showToast(message, type = 'success') {
   const toast = document.createElement('div');
   toast.className = 'toast';
   toast.innerHTML = `
-    <i class="fa-solid ${type === 'success' ? 'fa-check text-emerald-400' : 'fa-triangle-exclamation text-rose-400'}"></i>
+    <i class="fa-solid ${type === 'success' ? 'fa-check text-pink-400' : 'fa-triangle-exclamation text-rose-400'}"></i>
     <span>${message}</span>
   `;
 
