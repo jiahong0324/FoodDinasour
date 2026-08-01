@@ -892,21 +892,26 @@ function renderCheckoutModalContent() {
   const currentPaymentChannel = state.selectedPaymentChannel || 'card';
   const isPaymentStep = state.checkoutStep === 2;
 
-  // STEP 2: PAYMENT PROCESSING PAGE (MATCHING SAMPLE IMAGE 3)
+  // STEP 2: PAYMENT PROCESSING PAGE (MATCHING SAMPLE IMAGE 3 & GRABFOOD UI)
   if (isPaymentStep) {
     return `
       <div class="modal-container p-6 max-w-lg overflow-y-auto max-h-[90vh]">
         <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
           <div>
-            <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 block mb-1">
-              SECURE CHECKOUT
-            </span>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                SECURE CHECKOUT
+              </span>
+              <button type="button" onclick="fillSampleData()" class="text-[11px] font-extrabold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-2.5 py-0.5 rounded-md border border-emerald-300 transition-all">
+                ⚡ Fill Sample Data
+              </button>
+            </div>
             <h2 class="text-xl font-extrabold text-slate-900">Payment Processing</h2>
           </div>
           <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
         </div>
 
-        <form onsubmit="handleFormSubmit(event)" class="space-y-5">
+        <form onsubmit="handleFormSubmit(event)" class="space-y-5" novalidate>
           <!-- AUTO-IMPORTED GRAND TOTAL CARD -->
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-1">
             <div class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">Grand Total to Pay</div>
@@ -928,7 +933,7 @@ function renderCheckoutModalContent() {
             </select>
           </div>
 
-          <!-- DYNAMIC PAYMENT DETAILS BOX -->
+          <!-- DYNAMIC PAYMENT DETAILS BOX WITH VALIDATION -->
           <div class="p-4 bg-slate-50/70 rounded-2xl border border-slate-200 space-y-3">
             ${currentPaymentChannel === 'card' ? `
               <div>
@@ -936,14 +941,14 @@ function renderCheckoutModalContent() {
                   <span>Cardholder Name</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
                 </label>
-                <input type="text" value="" placeholder="e.g. Chan Pei Xuan" required class="form-input py-2 text-xs" />
+                <input type="text" id="input-cardholder" value="" placeholder="e.g. Chan Pei Xuan" class="form-input py-2 text-xs" />
               </div>
               <div>
                 <label class="form-label text-xs mb-1">
                   <span>Card Number</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">16-Digit</span>' : ''}
                 </label>
-                <input type="text" value="" maxlength="19" required class="form-input py-2 text-xs font-mono tracking-widest" placeholder="16-digit card number without spaces" />
+                <input type="text" id="input-cardnumber" value="" maxlength="19" class="form-input py-2 text-xs font-mono tracking-widest" placeholder="16-digit card number without spaces" />
                 <p class="text-[10px] text-slate-400 mt-0.5">16-digit card number without spaces</p>
               </div>
               <div class="grid grid-cols-2 gap-3">
@@ -952,14 +957,14 @@ function renderCheckoutModalContent() {
                     <span>Expiry Date</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">Date</span>' : ''}
                   </label>
-                  <input type="text" value="" placeholder="e.g. October, 2029" required class="form-input py-2 text-xs" />
+                  <input type="text" id="input-cardexpiry" value="" placeholder="e.g. October, 2029" class="form-input py-2 text-xs" />
                 </div>
                 <div>
                   <label class="form-label text-xs mb-1">
                     <span>CVV</span>
                     ${showBadges ? '<span class="val-tag val-tag-active">3-Digit</span>' : ''}
                   </label>
-                  <input type="password" value="" placeholder="e.g. 882" maxlength="4" required class="form-input py-2 text-xs font-mono text-center" />
+                  <input type="password" id="input-cardcvv" value="" placeholder="e.g. 882" maxlength="4" class="form-input py-2 text-xs font-mono text-center" />
                 </div>
               </div>
             ` : ''}
@@ -967,35 +972,35 @@ function renderCheckoutModalContent() {
             ${currentPaymentChannel === 'fpx' ? `
               <div>
                 <label class="form-label text-xs mb-1">Select Bank Portal</label>
-                <select class="form-input py-2 text-xs font-bold text-slate-800">
+                <select id="input-fpxbank" class="form-input py-2 text-xs font-bold text-slate-800">
                   <option value="" disabled selected>-- Select FPX Bank --</option>
-                  <option>Maybank2u (Maybank)</option>
-                  <option>CIMB Clicks (CIMB Bank)</option>
-                  <option>Public Bank Online</option>
-                  <option>RHB Now Online Banking</option>
+                  <option value="maybank">Maybank2u (Maybank)</option>
+                  <option value="cimb">CIMB Clicks (CIMB Bank)</option>
+                  <option value="publicbank">Public Bank Online</option>
+                  <option value="rhb">RHB Now Online Banking</option>
                 </select>
               </div>
               <div>
                 <label class="form-label text-xs mb-1">Online Banking User ID</label>
-                <input type="text" value="" placeholder="Enter bank user ID" required class="form-input py-2 text-xs" />
+                <input type="text" id="input-fpxuser" value="" placeholder="Enter bank user ID" class="form-input py-2 text-xs" />
               </div>
             ` : ''}
 
             ${currentPaymentChannel === 'ewallet' ? `
               <div>
                 <label class="form-label text-xs mb-1">E-Wallet Registered Phone</label>
-                <input type="tel" value="" placeholder="e.g. 012-3456789" required class="form-input py-2 text-xs" />
+                <input type="tel" id="input-ewalletphone" value="" placeholder="e.g. 012-3456789" class="form-input py-2 text-xs" />
               </div>
               <div>
                 <label class="form-label text-xs mb-1">6-Digit E-Wallet Security PIN</label>
-                <input type="password" value="" placeholder="e.g. 123456" maxlength="6" required class="form-input py-2 text-xs font-mono text-center" />
+                <input type="password" id="input-ewalletpin" value="" placeholder="e.g. 123456" maxlength="6" class="form-input py-2 text-xs font-mono text-center" />
               </div>
             ` : ''}
 
             ${currentPaymentChannel === 'cod' ? `
               <div>
                 <label class="form-label text-xs mb-1">Cash Change Request Note</label>
-                <input type="text" value="" placeholder="e.g. Paying with RM 100 note, please prepare RM 37.18 change" class="form-input py-2 text-xs" />
+                <input type="text" id="input-codnote" value="" placeholder="e.g. Paying with RM 100 note, please prepare RM 37.18 change" class="form-input py-2 text-xs" />
               </div>
             ` : ''}
           </div>
@@ -1025,7 +1030,7 @@ function renderCheckoutModalContent() {
     `;
   }
 
-  // STEP 1: CREATE FOOD ORDER & BOOKING SUMMARY PAGE (MATCHING SAMPLE IMAGE 1)
+  // STEP 1: CREATE FOOD ORDER & BOOKING SUMMARY PAGE (MATCHING SAMPLE IMAGE 1 & GRABFOOD UI)
   return `
     <div class="modal-container p-6 max-w-3xl overflow-y-auto max-h-[90vh]">
       <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
@@ -1034,6 +1039,9 @@ function renderCheckoutModalContent() {
             <span class="text-[10px] font-extrabold text-emerald-700 uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
               CREATE FOOD ORDER
             </span>
+            <button type="button" onclick="fillSampleData()" class="text-[11px] font-extrabold bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-2.5 py-0.5 rounded-md border border-emerald-300 transition-all">
+              ⚡ Fill Sample Data
+            </button>
             <button type="button" onclick="toggleAssignmentAnnotations()" class="text-[11px] font-bold text-slate-600 hover:text-emerald-600 underline">
               ${showBadges ? '⚡ Switch to Simple View' : '🎓 Show Assignment Badges [1]-[16]'}
             </button>
@@ -1084,14 +1092,14 @@ function renderCheckoutModalContent() {
                   <span>${showBadges ? '[7] ' : ''}Passport / MyKad</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">12-Digit</span>' : ''}
                 </label>
-                <input type="text" value="" placeholder="e.g. A1234567" class="form-input py-1.5" />
+                <input type="text" id="input-passport" value="" placeholder="e.g. A1234567" class="form-input py-1.5" />
               </div>
               <div>
                 <label class="form-label mb-1">
                   <span>${showBadges ? '[8] ' : ''}Contact Number</span>
                   ${showBadges ? '<span class="val-tag val-tag-active">Phone Check</span>' : ''}
                 </label>
-                <input type="tel" value="" placeholder="e.g. 012-3456789" class="form-input py-1.5" />
+                <input type="tel" id="input-phone" value="" placeholder="e.g. 012-3456789" class="form-input py-1.5" />
               </div>
             </div>
 
@@ -1100,7 +1108,7 @@ function renderCheckoutModalContent() {
                 <span>${showBadges ? '[9] ' : ''}Delivery Address</span>
                 ${showBadges ? '<span class="val-tag val-tag-active">Required</span>' : ''}
               </label>
-              <input type="text" value="" placeholder="e.g. No. 12, Jalan Genting Klang, Setapak, 53300 KL" class="form-input py-1.5" />
+              <input type="text" id="input-address" value="" placeholder="e.g. No. 12, Jalan Genting Klang, Setapak, 53300 KL" class="form-input py-1.5" />
             </div>
           </div>
 
@@ -1602,9 +1610,47 @@ window.closeCheckoutModal = function() {
 
 window.goToPaymentStep = function() {
   if (state.cart.length === 0) {
-    showToast('Error: Please complete your booking before proceeding to payment.', 'error');
+    showToast('🚫 Action Error: Please complete your food selection before proceeding.', 'error');
     return;
   }
+
+  const passportInput = document.getElementById('input-passport');
+  const phoneInput = document.getElementById('input-phone');
+  const addressInput = document.getElementById('input-address');
+
+  let isValid = true;
+
+  // Clear previous errors
+  [passportInput, phoneInput, addressInput].forEach(el => el?.classList.remove('input-error'));
+  document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+  // Passport / MyKad Validation
+  if (!passportInput?.value.trim()) {
+    passportInput?.classList.add('input-error');
+    passportInput?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Passport / MyKad IC number is required</div>');
+    isValid = false;
+  }
+
+  // Phone Validation (Format Check: 10-11 digits)
+  const phoneVal = phoneInput?.value.trim().replace(/[- ]/g, '');
+  if (!phoneVal || !/^\d{10,11}$/.test(phoneVal)) {
+    phoneInput?.classList.add('input-error');
+    phoneInput?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Phone number must be 10-11 digits (e.g. 012-3456789)</div>');
+    isValid = false;
+  }
+
+  // Delivery Address Validation (Required Check)
+  if (!addressInput?.value.trim()) {
+    addressInput?.classList.add('input-error');
+    addressInput?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Delivery address is required</div>');
+    isValid = false;
+  }
+
+  if (!isValid) {
+    showToast('❌ Validation Error: Please correct highlighted fields!', 'error');
+    return;
+  }
+
   state.checkoutStep = 2;
   renderApp();
   openCheckoutModal();
@@ -1644,10 +1690,131 @@ window.applyPromoCode = function() {
 
 window.handleFormSubmit = function(event) {
   event.preventDefault();
+
+  const channel = state.selectedPaymentChannel || 'card';
+  let isValid = true;
+
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+  if (channel === 'card') {
+    const cardholder = document.getElementById('input-cardholder');
+    const cardnumber = document.getElementById('input-cardnumber');
+    const cardexpiry = document.getElementById('input-cardexpiry');
+    const cardcvv = document.getElementById('input-cardcvv');
+
+    if (!cardholder?.value.trim()) {
+      cardholder?.classList.add('input-error');
+      cardholder?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Cardholder Name is required</div>');
+      isValid = false;
+    }
+
+    const cleanCardNum = cardnumber?.value.trim().replace(/\s+/g, '');
+    if (!cleanCardNum || cleanCardNum.length !== 16 || !/^\d{16}$/.test(cleanCardNum)) {
+      cardnumber?.classList.add('input-error');
+      cardnumber?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Format Error: Credit Card Number must be exactly 16 digits</div>');
+      isValid = false;
+    }
+
+    if (!cardexpiry?.value.trim()) {
+      cardexpiry?.classList.add('input-error');
+      cardexpiry?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Expiry date is required</div>');
+      isValid = false;
+    }
+
+    const cvvVal = cardcvv?.value.trim();
+    if (!cvvVal || !/^\d{3,4}$/.test(cvvVal)) {
+      cardcvv?.classList.add('input-error');
+      cardcvv?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ CVV must be 3 numeric digits</div>');
+      isValid = false;
+    }
+  } else if (channel === 'fpx') {
+    const bankSelect = document.getElementById('input-fpxbank');
+    const fpxUser = document.getElementById('input-fpxuser');
+
+    if (!bankSelect?.value) {
+      bankSelect?.classList.add('input-error');
+      bankSelect?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Please select an FPX Bank Portal</div>');
+      isValid = false;
+    }
+    if (!fpxUser?.value.trim()) {
+      fpxUser?.classList.add('input-error');
+      fpxUser?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Bank User ID is required</div>');
+      isValid = false;
+    }
+  } else if (channel === 'ewallet') {
+    const ewalletPhone = document.getElementById('input-ewalletphone');
+    const ewalletPin = document.getElementById('input-ewalletpin');
+
+    const phoneVal = ewalletPhone?.value.trim().replace(/[- ]/g, '');
+    if (!phoneVal || !/^\d{10,11}$/.test(phoneVal)) {
+      ewalletPhone?.classList.add('input-error');
+      ewalletPhone?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Phone number must be 10-11 digits</div>');
+      isValid = false;
+    }
+
+    if (!ewalletPin?.value.trim() || !/^\d{6}$/.test(ewalletPin.value.trim())) {
+      ewalletPin?.classList.add('input-error');
+      ewalletPin?.insertAdjacentHTML('afterend', '<div class="error-msg">❌ Security PIN must be 6 numeric digits</div>');
+      isValid = false;
+    }
+  }
+
+  if (!isValid) {
+    showToast('❌ Payment Validation Failed: Please correct highlighted errors!', 'error');
+    return;
+  }
+
   closeCheckoutModal();
   showToast('Payment Authorized & Food Order Submitted! 🚀');
   renderApp();
   openTrackingModal();
+};
+
+window.fillSampleData = function() {
+  if (state.checkoutStep === 1) {
+    const passportInput = document.getElementById('input-passport');
+    const phoneInput = document.getElementById('input-phone');
+    const addressInput = document.getElementById('input-address');
+
+    if (passportInput) passportInput.value = 'A1234567';
+    if (phoneInput) phoneInput.value = '012-3456789';
+    if (addressInput) addressInput.value = 'No. 12, Jalan Genting Klang, Setapak, 53300 KL';
+
+    [passportInput, phoneInput, addressInput].forEach(el => el?.classList.remove('input-error'));
+    document.querySelectorAll('.error-msg').forEach(el => el.remove());
+    showToast('⚡ Sample Contact Data Filled!');
+  } else {
+    const channel = state.selectedPaymentChannel || 'card';
+    if (channel === 'card') {
+      const cardholder = document.getElementById('input-cardholder');
+      const cardnumber = document.getElementById('input-cardnumber');
+      const cardexpiry = document.getElementById('input-cardexpiry');
+      const cardcvv = document.getElementById('input-cardcvv');
+
+      if (cardholder) cardholder.value = 'Chan Pei Xuan';
+      if (cardnumber) cardnumber.value = '1234567812345678';
+      if (cardexpiry) cardexpiry.value = 'October, 2029';
+      if (cardcvv) cardcvv.value = '882';
+
+      [cardholder, cardnumber, cardexpiry, cardcvv].forEach(el => el?.classList.remove('input-error'));
+    } else if (channel === 'fpx') {
+      const bankSelect = document.getElementById('input-fpxbank');
+      const fpxUser = document.getElementById('input-fpxuser');
+      if (bankSelect) bankSelect.value = 'maybank';
+      if (fpxUser) fpxUser.value = 'chanpeixuan99';
+      [bankSelect, fpxUser].forEach(el => el?.classList.remove('input-error'));
+    } else if (channel === 'ewallet') {
+      const ewalletPhone = document.getElementById('input-ewalletphone');
+      const ewalletPin = document.getElementById('input-ewalletpin');
+      if (ewalletPhone) ewalletPhone.value = '012-3456789';
+      if (ewalletPin) ewalletPin.value = '123456';
+      [ewalletPhone, ewalletPin].forEach(el => el?.classList.remove('input-error'));
+    }
+
+    document.querySelectorAll('.error-msg').forEach(el => el.remove());
+    showToast('⚡ Sample Payment Credentials Filled!');
+  }
 };
 
 window.updateOrderStatus = function(orderId, newStatus) {

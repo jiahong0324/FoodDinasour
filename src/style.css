@@ -9,7 +9,8 @@
   --dino-green-light: #ecfdf5;
   --dino-green-badge: #dcfce7;
   
-  --bg-page: #f8fafc; /* Clean Light Background */
+  --grab-green: #00b14f; /* GrabFood Signature Green */
+  --bg-page: #f8fafc;
   --bg-card: #ffffff;
   --border-color: #e2e8f0;
   
@@ -47,7 +48,7 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: none;
 }
 
-/* Food Dinosaur Hero Banner */
+/* GrabFood & Food Dinosaur Hero Banner */
 .dino-hero {
   background: linear-gradient(135deg, #059669 0%, #064e3b 100%);
   color: #ffffff;
@@ -161,7 +162,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #a7f3d0;
 }
 
-/* Form Inputs */
+/* Form Inputs & Validation Styles */
 .form-input {
   width: 100%;
   background-color: #ffffff;
@@ -178,6 +179,22 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
   border-color: #059669;
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.18);
+}
+
+.form-input.input-error {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .form-input[readonly] {
@@ -312,24 +329,6 @@ h1, h2, h3, h4, h5, h6 {
 .btn-secondary:hover {
   background-color: #f8fafc;
   border-color: #94a3b8;
-}
-
-/* Option Cards for Customization */
-.option-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 0.75rem;
-  background-color: #ffffff;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.option-card:hover {
-  border-color: #059669;
-  background-color: #f0fdf4;
 }
 
 /* Toast Notifications */
